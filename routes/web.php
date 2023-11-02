@@ -26,6 +26,7 @@ Route::get('/sanpham', [SanphamController::class, 'TrangSanPham'])->name('sanpha
 // Dang nhap, dang ky
 Route::get('/dang-nhap', [AuthContoller::class, 'login'])->name('login');
 Route::get('/dang-ky', [AuthContoller::class, 'signup'])->name('signup');
+Route::get('/verify/{token}', [AuthContoller::class, 'verify']);
 Route::post('/dang-nhap-user', [AuthContoller::class, 'loginUser'])->name('loginUser');
 Route::post('/tao-tai-khoan', [AuthContoller::class, 'createUser'])->name('createUser');
 Route::get('/dang-xuat', [AuthContoller::class, 'logoutUser'])->name('logoutUser');

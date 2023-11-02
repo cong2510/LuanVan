@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name')->nullable(false);
             $table->string('email')->nullable(false)->unique();
             $table->string('google_id')->nullable();
-            $table->boolean('verified')->default(false);
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable(false);
-            $table->rememberToken()->default(null);
+            $table->rememberToken();
             $table->string('address')->nullable();
             $table->boolean('gender')->default(false);
 

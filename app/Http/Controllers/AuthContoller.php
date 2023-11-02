@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use App\Mail\RegisterMail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 
 class AuthContoller extends Controller
@@ -47,7 +50,7 @@ class AuthContoller extends Controller
                     ->update(
                         [
                             'google_id' => $userGoogle->getId(),
-                            'verified' => 1,
+                            'email_verified_at' => Carbon::now(),
                         ]
                     );
             } else {
@@ -63,7 +66,7 @@ class AuthContoller extends Controller
                         'email' => $userGoogle->getEmail(),
                         'password' => Hash::make(Str::random(8)),
                         'google_id' => $userGoogle->getId(),
-                        'verified' => 1,
+                        'email_verified_at' => Carbon::now(),
                     ]
                 );
 
@@ -132,11 +135,20 @@ class AuthContoller extends Controller
 
         if ($userExist == null) {
 
-            User::create([
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password'))
-            ]);
+            // $user = User::create([
+            //     'name' => $request->get('name'),
+            //     'email' => $request->get('email'),
+            //     'password' => Hash::make($request->get('password')),
+            //     'remember_token' => Str::random(40),
+            // ]);
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->remember_token = Str::random(40);
+            $user->save();
+
+            Mail::to($user->email)->send(new RegisterMail($user));
 
             return redirect()->back()->with('signup_success', 'Đăng ký thành công');;;
         }
@@ -158,20 +170,40 @@ class AuthContoller extends Controller
             ]
         );
 
-        // $checkVerify = DB::table('users')
-        //     ->where('email', '=', $request->get('email'))
-        //     ->first();
+        $checkVerify = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->first();
 
-        // if ($checkVerify->verified !== 1) {
-        //     toastr()->warning('', 'Bạn chưa xác thực tài khoản!');
-        //     return redirect()->back();
-        // }
+        if ($checkVerify->email_verified_at == null) {
+            toastr()->warning('', 'Bạn chưa xác thực tài khoản!');
+            return redirect()->back();
+        }
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
+            toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 5000]);
             return redirect(route('index'));
         }
+    }
 
+    public function verify($token)
+    {
+        $user = DB::table('users')->where('remember_token', '=', $token);
+        if (!empty($user)) {
+            $user->update(
+                        [
+                            'remember_token' => Str::random(40),
+                            'email_verified_at' => Carbon::now(),
+                        ]
+                    );
+            // $user->email_verified_at = date('Y-m-d H:i:s');
+            // $user->remember_token = Str::random(40);
+            // $user->save();
+
+            toastr()->success('Chào mừng!', "Xác thực email thành công!", ['timeOut' => 5000]);
+            return redirect(route('login'));
+        } else {
+            abort(404);
+        }
     }
 }
