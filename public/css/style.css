@@ -1,0 +1,112 @@
+body {
+    background-color: white !important;
+
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.search .searchBar {
+    width: 350px;
+}
+
+.btnTaiKhoan {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.btnTaiKhoan a {
+    text-decoration: none;
+    color: black !important;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.btnTaiKhoan a:hover {
+    text-decoration: none;
+    color: blue !important;
+}
+
+.btnGioHang a {
+    text-decoration: none;
+    color: black !important;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.btnGioHang a:hover {
+    text-decoration: none;
+    color: blue !important;
+}
+
+.menu ul li a{
+    text-decoration: none;
+    color: black !important;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.menu ul li a:hover{
+    text-decoration: none;
+    color: blue !important;
+}
+
+@media(max-width: 991px) {
+    .search .searchBar {
+        width: 250px;
+    }
+
+    .btnTaiKhoan {
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 10px;
+    }
+
+    .btnTaiKhoan a {
+        text-decoration: none;
+        color: black !important;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    .btnTaiKhoan a:hover {
+        text-decoration: none;
+        color: blue !important;
+    }
+
+    .btnGioHang a {
+        text-decoration: none;
+        color: black !important;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    .btnGioHang a:hover {
+        text-decoration: none;
+        color: blue !important;
+    }
+}
+
+swiper-container {
+    width: 100%;
+    height: 100%;
+}
+
+swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
