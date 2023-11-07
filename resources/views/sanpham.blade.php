@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
 
-    <x-home.header :theloai="$theloai" title="Product" />
+    <x-home.header :theloai="$theloai" :role="$role" title="Product" />
 </head>
 
 <body>

@@ -13,7 +13,7 @@
             transition: all .2s linear;
         }
     </style>
-    <x-home.header :theloai="$theloai" title="Trang Chủ" />
+    <x-home.header :theloai="$theloai" :role="$role" title="Trang Chủ" />
 </head>
 
 <body>

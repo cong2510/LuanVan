@@ -27,7 +27,7 @@ class RegisterMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Email Validation',
+            subject: 'Xác thực tài khoản cửa hàng đồ chơi Thanh Ngân!!!',
         );
     }
 

@@ -23,7 +23,23 @@ class AuthContoller extends Controller
     public function login()
     {
         $theloai = Theloai::all();
-        return view('login', ['theloai' => $theloai]);
+        $role= Role::all();
+
+        return view('login', [
+            'theloai' => $theloai,
+            'role' => $role,
+    ]);
+    }
+
+    public function signup()
+    {
+        $theloai = Theloai::all();
+        $role= Role::all();
+
+        return view('signup', [
+            'theloai' => $theloai,
+            'role' => $role,
+    ]);
     }
 
     public function loginGoogle()
@@ -46,13 +62,24 @@ class AuthContoller extends Controller
 
         if ($userExist) {
             if (!$userGoogleExist) {
-                $user = DB::table('users')->where('email', '=', $userGoogle->getEmail())
+                if($userExist->email_verified_at == null)
+                {
+                    $user = DB::table('users')->where('email', '=', $userGoogle->getEmail())
                     ->update(
                         [
                             'google_id' => $userGoogle->getId(),
                             'email_verified_at' => Carbon::now(),
                         ]
                     );
+                }
+                else{
+                    $user = DB::table('users')->where('email', '=', $userGoogle->getEmail())
+                    ->update(
+                        [
+                            'google_id' => $userGoogle->getId(),
+                        ]
+                    );
+                }
             } else {
                 Auth::loginUsingId($userExist->id);
                 toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 5000]);
@@ -88,12 +115,6 @@ class AuthContoller extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
-    }
-
-    public function signup()
-    {
-        $theloai = Theloai::all();
-        return view('signup', ['theloai' => $theloai]);
     }
 
     public function createUser(Request $request)

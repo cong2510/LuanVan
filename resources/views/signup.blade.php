@@ -11,7 +11,7 @@
 
 <body>
     <div>
-        <x-home.header :theloai="$theloai" title="Đăng ký" />
+        <x-home.header :theloai="$theloai" :role="$role" title="Đăng ký" />
     </div>
     <div class="container col-8 pt-3">
         <div class="text-center">

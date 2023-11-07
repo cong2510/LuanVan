@@ -16,8 +16,8 @@
                     <a class="nav-link" href="{{ route('sanpham') }}">Sản phẩm</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         Thể loại
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -53,6 +53,9 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             @if (Auth::user())
                                 <li><a class="dropdown-item" href="#">Cài đặt tài khoản</a></li>
+                                @if (Auth::user()->hasAnyRole($role))
+                                    <li><a class="dropdown-item" href="{{ route('admindashboard') }}">Admin</a></li>
+                                @endif
                                 <li><a class="dropdown-item" href="{{ route('logoutUser') }}">Đăng xuất</a></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>

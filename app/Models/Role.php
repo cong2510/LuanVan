@@ -16,6 +16,7 @@ class Role extends Model
         'staff'
     ];
 
+
     /**
      * @return BelongsToMany
      */
