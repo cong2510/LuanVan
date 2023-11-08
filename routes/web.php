@@ -31,25 +31,41 @@ Route::get('/verify/{token}', [AuthContoller::class, 'verify']);
 Route::post('/dang-nhap-user', [AuthContoller::class, 'loginUser'])->name('loginUser');
 Route::post('/tao-tai-khoan', [AuthContoller::class, 'createUser'])->name('createUser');
 Route::get('/dang-xuat', [AuthContoller::class, 'logoutUser'])->name('logoutUser');
+route::get('/quen-mat-khau', [AuthContoller::class, 'forgotPassword'])->name('forgotPassword');
+route::post('/quen-mat-khau', [AuthContoller::class, 'storeForgotPassword'])->name('storeForgotPassword');
+Route::get('/reset-password/{token}', [AuthContoller::class, 'resetPassword']);
+Route::post('/reset-password/{token}', [AuthContoller::class, 'postResetPassword']);
 
 // Dang nhap google
-Route::get('auth/google', [AuthContoller::class,'loginGoogle'])->name('loginGoogle');
-Route::get('auth/google/callback', [AuthContoller::class,'loginGoogleCallback']);
+Route::get('auth/google', [AuthContoller::class, 'loginGoogle'])->name('loginGoogle');
+Route::get('auth/google/callback', [AuthContoller::class, 'loginGoogleCallback']);
 
 
 // Admin
 Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'Index'])->name('admindashboard');
-    Route::get('/all/sanpham', [AdminSanphamController::class, 'Index'])->name('adminsanpham');
 
-
-    Route::controller(RoleController::class)->group(function(){
-        Route::get('/all/permission','AllPermission')->name('all.permission');
-        Route::get('/add/permission','AddPermission')->name('add.permission');
-        Route::post('/store/permission','StorePermission')->name('store.permission');
-        Route::get('/edit/permission/{id}','EditPermission')->name('edit.permission');
-        Route::post('/update/permission','UpdatePermission')->name('update.permission');
-        Route::get('/delete/permission/{id}','DeletePermission')->name('delete.permission');
+    Route::controller(AdminSanphamController::class)->group(function () {
+        Route::get('/all/sanpham', 'AllProduct')->name('all.product');
     });
+
+
+    Route::controller(RoleController::class)->group(function () {
+        //Permission
+        Route::get('/all/permission', 'AllPermission')->name('all.permission');
+        Route::get('/add/permission', 'AddPermission')->name('add.permission');
+        Route::post('/store/permission', 'StorePermission')->name('store.permission');
+        Route::get('/edit/permission/{id}', 'EditPermission')->name('edit.permission');
+        Route::post('/update/permission', 'UpdatePermission')->name('update.permission');
+        Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission');
+
+        Route::get('/import/permission', 'ImportPermission')->name('import.permission');
+        Route::get('/export', 'Export')->name('export');
+        Route::post('/import', 'Import')->name('import');
+        //Role
+
+    });
+
+
 });
 

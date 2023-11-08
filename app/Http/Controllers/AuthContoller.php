@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Mail\RegisterMail;
+use App\Mail\ForgotPasswordMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
@@ -23,23 +24,31 @@ class AuthContoller extends Controller
     public function login()
     {
         $theloai = Theloai::all();
-        $role= Role::all();
+        $role = Role::all();
 
-        return view('login', [
-            'theloai' => $theloai,
-            'role' => $role,
-    ]);
+        if (auth()->check()) {
+            return redirect()->back();
+        } else {
+            return view('login', [
+                'theloai' => $theloai,
+                'role' => $role,
+            ]);
+        }
     }
 
     public function signup()
     {
         $theloai = Theloai::all();
-        $role= Role::all();
+        $role = Role::all();
 
-        return view('signup', [
-            'theloai' => $theloai,
-            'role' => $role,
-    ]);
+        if (auth()->check()) {
+            return redirect()->back();
+        } else {
+            return view('signup', [
+                'theloai' => $theloai,
+                'role' => $role,
+            ]);
+        }
     }
 
     public function loginGoogle()
@@ -55,55 +64,29 @@ class AuthContoller extends Controller
             ->where('email', '=', $userGoogle->getEmail())
             ->first();
 
-        $userGoogleExist = DB::table('users')
-            ->where('google_id', '=', $userGoogle->getId())
-            ->first();
-
+        // $userGoogleExist = DB::table('users')
+        //     ->where('google_id', '=', $userGoogle->getId())
+        //     ->first();
 
         if ($userExist) {
-            if (!$userGoogleExist) {
-                if($userExist->email_verified_at == null)
-                {
-                    $user = DB::table('users')->where('email', '=', $userGoogle->getEmail())
-                    ->update(
-                        [
-                            'google_id' => $userGoogle->getId(),
-                            'email_verified_at' => Carbon::now(),
-                        ]
-                    );
-                }
-                else{
-                    $user = DB::table('users')->where('email', '=', $userGoogle->getEmail())
-                    ->update(
-                        [
-                            'google_id' => $userGoogle->getId(),
-                        ]
-                    );
-                }
-            } else {
-                Auth::loginUsingId($userExist->id);
-                toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 5000]);
-                return redirect(route('index'));
-            }
+            toastr()->warning('Đã tồn tại tài khoản!', "", ['timeOut' => 5000]);
+            return redirect(route('login'));
         } else {
             $user = DB::table('users')
                 ->insertGetId(
                     [
                         'name' => $userGoogle->getName(),
                         'email' => $userGoogle->getEmail(),
-                        'password' => Hash::make(Str::random(8)),
+                        'password' => Hash::make(Str::random(40)),
                         'google_id' => $userGoogle->getId(),
                         'email_verified_at' => Carbon::now(),
                     ]
                 );
 
             Auth::loginUsingId($user);
+            toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 5000]);
             return redirect(route('index'));
         }
-
-        Auth::loginUsingId($userExist->id);
-        toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 5000]);
-        return redirect(route('index'));
     }
 
     public function logoutUser(Request $request)
@@ -126,10 +109,10 @@ class AuthContoller extends Controller
                     'email'
                 ],
                 'name' => [
-                    'required',
-                    'string',
-                    'max:255'
-                ],
+                        'required',
+                        'string',
+                        'max:255'
+                    ],
                 'password' => [
                     'required',
                     'confirmed',
@@ -171,9 +154,10 @@ class AuthContoller extends Controller
 
             Mail::to($user->email)->send(new RegisterMail($user));
 
-            return redirect()->back()->with('signup_success', 'Đăng ký thành công');;;
+            return redirect()->back()->with('signup_success', 'Đăng ký thành công');
         }
-        return redirect(route('signup'))->with('user_already_exist', 'Email đã tồn tại!');;
+        return redirect(route('signup'))->with('user_already_exist', 'Email đã tồn tại!');
+        ;
     }
 
     public function loginUser(Request $request)
@@ -195,15 +179,21 @@ class AuthContoller extends Controller
             ->where('email', '=', $request->get('email'))
             ->first();
 
-        if ($checkVerify->email_verified_at == null) {
-            toastr()->warning('', 'Bạn chưa xác thực tài khoản!');
-            return redirect()->back();
-        }
+        if (!$checkVerify) {
+            return redirect()->back()->with('error', 'Email không tồn tại!');
+        } else {
+            if ($checkVerify->email_verified_at == null) {
+                toastr()->warning('', 'Bạn chưa xác thực tài khoản!');
+                return redirect()->back();
+            }
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 5000]);
-            return redirect(route('index'));
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 5000]);
+                return redirect(route('index'));
+            } else {
+                return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!');
+            }
         }
     }
 
@@ -212,17 +202,108 @@ class AuthContoller extends Controller
         $user = DB::table('users')->where('remember_token', '=', $token);
         if (!empty($user)) {
             $user->update(
-                        [
-                            'remember_token' => Str::random(40),
-                            'email_verified_at' => Carbon::now(),
-                        ]
-                    );
+                [
+                    'remember_token' => Str::random(40),
+                    'email_verified_at' => Carbon::now(),
+                ]
+            );
             // $user->email_verified_at = date('Y-m-d H:i:s');
             // $user->remember_token = Str::random(40);
             // $user->save();
 
             toastr()->success('Chào mừng!', "Xác thực email thành công!", ['timeOut' => 5000]);
             return redirect(route('login'));
+        } else {
+            abort(404);
+        }
+    }
+
+    public function forgotPassword()
+    {
+        $theloai = Theloai::all();
+        $role = Role::all();
+
+        if (auth()->check()) {
+            return redirect()->back();
+        } else {
+            return view('forgotPassword', [
+                'theloai' => $theloai,
+                'role' => $role,
+            ]);
+        }
+
+    }
+
+    public function storeForgotPassword(Request $request)
+    {
+        $request->validate(
+            [
+                'email' => [
+                    'required',
+                    'email'
+                ],
+            ],
+            [
+                'email.required' => "Thiếu email!",
+                'email.email' => "Email không hợp lệ!",
+            ]
+        );
+
+        $user = User::where('email', '=', $request->email)->first();
+        if ($user != null) {
+            if ($user->google_id != null) {
+                return redirect()->back()->with('error', 'Email không hợp lệ');
+            } else {
+                $user->remember_token = Str::random(40);
+                $user->save();
+
+                Mail::to($user->email)->send(new ForgotPasswordMail($user));
+                return redirect()->back()->with('success', 'Kiểm tra email và khôi phục mật khẩu');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Email không tồn tại');
+        }
+    }
+
+    public function resetPassword($token)
+    {
+        $user = User::where('remember_token', '=', $token)->first();
+        if ($user != null) {
+            $data['user'] = $user;
+            return view('resetpassword', $data);
+        } else {
+            abort(404);
+        }
+    }
+
+    public function postResetPassword($token, Request $request)
+    {
+        $request->validate(
+            [
+                'password' => [
+                    'required',
+                    'confirmed',
+                    'min:8'
+                ]
+            ],
+            [
+                'password.required' => "Thiếu mật khẩu!",
+                'password.confirmed' => "Mật khẩu không trùng khớp",
+                'password.min' => "Mật khẩu phải từ 8 ký tự trở lên"
+            ]
+        );
+
+        $user = User::where('remember_token', '=', $token)->first();
+        if ($user != null) {
+            if ($request->password == $request->password_confirmation) {
+                $user->password = Hash::make($request->password);
+                $user->remember_token = Str::random(40);
+                $user->save();
+
+                return redirect(route('login'))->with('success', "Đặt lại mật khẩu thành công!");
+            } else {
+                return redirect()->back()->with('error', 'Mật khẩu không trùng khớp!');
+            }
         } else {
             abort(404);
         }

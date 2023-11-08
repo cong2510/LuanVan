@@ -6,35 +6,26 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
+        <h1 class="h3 mb-2 text-gray-800">Danh sách quyền</h1>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                <a class="btn btn-primary" href="{{ route('add.permission') }}" role="button">Thêm quyền</a>&nbsp;
+                <a class="btn btn-success" href="{{ route('import.permission') }}" role="button">Import</a>&nbsp;
+                <a class="btn btn-danger" href="{{ route('export') }}" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table id="myTable" class="table table-hover" style="width:100%">
                         <thead>
                             <tr>
                                 <th>SL</th>
                                 <th>Permission name</th>
                                 <th>Group name</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Permission name</th>
-                                <th>Group name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </tfoot>
                         <tbody>
                             @foreach ($permissions as $key => $per)
                                 <tr>
@@ -42,10 +33,10 @@
                                     <td>{{ $per->name }}</td>
                                     <td>{{ $per->group_name }}</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown"><i
-                                                    class="bx bx-dots-vertical-rounded"></i></button>
+                                        <div class="dropdown text-center">
+                                            <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
+                                                    class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
+                                                        style="color: #000000;"></i></i></button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ route('edit.permission', $per->id) }}"><i
                                                         class="bx bx-edit-alt me-1"></i>
@@ -60,11 +51,23 @@
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>SL</th>
+                                <th>Permission name</th>
+                                <th>Group name</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
     <!-- /.container-fluid -->
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
 @endsection

@@ -95,7 +95,7 @@
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">Quên mật khẩu?</a>
+                                <a class="small" href="{{ route('forgotPassword') }}">Quên mật khẩu?</a>
                             </div>
                             <div class="text-center">
                                 <a class="small" href="{{ route('login') }}">Đã có tài khoản? Đăng nhập!</a>

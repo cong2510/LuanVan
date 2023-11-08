@@ -53,3 +53,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon_io/favicon-32x32.png') }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon_io/favicon-16x16.png') }}">
 <link rel="manifest" href="{{ asset('favicon_io/site.webmanifest') }}">
+
+
+{{-- Datatable --}}
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+

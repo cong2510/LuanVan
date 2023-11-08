@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class AdminSanphamController extends Controller
 {
-    public function Index()
+    public function AllProduct()
     {
         $brands = Brand::all();
         $sanphams = Sanpham::query()->with('theloai')->paginate(4);
-        return view('admin.sanpham.adminsanpham', [
+        return view('admin.sanpham.allproduct', [
             'brands' => $brands,
             'sanphams' => $sanphams,
         ]);

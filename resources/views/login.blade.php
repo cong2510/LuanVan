@@ -56,13 +56,13 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">Nhớ mật
                                                     khẩu</label>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <button type="submit" class="btn btn-primary btn-user btn-block">Đăng nhập</button>
                                         <hr>
                                         <a href="{{ route('loginGoogle') }}" class="btn btn-google btn-user btn-block"
@@ -72,7 +72,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Quên mật khẩu?</a>
+                                        <a class="small" href="{{ route('forgotPassword') }}">Quên mật khẩu?</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="{{ route('signup') }}">Tạo tài khoản!</a>

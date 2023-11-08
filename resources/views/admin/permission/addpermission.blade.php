@@ -4,7 +4,8 @@
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Admin/</span> Thêm quyền</h4>
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.permission') }}"
+            style="text-decoration: none;" class="text-gray-700">Danh sách quyền</a>/</span>Thêm quyền</h4>
         <div class="text-center">
             @if ($errors->any())
                 <div class="text-danger h6 text-lg-start fw-bold">
