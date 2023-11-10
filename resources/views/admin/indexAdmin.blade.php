@@ -21,7 +21,8 @@
         <ul class="navbar-nav bg-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admindashboard') }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                href="{{ route('admindashboard') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fa-solid fa-briefcase fa-2xl" style="color: #ffffff;"></i>
                 </div>
@@ -65,26 +66,34 @@
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @if (Auth::user()->can('menuRolePermission'))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
                     aria-expanded="true" aria-controls="collapseRoles">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fa-solid fa-users"></i></i>
                     <span>Role & Permission</span>
                 </a>
-                <div id="collapseRoles" class="collapse" aria-labelledby="headingPages"
-                    data-parent="#accordionSidebar">
+                <div id="collapseRoles" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Permissions:</h6>
+                        @if (Auth::user()->can('allPermission'))
                         <a class="collapse-item" href="{{ route('all.permission') }}">Danh sách quyền</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Roles:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        @endif
+                        @if (Auth::user()->can('allRole'))
+                        <a class="collapse-item" href="{{ route('all.roles') }}">Danh sách role</a>
+                        @endif
+                        @if (Auth::user()->can('addPermissionToRole'))
+                        <a class="collapse-item" href="{{ route('add.roles.permission') }}">Phân quyền cho role</a>
+                        @endif
+                        @if (Auth::user()->can('allRolePermission'))
+                        <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách role có quyền</a>
+                        @endif
+                        @if (Auth::user()->can('allUser'))
+                        <a class="collapse-item" href="{{ route('all.roles.user') }}">Danh sách User</a>
+                        @endif
                     </div>
                 </div>
             </li>
+            @endif
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
@@ -136,7 +145,8 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Pages</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" href="login.html">Login</a>
@@ -415,6 +425,7 @@
             $("ul.sidebar").addClass("toggled");
         }
     });
+
 </script>
 
 </html>

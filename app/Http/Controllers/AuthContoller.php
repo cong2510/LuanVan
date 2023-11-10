@@ -64,13 +64,19 @@ class AuthContoller extends Controller
             ->where('email', '=', $userGoogle->getEmail())
             ->first();
 
-        // $userGoogleExist = DB::table('users')
-        //     ->where('google_id', '=', $userGoogle->getId())
-        //     ->first();
+        $userGoogleExist = DB::table('users')
+            ->where('google_id', '=', $userGoogle->getId())
+            ->first();
 
         if ($userExist) {
-            toastr()->warning('Đã tồn tại tài khoản!', "", ['timeOut' => 5000]);
-            return redirect(route('login'));
+            if ($userGoogleExist) {
+                Auth::loginUsingId($userExist->id);
+                toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 5000]);
+                return redirect(route('index'));
+            } else {
+                toastr()->warning('Đã tồn tại tài khoản!', "", ['timeOut' => 5000]);
+                return redirect(route('login'));
+            }
         } else {
             $user = DB::table('users')
                 ->insertGetId(
@@ -109,10 +115,10 @@ class AuthContoller extends Controller
                     'email'
                 ],
                 'name' => [
-                        'required',
-                        'string',
-                        'max:255'
-                    ],
+                    'required',
+                    'string',
+                    'max:255'
+                ],
                 'password' => [
                     'required',
                     'confirmed',

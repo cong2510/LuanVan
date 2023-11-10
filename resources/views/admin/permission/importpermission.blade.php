@@ -6,12 +6,12 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.permission') }}"
                     style="text-decoration: none;" class="text-gray-700">Danh sách quyền</a>/</span>Import</h4>
-        <div class="text-center">
+        <div class="">
             <div class="col-xxl">
+                <div class="card-header py-3">
+                    <a class="btn btn-danger" href="{{ route('export') }}" role="button">Download Xlsx</a>&nbsp;
+                </div>
                 <div class="card mb-4">
-                    <div class="card-header py-3">
-                        <a class="btn btn-danger" href="{{ route('export') }}" role="button">Download Xlsx</a>&nbsp;
-                    </div>
                     <div class="card-body">
                         <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                             @csrf

@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.permission') }}"
-            style="text-decoration: none;" class="text-gray-700">Danh sách quyền</a>/</span>Sửa quyền</h4>
+                    style="text-decoration: none;" class="text-gray-700">Danh sách quyền</a>/</span>Sửa quyền</h4>
         <div class="text-center">
             @if ($errors->any())
                 <div class="text-danger h6 text-lg-start fw-bold">
@@ -48,6 +48,8 @@
                                         Loại hàng</option>
                                     <option value="brand" {{ $permission->group_name == 'brand' ? 'selected' : '' }}>Thương
                                         hiệu</option>
+                                    <option value="role&permission" {{ $permission->group_name == 'role&permission' ? 'selected' : '' }}>Role & Permission</option>
+                                    <option value="User" {{ $permission->group_name == 'user' ? 'selected' : '' }}>User</option>
                                 </select>
                             </div>
                         </div>

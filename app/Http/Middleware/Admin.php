@@ -22,7 +22,7 @@ class Admin
             $currentUserId = auth()->user()->id;
             $user = User::find($currentUserId);
 
-            if (!auth()->check() || $user->hasAnyRole(Role::ROLES)) {
+            if (!auth()->check() || $user->hasAnyRole(Role::all())) {
                 return $next($request);
             } else {
                 toastr()->error('', 'Bạn không có quyền hạn!!!');
