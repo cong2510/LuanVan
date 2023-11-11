@@ -48,6 +48,10 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
     Route::controller(AdminSanphamController::class)->group(function () {
         Route::get('/all/sanpham', 'AllProduct')->name('all.product');
+        Route::get('/add/sanpham', 'AddProduct')->name('add.product');
+        Route::post('/store/sanpham', 'StoreProduct')->name('store.product');
+
+        Route::get('/export/product', 'Export')->name('export.product');
     });
 
 
@@ -61,7 +65,7 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission')->middleware('permission:deletePermission');
 
         Route::get('/import/permission', 'ImportPermission')->name('import.permission');
-        Route::get('/export', 'Export')->name('export');
+        Route::get('/export/permission', 'Export')->name('export.permission');
         Route::post('/import', 'Import')->name('import');
     });
 
@@ -73,7 +77,6 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::get('/edit/roles/{id}', 'EditRoles')->name('edit.roles')->middleware('permission:editRole');
         Route::post('/update/roles', 'UpdateRoles')->name('update.roles')->middleware('permission:editRole');
         Route::get('/delete/roles/{id}', 'DeleteRoles')->name('delete.roles')->middleware('permission:deleteRole');
-
 
         Route::get('/add/roles/permission', 'AddRolesPermission')->name('add.roles.permission')->middleware('permission:addPermissionToRole');
         Route::post('/store/roles/permission', 'StoreRolesPermission')->name('store.roles.permission')->middleware('permission:addPermissionToRole');

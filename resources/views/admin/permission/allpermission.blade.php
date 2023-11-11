@@ -15,7 +15,7 @@
                     <a class="btn btn-primary" href="{{ route('add.permission') }}" role="button">Thêm quyền</a>&nbsp;
                 @endif
                 <a class="btn btn-success" href="{{ route('import.permission') }}" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="{{ route('export') }}" role="button">Export</a>
+                <a class="btn btn-danger" href="{{ route('export.permission') }}" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -359,7 +359,6 @@ class RoleController extends Controller
 
     public function AdminUpdateUser(Request $request, $id)
     {
-        $data = array();
         $user = User::findOrFail($id);
         $roles = $request->role;
 

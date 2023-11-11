@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string("mota",1000);
             $table->double("gia");
             $table->double("soluong");
-            $table->string("image",100);
             $table->boolean("tinhtrang")->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

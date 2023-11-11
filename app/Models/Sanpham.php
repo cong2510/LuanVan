@@ -13,11 +13,11 @@ class Sanpham extends Model
 
     protected $table = 'sanpham';
     protected $fillable = [
-        'tensanpham',
+        'name',
         'mota',
         'gia',
         'soluong',
-        'image',
+        'brand_id',
     ];
 
     /**

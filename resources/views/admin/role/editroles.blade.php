@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.permission') }}"
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.roles') }}"
             style="text-decoration: none;" class="text-gray-700">Danh sách role</a>/</span>Sửa role</h4>
         <div class="text-center">
             @if ($errors->any())
