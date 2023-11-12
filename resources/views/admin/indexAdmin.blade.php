@@ -48,51 +48,58 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProducts"
-                    aria-expanded="true" aria-controls="collapseProducts">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Product</span>
-                </a>
-                <div id="collapseProducts" class="collapse" aria-labelledby="headingPages"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Products:</h6>
-                        <a class="collapse-item" href="{{ route('all.product') }}">Danh sách sản phẩm</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            @if (Auth::user()->hasAnyPermission(['allProduct','allCategory','allBrand']))
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProducts"
+                        aria-expanded="true" aria-controls="collapseProducts">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Danh mục sản phẩm</span>
+                    </a>
+                    <div id="collapseProducts" class="collapse" aria-labelledby="headingPages"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Products:</h6>
+                            @if (Auth::user()->can('allProduct'))
+                                <a class="collapse-item" href="{{ route('all.product') }}">Danh sách sản phẩm</a>
+                            @endif
+                            @if (Auth::user()->can('allCategory'))
+                                <a class="collapse-item" href="{{ route('all.category') }}">Danh sách thể loại</a>
+                            @endif
+                            @if (Auth::user()->can('allBrand'))
+                            <a class="collapse-item" href="{{ route('all.brand') }}">Danh sách thương hiệu</a>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
             <!-- Nav Item - Pages Collapse Menu -->
-            @if (Auth::user()->can('menuRolePermission'))
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
-                    aria-expanded="true" aria-controls="collapseRoles">
-                    <i class="fa-solid fa-users"></i></i>
-                    <span>Role & Permission</span>
-                </a>
-                <div id="collapseRoles" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @if (Auth::user()->can('allPermission'))
-                        <a class="collapse-item" href="{{ route('all.permission') }}">Danh sách quyền</a>
-                        @endif
-                        @if (Auth::user()->can('allRole'))
-                        <a class="collapse-item" href="{{ route('all.roles') }}">Danh sách role</a>
-                        @endif
-                        @if (Auth::user()->can('addPermissionToRole'))
-                        <a class="collapse-item" href="{{ route('add.roles.permission') }}">Phân quyền cho role</a>
-                        @endif
-                        @if (Auth::user()->can('allRolePermission'))
-                        <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách role có quyền</a>
-                        @endif
-                        @if (Auth::user()->can('allUser'))
-                        <a class="collapse-item" href="{{ route('all.roles.user') }}">Danh sách User</a>
-                        @endif
+            @if (Auth::user()->hasAnyPermission(['allPermission', 'allRole', 'allRolePermission', 'allUser']))
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
+                        aria-expanded="true" aria-controls="collapseRoles">
+                        <i class="fa-solid fa-users"></i></i>
+                        <span>Role & Permission</span>
+                    </a>
+                    <div id="collapseRoles" class="collapse" aria-labelledby="headingPages"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @if (Auth::user()->can('allPermission'))
+                                <a class="collapse-item" href="{{ route('all.permission') }}">Danh sách quyền</a>
+                            @endif
+                            @if (Auth::user()->can('allRole'))
+                                <a class="collapse-item" href="{{ route('all.roles') }}">Danh sách role</a>
+                            @endif
+                            @if (Auth::user()->can('allRolePermission'))
+                                <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách role có
+                                    quyền</a>
+                            @endif
+                            @if (Auth::user()->can('allUser'))
+                                <a class="collapse-item" href="{{ route('all.roles.user') }}">Danh sách User</a>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
             @endif
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -425,7 +432,6 @@
             $("ul.sidebar").addClass("toggled");
         }
     });
-
 </script>
 
 </html>

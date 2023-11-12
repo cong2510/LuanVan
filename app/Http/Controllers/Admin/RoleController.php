@@ -52,8 +52,6 @@ class RoleController extends Controller
                 'group_name.required' => "Thiếu nhóm quyền!",
             ]
         );
-        $permission = DB::table('permissions')->select('name')->where('name', $request->name)->get();
-        // dd($permission);
 
         Permission::create([
             'name' => $request->name,
@@ -105,12 +103,13 @@ class RoleController extends Controller
         return redirect()->route('all.permission');
     }
 
-    // public function DeletePermission($id)
-    // {
-    //     Permission::findOrFail($id)->delete();
-    //     toastr()->success("", 'Xóa quyền thành công', ['timeOut' => 5000]);
-    //     return redirect()->route('all.permission');
-    // }
+    public function DeletePermission($id)
+    {
+        Permission::findOrFail($id)->delete();
+
+        toastr()->success("", 'Xóa quyền thành công', ['timeOut' => 5000]);
+        return redirect()->route('all.permission');
+    }
 
     public function ImportPermission()
     {
@@ -218,12 +217,12 @@ class RoleController extends Controller
         return redirect()->route('all.roles');
     }
 
-    // public function DeleteRoles($id)
-    // {
-    //     Role::findOrFail($id)->delete();
-    //     toastr()->success("", 'Xóa role thành công', ['timeOut' => 5000]);
-    //     return redirect()->route('all.roles');
-    // }
+    public function DeleteRoles($id)
+    {
+        Role::findOrFail($id)->delete();
+        toastr()->success("", 'Xóa role thành công', ['timeOut' => 5000]);
+        return redirect()->route('all.roles');
+    }
 
 
     //////////////// Role Permission ///////////////////

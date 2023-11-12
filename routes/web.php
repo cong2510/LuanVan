@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminBrandController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSanphamController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AuthContoller;
@@ -46,14 +48,39 @@ Route::get('auth/google/callback', [AuthContoller::class, 'loginGoogleCallback']
 Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'Index'])->name('admindashboard');
 
+    //Product
     Route::controller(AdminSanphamController::class)->group(function () {
-        Route::get('/all/sanpham', 'AllProduct')->name('all.product');
-        Route::get('/add/sanpham', 'AddProduct')->name('add.product');
-        Route::post('/store/sanpham', 'StoreProduct')->name('store.product');
+        Route::get('/all/product', 'AllProduct')->name('all.product')->middleware('permission:allProduct');
+        Route::get('/add/product', 'AddProduct')->name('add.product')->middleware('permission:addProduct');
+        Route::post('/store/product', 'StoreProduct')->name('store.product')->middleware('permission:addProduct');
+        Route::get('/edit/product/{id}', 'EditProduct')->name('edit.product')->middleware('permission:editProduct');
+        Route::post('/update/product/{id}', 'UpdateProduct')->name('update.product')->middleware('permission:editProduct');;
+        Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product')->middleware('permission:deleteProduct');;
 
         Route::get('/export/product', 'Export')->name('export.product');
     });
 
+    //Category
+    Route::controller(AdminCategoryController::class)->group(function () {
+        Route::get('/all/category', 'AllCategory')->name('all.category')->middleware('permission:allCategory');
+        Route::get('/add/category', 'AddCategory')->name('add.category')->middleware('permission:addCategory');
+        Route::post('/store/category', 'StoreCategory')->name('store.category')->middleware('permission:addCategory');
+        Route::get('/edit/category/{id}', 'EditCategory')->name('edit.category')->middleware('permission:editCategory');
+        Route::post('/update/category', 'UpdateCategory')->name('update.category')->middleware('permission:editCategory');
+        Route::get('/delete/category/{id}', 'DeleteCategory')->name('delete.category')->middleware('permission:deleteCategory');
+
+    });
+
+    //Brand
+    Route::controller(AdminBrandController::class)->group(function () {
+        Route::get('/all/brand', 'AllBrand')->name('all.brand')->middleware('permission:allBrand');
+        Route::get('/add/brand', 'AddBrand')->name('add.brand')->middleware('permission:addBrand');
+        Route::post('/store/brand', 'StoreBrand')->name('store.brand')->middleware('permission:addBrand');
+        Route::get('/edit/brand/{id}', 'EditBrand')->name('edit.brand')->middleware('permission:editBrand');
+        Route::post('/update/brand', 'UpdateBrand')->name('update.brand')->middleware('permission:editBrand');
+        Route::get('/delete/brand/{id}', 'DeleteBrand')->name('delete.brand')->middleware('permission:deleteBrand');
+
+    });
 
     //Permission
     Route::controller(RoleController::class)->group(function () {

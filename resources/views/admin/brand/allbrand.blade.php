@@ -1,18 +1,18 @@
 @extends('admin.indexAdmin')
 @section('page_title')
-    Danh sách role
+    Danh sách thương hiệu
 @endsection
 @section('content')
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Danh sách role có quyền</h1>
+        <h1 class="h3 mb-2 text-gray-800">Danh sách thương hiệu</h1>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                @if (Auth::user()->can('addPermissionToRole'))
-                    <a class="btn btn-primary" href="{{ route('add.roles.permission') }}" role="button">Phân quyền cho role</a>&nbsp;
+                @if (Auth::user()->can('addBrand'))
+                    <a class="btn btn-primary" href="{{ route('add.brand') }}" role="button">Thêm thương hiệu</a>&nbsp;
                 @endif
                 <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
                 <a class="btn btn-danger" href="" role="button">Export</a>
@@ -23,37 +23,32 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
-                                <th>Role</th>
-                                <th>Permission</th>
+                                <th>Brand name</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($roles as $key => $role)
+                            @foreach ($brands as $key => $brand)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>
-                                        @foreach ($role->permissions as $roleper)
-                                            <span class="badge bg-danger">{{ $roleper->name }}</span>
-                                        @endforeach
-                                    </td>
+                                    <td>{{ $brand->name }}</td>
                                     <td>
                                         <div class="dropdown text-center">
                                             <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
                                                     class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
                                                         style="color: #000000;"></i></i></button>
                                             <div class="dropdown-menu">
-                                                @if (Auth::user()->can('editRolePermission'))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.edit.roles', $role->id) }}"><i
+                                                @if (Auth::user()->can('editBrand'))
+                                                    <a class="dropdown-item" href="{{ route('edit.brand', $brand->id) }}"><i
                                                             class="bx bx-edit-alt me-1"></i>
                                                         Edit</a>
                                                 @endif
-                                                {{-- <a class="dropdown-item"
-                                                    href="{{ route('admin.delete.roles', $role->id) }}"><i
-                                                        class="bx bx-trash me-1"></i>
-                                                    Delete</a> --}}
+                                                @if (Auth::user()->can('deleteBrand'))
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('delete.brand', $brand->id) }}"><i
+                                                            class="bx bx-trash me-1"></i>
+                                                        Delete</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>
@@ -63,8 +58,7 @@
                         <tfoot>
                             <tr>
                                 <th>SL</th>
-                                <th>Role</th>
-                                <th>Permission</th>
+                                <th>Brand name</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </tfoot>

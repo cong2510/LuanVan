@@ -46,12 +46,12 @@
                                                             class="bx bx-edit-alt me-1"></i>
                                                         Edit</a>
                                                 @endif
-                                                {{-- @if (Auth::user()->can('deletePermission'))
+                                                @if (Auth::user()->can('deletePermission'))
                                                     <a class="dropdown-item"
                                                         href="{{ route('delete.permission', $per->id) }}"><i
                                                             class="bx bx-trash me-1"></i>
                                                         Delete</a>
-                                                @endif --}}
+                                                @endif
                                             </div>
                                         </div>
                                     </td>
@@ -72,6 +72,8 @@
         </div>
     </div>
     <!-- /.container-fluid -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();

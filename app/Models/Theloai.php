@@ -11,6 +11,10 @@ class Theloai extends Model
     use HasFactory;
 
     protected $table = 'theloai';
+    protected $fillable = [
+        'name',
+    ];
+
      /**
      * @return BelongsToMany
      */

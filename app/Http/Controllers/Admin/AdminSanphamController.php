@@ -108,5 +108,115 @@ class AdminSanphamController extends Controller
     {
         return Excel::download(new SanphamExport(), 'product.xlsx');
     }
+
+    public function EditProduct($id)
+    {
+        $sanpham = Sanpham::findOrFail($id);
+        $brands = Brand::all();
+        $loais = Theloai::all();
+        $sanpham_theloai = DB::table('sanpham_theloai')->get();
+
+        return view('admin.sanpham.editproduct', [
+            'sanpham' => $sanpham,
+            'brands' => $brands,
+            'loais' => $loais,
+            'sanpham_theloai' => $sanpham_theloai,
+        ]);
+    }
+
+    public function UpdateProduct(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'name' => [
+                    'required',
+                    'max:300',
+                ],
+                'mota' => [
+                    'required',
+                    'max:600',
+                ],
+                'brand' => [
+                    'required',
+                ],
+                'soluong' => [
+                    'required',
+                    'numeric'
+                ],
+                'gia' => [
+                    'required',
+                    'numeric'
+                ],
+                'loai' => [
+                    'required',
+                ],
+            ],
+            [
+
+                'name.required' => "Thiếu tên sản phẩm!",
+                'name.max' => "Tên sản phẩm tối đa 300 ký tự",
+
+                'mota.required' => "Thiếu mô tả",
+                'mota.max' => "Mô tả tối đa 600 ký tự",
+
+                'brand.requied' => "Hãy chọn thương hiệu",
+
+                'soluong.requied' => "Thiếu số lượng",
+                'soluong.numeric' => "Số lượng phải là kiểu số",
+
+                'gia.requied' => "Thiếu giá",
+                'gia.numeric' => "Giá phải là kiểu số",
+
+                'loai_id.requied' => "Hãy chọn loại",
+            ]
+        );
+        DB::beginTransaction();
+        try {
+            DB::table('sanpham')->where('id', '=', $id)->update([
+                'name' => $request->name,
+                'mota' => $request->mota,
+                'brand_id' => $request->brand,
+                'soluong' => $request->soluong,
+                'gia' => $request->gia,
+            ]);
+
+            $data = array();
+            $loais = $request->loai;
+            DB::table('sanpham_theloai')
+                ->where('sanpham_id', '=', $id)
+                ->delete();
+
+            foreach ($loais as $key => $loai) {
+                if ($loai == 0) {
+                    continue;
+                } else {
+                    $data['sanpham_id'] = $id;
+                    $data['theloai_id'] = $loai;
+
+                    DB::table('sanpham_theloai')->insert($data);
+                }
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            toastr()->error('', 'Something went wrong');
+            return redirect()->back();
+        }
+
+        toastr()->success("", 'Cập nhật sản phẩm thành công', ['timeOut' => 5000]);
+        return redirect()->route('all.product');
+    }
+
+    public function DeleteProduct($id)
+    {
+        Sanpham::findOrfail($id)->delete();
+        DB::table('sanpham_theloai')
+                ->where('sanpham_id', '=', $id)
+                ->delete();
+
+        toastr()->success('', 'Xóa thành công');
+        return redirect()->back();
+    }
 }
 

@@ -1,6 +1,6 @@
 @extends('admin.indexAdmin')
 @section('page_title')
-    Thêm sản phẩm
+    Sửa sản phẩm
 @endsection
 @section('content')
     <style>
@@ -16,7 +16,7 @@
     </style>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.product') }}"
-                    style="text-decoration: none;" class="text-gray-700">Danh sách sản phẩm</a>/</span>Thêm sản phẩm</h4>
+                    style="text-decoration: none;" class="text-gray-700">Danh sách sản phẩm</a>/</span>Sửa sản phẩm</h4>
         <div class="text-center">
             @if ($errors->any())
                 <div class="text-danger h6 text-lg-start fw-bold">
@@ -32,37 +32,61 @@
         <div class="col-xxl">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Thêm sản phẩm mới</h5>
+                    <h5 class="mb-0">Sửa sản phẩm</h5>
                     {{-- <small class="text-muted float-end">Default label</small> --}}
                 </div>
                 <div class="card-body">
-                    <form id="addProduct" action="{{ route('store.product') }}" method="POST"
+                    <form id="editProduct" action="{{ route('update.product',$sanpham->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Tên sản phẩm</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Tên sản phẩm" />
+                                    placeholder="Tên sản phẩm" value="{{ $sanpham->name }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Mô tả</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="mota" id="mota" cols="30" rows="10"></textarea>
+                                <textarea class="form-control" name="mota" id="mota" cols="30" rows="10"">{{ $sanpham->mota }}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Chọn loại</label>
                             <div class="col-sm-10">
                                 @foreach ($loais as $loai)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="{{ $loai->id }}"
+                                    @php
+                                        $flag = 0;
+                                    @endphp
+                                    @foreach ($sanpham_theloai as $sptl)
+                                        @if ($sptl->sanpham_id == $sanpham->id && $sptl->theloai_id == $loai->id)
+                                            @php
+                                                $flag = 1;
+                                            @endphp
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="{{ $loai->id }}"
+                                                    id="flexCheckDefault{{ $loai->id }}" name="loai[]" checked>
+                                                <label class="form-check-label" for="flexCheckDefault{{ $loai->id }}">
+                                                    {{ $loai->name }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    @if ($flag == 0)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $loai->id }}"
+                                                id="flexCheckDefault{{ $loai->id }}" name="loai[]">
+                                            <label class="form-check-label" for="flexCheckDefault{{ $loai->id }}">
+                                                {{ $loai->name }}
+                                            </label>
+                                        </div>
+                                    @endif
+                                    {{-- <input class="form-check-input" type="checkbox" value="{{ $loai->id }}"
                                             id="flexCheckDefault{{ $loai->id }}" name="loai[]">
                                         <label class="form-check-label" for="flexCheckDefault{{ $loai->id }}">
                                             {{ $loai->name }}
-                                        </label>
-                                    </div>
+                                        </label> --}}
                                 @endforeach
                             </div>
                         </div>
@@ -73,7 +97,11 @@
                                     aria-label="Default select example">
                                     <option disabled="" selected="">Chọn thương hiệu</option>
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @if ($brand->id == $sanpham->brand_id)
+                                            <option selected value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @else
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -82,14 +110,14 @@
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Số lượng</label>
                             <div class="col-sm-2">
                                 <input type="number" class="form-control" id="soluong" name="soluong"
-                                    placeholder="Sô lượng" />
+                                    placeholder="Sô lượng" value="{{ $sanpham->soluong }}"/>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Giá</label>
                             <div class="col-sm-2">
                                 <input type="number" class="form-control" id="gia" name="gia"
-                                    placeholder="Giá" />
+                                    placeholder="Giá" value="{{ $sanpham->gia }}"/>
                             </div>
                         </div>
                         <div class="row justify-content-end">
@@ -104,7 +132,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#addProduct').validate({
+            $('#editProduct').validate({
                 rules: {
                     name: {
                         required: true,

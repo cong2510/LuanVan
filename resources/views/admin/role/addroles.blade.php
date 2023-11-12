@@ -1,11 +1,17 @@
 @extends('admin.indexAdmin')
 @section('page_title')
-    Thêm quyền
+    Thêm role
 @endsection
 @section('content')
+    <style>
+        .error {
+            color: red;
+            font-size: 16px;
+        }
+    </style>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('all.roles') }}"
-            style="text-decoration: none;" class="text-gray-700">Danh sách role</a>/</span>Thêm role</h4>
+                    style="text-decoration: none;" class="text-gray-700">Danh sách role</a>/</span>Thêm role</h4>
         <div class="text-center">
             @if ($errors->any())
                 <div class="text-danger h6 text-lg-start fw-bold">
@@ -25,7 +31,7 @@
                     {{-- <small class="text-muted float-end">Default label</small> --}}
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('store.roles') }}" method="POST" enctype="multipart/form-data">
+                    <form id="addRole" action="{{ route('store.roles') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Tên role</label>
@@ -44,4 +50,27 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#addRole').validate({
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    name: {
+                        required: 'Thiếu tên role!',
+                    },
+                },
+                errorPlacement: function(error, element) {
+                    error.appendTo(element.parent());
+                }
+            });
+
+            $('#name').on('blur', function() {
+                $(this).valid(); // Trigger validation on blur event
+            });
+        });
+    </script>
 @endsection
