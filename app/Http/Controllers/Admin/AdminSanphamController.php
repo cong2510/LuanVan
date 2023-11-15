@@ -10,6 +10,9 @@ use App\Exports\SanphamExport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+
 
 class AdminSanphamController extends Controller
 {
@@ -60,6 +63,14 @@ class AdminSanphamController extends Controller
                 'loai' => [
                     'required',
                 ],
+                'hinh' => [
+                    'required',
+                ],
+                'hinh.*' => [
+                    'mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:2048',
+                    'image',
+                    'max:5048',
+                ],
             ],
             [
 
@@ -78,10 +89,16 @@ class AdminSanphamController extends Controller
                 'gia.requied' => "Thiếu giá",
                 'gia.numeric' => "Giá phải là kiểu số",
 
-                'loai_id.requied' => "Hãy chọn loại",
+                'loai.requied' => "Hãy chọn loại",
+
+                'hinh.required' => 'Thiếu hình ảnh!',
+
+                'hinh.*.max' => 'Hình ảnh không quá 5MB!',
+                'hinh.*.mimes' => 'Định dạng ảnh không hợp lệ',
+                'hinh.*.image' => 'Hình ảnh không hợp lệ',
             ]
         );
-
+        // dd($request);
         $sanpham_id = DB::table('sanpham')->insertGetId([
             'name' => $request->name,
             'mota' => $request->mota,
@@ -89,6 +106,7 @@ class AdminSanphamController extends Controller
             'soluong' => $request->soluong,
             'gia' => $request->gia,
         ]);
+
 
         $data = array();
         $loais = $request->loai;
@@ -98,6 +116,31 @@ class AdminSanphamController extends Controller
 
             DB::table('sanpham_theloai')->insert($data);
         }
+
+        if ($request->hasFile('hinh')) {
+            $hinhs = $request->file('hinh');
+            foreach ($hinhs as $hinh) {
+                //Tao temp hinh anh
+                $image_temp = Image::make($hinh);
+                //Lay Extension hinh anh
+                $extension = $hinh->getClientOriginalExtension();
+                //Tao ten cho hinh
+                $image_name = 'sanpham-' . rand(1111, 9999999) . '.' . $extension;
+                //Dia chi thu muc
+                $image_path = public_path('images/Sanpham/' . $image_name);
+
+                Image::make($image_temp)->resize(1040, 1200)->save($image_path);
+
+                //Them vao database
+                DB::table('image')->insert([
+                    'image' => $image_name,
+                    'sanpham_id' => $sanpham_id,
+                ]);
+            }
+        }
+
+
+
 
         toastr()->success("", 'Thêm sản phẩm thành công', ['timeOut' => 5000]);
         return redirect()->route('all.product');
@@ -115,12 +158,14 @@ class AdminSanphamController extends Controller
         $brands = Brand::all();
         $loais = Theloai::all();
         $sanpham_theloai = DB::table('sanpham_theloai')->get();
+        $sanpham_hinh = DB::table('image')->get();
 
         return view('admin.sanpham.editproduct', [
             'sanpham' => $sanpham,
             'brands' => $brands,
             'loais' => $loais,
             'sanpham_theloai' => $sanpham_theloai,
+            'sanpham_hinh' => $sanpham_hinh,
         ]);
     }
 
@@ -150,6 +195,11 @@ class AdminSanphamController extends Controller
                 'loai' => [
                     'required',
                 ],
+                'hinh.*' => [
+                    'mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:2048',
+                    'image',
+                    'max:5048',
+                ],
             ],
             [
 
@@ -168,6 +218,10 @@ class AdminSanphamController extends Controller
                 'gia.numeric' => "Giá phải là kiểu số",
 
                 'loai_id.requied' => "Hãy chọn loại",
+
+                'hinh.*.max' => 'Hình ảnh không quá 5MB!',
+                'hinh.*.mimes' => 'Định dạng ảnh không hợp lệ',
+                'hinh.*.image' => 'Hình ảnh không hợp lệ',
             ]
         );
         DB::beginTransaction();
@@ -197,6 +251,29 @@ class AdminSanphamController extends Controller
                 }
             }
 
+            if ($request->hasFile('hinh')) {
+                $hinhs = $request->file('hinh');
+                foreach ($hinhs as $hinh) {
+                    //Tao temp hinh anh
+                    $image_temp = Image::make($hinh);
+                    //Lay Extension hinh anh
+                    $extension = $hinh->getClientOriginalExtension();
+                    //Tao ten cho hinh
+                    $image_name = 'sanpham-' . rand(1111, 9999999) . '.' . $extension;
+                    //Dia chi thu muc
+                    $image_path = public_path('images/Sanpham/' . $image_name);
+
+                    Image::make($image_temp)->resize(1040, 1200)->save($image_path);
+
+                    //Them vao database
+                    DB::table('image')->insert([
+                        'image' => $image_name,
+                        'sanpham_id' => $id,
+                    ]);
+                }
+            }
+
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -210,13 +287,42 @@ class AdminSanphamController extends Controller
 
     public function DeleteProduct($id)
     {
+        $imageProduct = DB::table('image')->where('sanpham_id', $id)->get();
+
+        foreach ($imageProduct as $imagePro) {
+            $image_path = public_path('images/Sanpham/' . $imagePro->image);
+            if (File::exists($image_path)) {
+                File::delete($image_path);
+            }
+        }
+
         Sanpham::findOrfail($id)->delete();
         DB::table('sanpham_theloai')
-                ->where('sanpham_id', '=', $id)
-                ->delete();
+            ->where('sanpham_id', '=', $id)
+            ->delete();
+
+        DB::table('image')
+            ->where('sanpham_id', '=', $id)
+            ->delete();
+
+
 
         toastr()->success('', 'Xóa thành công');
         return redirect()->back();
+    }
+
+    public function DeleteProductImage($id)
+    {
+        $imageProduct = DB::table('image')->where('id', $id)->first();
+        $image_path = public_path('images/Sanpham/' . $imageProduct->image);
+
+        if (File::exists($image_path)) {
+            File::delete($image_path);
+        }
+
+        DB::table('image')->where('id', $id)->delete();
+
+        return redirect()->back()->with('success','Xóa hình thành công');
     }
 }
 

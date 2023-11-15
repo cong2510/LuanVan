@@ -54,8 +54,9 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::get('/add/product', 'AddProduct')->name('add.product')->middleware('permission:addProduct');
         Route::post('/store/product', 'StoreProduct')->name('store.product')->middleware('permission:addProduct');
         Route::get('/edit/product/{id}', 'EditProduct')->name('edit.product')->middleware('permission:editProduct');
-        Route::post('/update/product/{id}', 'UpdateProduct')->name('update.product')->middleware('permission:editProduct');;
-        Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product')->middleware('permission:deleteProduct');;
+        Route::post('/update/product/{id}', 'UpdateProduct')->name('update.product')->middleware('permission:editProduct');
+        Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product')->middleware('permission:deleteProduct');
+        Route::get('/delete/product-image/{id}', 'DeleteProductImage')->name('delete.productimage')->middleware('permission:editProduct');
 
         Route::get('/export/product', 'Export')->name('export.product');
     });

@@ -36,7 +36,7 @@
                     {{-- <small class="text-muted float-end">Default label</small> --}}
                 </div>
                 <div class="card-body">
-                    <form id="editProduct" action="{{ route('update.product',$sanpham->id) }}" method="POST"
+                    <form id="editProduct" action="{{ route('update.product', $sanpham->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
@@ -110,19 +110,45 @@
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Số lượng</label>
                             <div class="col-sm-2">
                                 <input type="number" class="form-control" id="soluong" name="soluong"
-                                    placeholder="Sô lượng" value="{{ $sanpham->soluong }}"/>
+                                    placeholder="Sô lượng" value="{{ $sanpham->soluong }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">Giá</label>
                             <div class="col-sm-2">
-                                <input type="number" class="form-control" id="gia" name="gia"
-                                    placeholder="Giá" value="{{ $sanpham->gia }}"/>
+                                <input type="number" class="form-control" id="gia" name="gia" placeholder="Giá"
+                                    value="{{ $sanpham->gia }}" />
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Hình sản
+                                phẩm<br>(jpeg,png,jpg)</label>
+                            <div class="col-sm-4">
+                                <input type="file" class="form-control" id="hinh" name="hinh[]"
+                                    placeholder="Chọn hình" multiple="" />
+                                <br>
+                                <table cellpadding="10" cellspacing="10" border="1" style="margin:5px;">
+                                    <tr>
+                                        @foreach ($sanpham_hinh as $hinh)
+                                            @if ($hinh->sanpham_id == $sanpham->id)
+                                                <td>
+                                                    <img src="{{ asset('images/Sanpham/' . $hinh->image) }}"
+                                                        alt="" style="width: 80px">&nbsp;
+                                                    <a class="button"
+                                                        href="{{ route('delete.productimage', $hinh->id) }}"
+                                                        name="hinh_id" id="hinh_id" value={{ $hinh->id }}>
+                                                        <i class="fa-solid fa-trash-can" style="color: #000000;"></i></a>
+                                                </td>
+                                            @endif
+                                        @endforeach
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                                <button type="submit" class="btn btn-primary">Sửa sản phẩm</button>
                             </div>
                         </div>
                     </form>

@@ -92,6 +92,14 @@
                                     placeholder="Giá" />
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Hình sản phẩm<br>(jpeg,png,jpg)</label>
+                            <div class="col-sm-4">
+                                <input type="file" class="form-control" id="hinh" name="hinh[]"
+                                    placeholder="Chọn hình" multiple />
+                            </div>
+                        </div>
+                        <br>
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
@@ -126,6 +134,9 @@
                         required: true,
                         min: 0
                     },
+                    hinh: {
+                        required: true,
+                    },
                 },
                 messages: {
                     name: {
@@ -147,7 +158,10 @@
                     gia: {
                         required: 'Thiếu giá tiền!',
                         min: 'Số tiền âm!',
-                    }
+                    },
+                    hinh: {
+                        required: 'Thiếu hình!',
+                    },
                 },
                 errorPlacement: function(error, element) {
                     error.appendTo(element.parent());
@@ -170,6 +184,9 @@
                 $(this).valid(); // Trigger validation on blur event
             });
             $('input[name="loai[]"]').on('blur', function() {
+                $(this).valid();
+            });
+            $('input[name="hinh[]"]').on('blur', function() {
                 $(this).valid();
             });
         });

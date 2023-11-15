@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('sanpham', function (Blueprint $table) {
             $table->id();
-            $table->integer('brand_id');
-            $table->integer('discount_id');
+            $table->integer('brand_id')->default(0);
+            $table->integer('discount_id')->default(0);
             $table->string("name",1000);
             $table->string("mota",1000);
             $table->double("gia");

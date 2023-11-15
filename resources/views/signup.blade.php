@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
-
+    <style>
+        .error {
+            color: red;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -107,5 +112,58 @@
         </div>
     </div>
 </body>
+<script>
+        $(document).ready(function() {
+            $('#signup').validate({
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    password: {
+                        required: true,
+                    },
+                    password_confirmation: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    name: {
+                        required: 'Thiếu họ và tên!',
+                    },
+                    email: {
+                        required: 'Thiếu email!',
+                        email: 'Hãy nhập dúng email!',
+                    },
+                    password: {
+                        required: 'Thiếu mật khẩu!',
+                    },
+                    password_confirmation: {
+                        required: 'Thiếu nhập lại mật khẩu!',
+                    },
+
+                },
+                errorPlacement: function(error, element) {
+                    error.appendTo(element.parent());
+                }
+            });
+
+            $('#name').on('blur', function() {
+                $(this).valid(); // Trigger validation on blur event
+            });
+            $('#email').on('blur', function() {
+                $(this).valid(); // Trigger validation on blur event
+            });
+            $('#password').on('blur', function() {
+                $(this).valid(); // Trigger validation on blur event
+            });
+            $('#password_confirmation').on('blur', function() {
+                $(this).valid(); // Trigger validation on blur event
+            });
+        });
+    </script>
 
 </html>

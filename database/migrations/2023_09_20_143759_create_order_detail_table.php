@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('order_detail', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_sanpham");
-            $table->integer("id_order");
+            $table->integer("sanpham_id");
+            $table->integer("order_id");
             $table->string("tensanpham",1000);
             $table->double("gia");
             $table->integer("soluong");
@@ -22,8 +22,8 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            $table->foreign('id_sanpham')->references('id')->on('sanpham');
-            $table->foreign('id_order')->references('id')->on('order');
+            $table->foreign('sanpham_id')->references('id')->on('sanpham');
+            $table->foreign('order_id')->references('id')->on('order');
         });
     }
 
