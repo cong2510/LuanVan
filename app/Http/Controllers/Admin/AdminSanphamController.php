@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Brand;
+use App\Models\Image as ImageModel;
 use App\Models\Sanpham;
 use App\Models\Theloai;
 use Illuminate\Http\Request;
@@ -20,9 +21,11 @@ class AdminSanphamController extends Controller
     {
         $sanphams = Sanpham::query()->with('theloai')->get();
         $brandsanphams = Brand::all();
+        $image = DB::table('image')->get();
         return view('admin.sanpham.allproduct', [
             'sanphams' => $sanphams,
             'brandsanphams' => $brandsanphams,
+            'image' => $image,
         ]);
     }
 

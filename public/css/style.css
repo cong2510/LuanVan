@@ -111,4 +111,15 @@ swiper-slide img {
     object-fit: cover;
 }
 
+.theloaiFilter
+{
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
 
+.theloaiFilter:hover
+{
+    text-decoration: none;
+    color: blue !important;
+}

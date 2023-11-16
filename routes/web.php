@@ -25,6 +25,16 @@ use App\Http\Controllers\Admin\RoleController;
 
 Route::get('/', [SanphamController::class, 'index'])->name('index');
 Route::get('/sanpham', [SanphamController::class, 'TrangSanPham'])->name('sanpham');
+Route::get('/sanpham/theloai/{id}', [SanphamController::class, 'TrangSanPhamTheLoai'])->name('sanphamtheloai');
+Route::get('/sanpham-detail/{id}', [SanphamController::class, 'DetailSanpham'])->name('sanphamdetail');
+
+
+
+
+
+
+
+
 
 // Dang nhap, dang ky
 Route::get('/dang-nhap', [AuthContoller::class, 'login'])->name('login');

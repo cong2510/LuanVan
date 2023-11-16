@@ -38,74 +38,86 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $sanpham->name }}</td>
-                                    <td>hinh</td>
-                                    <td>{{ $sanpham->mota }}</td>
                                     <td>
-                                        @foreach ($sanpham->theloai as $theloai)
-                                            - {{ $theloai->name }}<br>
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        @foreach ($brandsanphams as $brand)
-                                            @if ($sanpham->brand_id == $brand->id)
-                                                {{ $brand->name }}
+                                        @foreach ($image as $hinh)
+                                            @if ($sanpham->id == $hinh->sanpham_id)
+                                                <img src="{{ asset('images/Sanpham/' . $hinh->image) }}"
+                                                    style="width: 80px" />
+                                            @break
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <textarea readonly autofocus form style="border: 0">{{ $sanpham->mota }}</textarea>
+                                </td>
+                                <td>
+                                    @foreach ($sanpham->theloai as $theloai)
+                                        <span class="badge bg-dark">{{ $theloai->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($brandsanphams as $brand)
+                                        @if ($sanpham->brand_id == $brand->id)
+                                            <span class="badge bg-danger">{{ $brand->name }}</span>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>{{ $sanpham->soluong }}</td>
+                                <td>{{ $sanpham->gia }}</td>
+                                <td>0</td>
+                                <td>{{ $sanpham->tinhtrang }}</td>
+                                <td>
+                                    <div class="dropdown text-center">
+                                        <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
+                                                class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
+                                                    style="color: #000000;"></i></i></button>
+                                        <div class="dropdown-menu">
+                                            @if (Auth::user()->can('editProduct'))
+                                                <a class="dropdown-item"
+                                                    href="{{ route('edit.product', $sanpham->id) }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Edit</a>
                                             @endif
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $sanpham->soluong }}</td>
-                                    <td>{{ $sanpham->gia }}</td>
-                                    <td>Khuyễn mãi</td>
-                                    <td>{{ $sanpham->tinhtrang }}</td>
-                                    <td>
-                                        <div class="dropdown text-center">
-                                            <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
-                                                    class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
-                                                        style="color: #000000;"></i></i></button>
-                                            <div class="dropdown-menu">
-                                                @if (Auth::user()->can('editProduct'))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('edit.product', $sanpham->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i>
-                                                        Edit</a>
-                                                @endif
-                                                @if (Auth::user()->can('deleteProduct'))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('delete.product', $sanpham->id) }}"><i
-                                                            class="bx bx-trash me-1"></i>
-                                                        Delete</a>
-                                                @endif
-                                            </div>
+                                            @if (Auth::user()->can('deleteProduct'))
+                                                <a class="dropdown-item"
+                                                    href="{{ route('delete.product', $sanpham->id) }}"><i
+                                                        class="bx bx-trash me-1"></i>
+                                                    Delete</a>
+                                            @endif
                                         </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Name</th>
-                                <th>Hình</th>
-                                <th>Mô tả</th>
-                                <th>Thể loại</th>
-                                <th>Thương hiệu</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
-                                <th>Khuyễn mãi</th>
-                                <th>Tình trạng</th>
-                                <th class="text-center">Actions</th>
+                                    </div>
+                                </td>
                             </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>SL</th>
+                            <th>Name</th>
+                            <th>Hình</th>
+                            <th>Mô tả</th>
+                            <th>Thể loại</th>
+                            <th>Thương hiệu</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Khuyễn mãi</th>
+                            <th>Tình trạng</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
-    <!-- /.container-fluid -->
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#myTable').DataTable();
+</div>
+<!-- /.container-fluid -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            responsive: true
         });
-    </script>
+    });
+</script>
 @endsection

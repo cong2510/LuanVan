@@ -21,8 +21,8 @@
                         Thể loại
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @foreach ($theloai as $theloai)
-                            <li><a class="dropdown-item" href="#">{{ $theloai['name'] }}</a></li>
+                        @foreach ($theloai as $loai)
+                            <li><a class="dropdown-item" href="#">{{ $loai->name}}</a></li>
                         @endforeach
                     </ul>
                 </li>

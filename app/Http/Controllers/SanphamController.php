@@ -25,15 +25,92 @@ class SanphamController extends Controller
         ]);
     }
 
-    public function TrangSanPham()
+    public function TrangSanPham(Request $request)
     {
-        $sanphams = Sanpham::query()->with('theloai')->paginate(6);
+        $sanphams = Sanpham::query()->with('theloai');
         $theloai = Theloai::all();
         $role = Role::all();
-        return view('sanpham', [
-            'sanphams' => $sanphams,
+        $image = Image::all();
+
+        $loaiSanphams = DB::table('sanpham_theloai')->get(); //Để tính tát cả sản phẩm của mỗi thể loại
+
+        //sort
+        $sortBy = $request->get('sortBy');
+        // $sanphamQuery = Sanpham::query()->with('theloai');
+
+        if ($sortBy) {
+            if ($sortBy == 'highest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'desc');
+            } elseif ($sortBy == 'lowest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'asc');
+            } elseif ($sortBy == 'AZ') {
+                $sanphamsort = $sanphams->orderBy('name', 'asc');
+            } elseif ($sortBy == 'ZA') {
+                $sanphamsort = $sanphams->orderBy('name', 'desc');
+            }
+        } else {
+            // If no sort option is selected, get all games with default sorting
+            $sanphamsort = $sanphams;
+        }
+        $sanphamsort = $sanphamsort->paginate(6);
+        $sanphamsort->appends($request->except('page'));
+        $allProduct = count($sanphamsort);
+
+        return view('sanpham.product', [
+            'sanphamsort' => $sanphamsort,
             'theloai' => $theloai,
             'role' => $role,
+            'image' => $image,
+            'allProduct' => $allProduct,
+            'loaiSanphams' => $loaiSanphams,
         ]);
     }
+
+
+    public function TrangSanPhamTheLoai($id,Request $request)
+    {
+        $sanphams = Sanpham::query()->with('theloai');
+        $image = Image::all();
+        $role = Role::all();
+        $theloai = Theloai::all();
+
+        $loaiSanphams = DB::table('sanpham_theloai')->get();
+        $loaiSanpham = DB::table('theloai')->where('id', $id)->first();
+        $product = DB::table('sanpham_theloai')->where('theloai_id',$id)->get();
+
+        //sort
+        $sortBy = $request->get('sortBy');
+        // $sanphamQuery = Sanpham::query()->with('theloai');
+
+        if ($sortBy) {
+            if ($sortBy == 'highest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'desc');
+            } elseif ($sortBy == 'lowest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'asc');
+            } elseif ($sortBy == 'AZ') {
+                $sanphamsort = $sanphams->orderBy('name', 'asc');
+            } elseif ($sortBy == 'ZA') {
+                $sanphamsort = $sanphams->orderBy('name', 'desc');
+            }
+        } else {
+            // If no sort option is selected, get all games with default sorting
+            $sanphamsort = $sanphams;
+        }
+        $sanphamsort = $sanphamsort->paginate(6);
+        $sanphamsort->appends($request->except('page'));
+        $allProduct = count($sanphamsort);
+
+        return view('sanpham.producttheloai', [
+            'loaiSanpham' => $loaiSanpham,
+            'sanphamsort' => $sanphamsort,
+            'image' => $image,
+            'role' => $role,
+            'theloai' => $theloai,
+            'product' => $product,
+            'allProduct' => $allProduct,
+            'loaiSanphams' => $loaiSanphams,
+        ]);
+    }
+
+
 }
