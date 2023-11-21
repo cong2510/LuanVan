@@ -45,7 +45,7 @@ class AdminCategoryController extends Controller
         Theloai::create([
             'name' => $request->name,
         ]);
-        toastr()->success("", 'Thêm thể loại thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Thêm thể loại thành công', ['timeOut' => 1000]);
         return redirect()->route('all.category');
     }
 
@@ -81,7 +81,7 @@ class AdminCategoryController extends Controller
             'name' => $request->name,
         ]);
 
-        toastr()->success("", 'Cập nhật thể loại thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật thể loại thành công', ['timeOut' => 1000]);
         return redirect()->route('all.category');
     }
 
@@ -89,7 +89,7 @@ class AdminCategoryController extends Controller
     {
         Theloai::findOrFail($id)->delete();
 
-        toastr()->success("", 'Xóa thể loại thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Xóa thể loại thành công', ['timeOut' => 1000]);
         return redirect()->route('all.category');
     }
 }

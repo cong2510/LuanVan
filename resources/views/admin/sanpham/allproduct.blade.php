@@ -63,7 +63,7 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $sanpham->soluong }}</td>
-                                <td>{{ $sanpham->gia }}</td>
+                                <td>{{ number_format($sanpham->gia, 0, ',', '.') }}đ</td>
                                 <td>0</td>
                                 <td>{{ $sanpham->tinhtrang }}</td>
                                 <td>

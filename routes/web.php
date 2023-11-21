@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSanphamController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AuthContoller;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SanphamController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,13 +28,19 @@ use App\Http\Controllers\Admin\RoleController;
 Route::get('/', [SanphamController::class, 'index'])->name('index');
 Route::get('/sanpham', [SanphamController::class, 'TrangSanPham'])->name('sanpham');
 Route::get('/sanpham/theloai/{id}', [SanphamController::class, 'TrangSanPhamTheLoai'])->name('sanphamtheloai');
-Route::get('/sanpham-detail/{id}', [SanphamController::class, 'DetailSanpham'])->name('sanphamdetail');
+Route::get('/sanpham/detail-{id}', [SanphamController::class, 'DetailSanpham'])->name('detailsanpham');
+Route::get('/sanpham/timkiem', [SanphamController::class, 'TrangTimKiem'])->name('search');
+
+// Cart
+Route::get('/cart', [OrderController::class, 'Cart'])->name('cart');
+Route::post('/cart/add', [OrderController::class, 'AddToCart'])->name('addtocart');
+Route::delete('cart/remove', [OrderController::class, 'RemoveItem'])->name('removeitem');
+Route::post('/cart/update', [OrderController::class, 'UpdateItem'])->name('updateitem');
 
 
-
-
-
-
+Route::get('user/infor', [UserController::class, 'InforUser'])->name('inforuser');
+Route::post('user/edit', [UserController::class, 'EditUser'])->name('edituser');
+Route::put('user/changepassword', [UserController::class, 'ChangePassword'])->name('changepassworduser');
 
 
 

@@ -57,7 +57,7 @@ class RoleController extends Controller
             'name' => $request->name,
             'group_name' => $request->group_name,
         ]);
-        toastr()->success("", 'Thêm quyền thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Thêm quyền thành công', ['timeOut' => 1000]);
         return redirect()->route('all.permission');
 
     }
@@ -99,7 +99,7 @@ class RoleController extends Controller
             'group_name' => $request->group_name,
         ]);
 
-        toastr()->success("", 'Cập nhật quyền thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật quyền thành công', ['timeOut' => 1000]);
         return redirect()->route('all.permission');
     }
 
@@ -107,7 +107,7 @@ class RoleController extends Controller
     {
         Permission::findOrFail($id)->delete();
 
-        toastr()->success("", 'Xóa quyền thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Xóa quyền thành công', ['timeOut' => 1000]);
         return redirect()->route('all.permission');
     }
 
@@ -177,7 +177,7 @@ class RoleController extends Controller
         Role::create([
             'name' => $request->name,
         ]);
-        toastr()->success("", 'Thêm role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Thêm role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles');
 
     }
@@ -213,14 +213,14 @@ class RoleController extends Controller
             'name' => $request->name,
         ]);
 
-        toastr()->success("", 'Cập nhật role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles');
     }
 
     public function DeleteRoles($id)
     {
         Role::findOrFail($id)->delete();
-        toastr()->success("", 'Xóa role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Xóa role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles');
     }
 
@@ -255,7 +255,7 @@ class RoleController extends Controller
             return redirect()->back()->with('error', 'Hãy chọn dữ liệu!');
         }
 
-        toastr()->success("", 'Phân quyền thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Phân quyền thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles.permission');
     }
 
@@ -290,7 +290,7 @@ class RoleController extends Controller
             $role->revokePermissionTo($permissions);
         }
 
-        toastr()->success("", 'Cập nhật quyền role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật quyền role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles.permission');
     }
 
@@ -342,7 +342,7 @@ class RoleController extends Controller
             return redirect()->back()->with('error', 'Hãy chọn dữ liệu!');
         }
 
-        toastr()->success("", 'Phân role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Phân role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles.user');
     }
 
@@ -368,7 +368,7 @@ class RoleController extends Controller
             $user->syncRoles($roles);
         }
 
-        toastr()->success("", 'Cập nhật user role thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật user role thành công', ['timeOut' => 1000]);
         return redirect()->route('all.roles.user');
     }
 }

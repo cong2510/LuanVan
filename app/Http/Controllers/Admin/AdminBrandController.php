@@ -45,7 +45,7 @@ class AdminBrandController extends Controller
         Brand::create([
             'name' => $request->name,
         ]);
-        toastr()->success("", 'Thêm thương hiệu thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Thêm thương hiệu thành công', ['timeOut' => 1000]);
         return redirect()->route('all.brand');
     }
 
@@ -81,7 +81,7 @@ class AdminBrandController extends Controller
             'name' => $request->name,
         ]);
 
-        toastr()->success("", 'Cập nhật thương hiệu thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật thương hiệu thành công', ['timeOut' => 1000]);
         return redirect()->route('all.brand');
     }
 
@@ -89,7 +89,7 @@ class AdminBrandController extends Controller
     {
         Brand::findOrFail($id)->delete();
 
-        toastr()->success("", 'Xóa thương hiệu thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Xóa thương hiệu thành công', ['timeOut' => 1000]);
         return redirect()->route('all.brand');
     }
 }

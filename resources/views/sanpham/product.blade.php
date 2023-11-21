@@ -7,6 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
     <x-home.header :theloai="$theloai" :role="$role" title="Product" />
+    <style>
+        img:hover {
+            transform: scale(1.008);
+            transition: all .2s linear;
+        }
+    </style>
 </head>
 <br>
 
@@ -21,7 +27,7 @@
                         <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                                aria-controls="panelsStayOpen-collapseOne" style="color: black;font-weight: bold">
+                                aria-controls="panelsStayOpen-collapseOne" style="color: black;font-weight: bold;font-size: 18px">
                                 Thể loại
                             </button>
                         </h2>
@@ -33,18 +39,18 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-start"
                                             style="border: none;">
                                             <div class="ms-2 me-auto">
-                                                <div class="fw-bold"><a href="{{ route('sanpham') }}"
+                                                <div class=""><a href="{{ route('sanpham') }}"
                                                         class="theloaiFilter">All</a>
                                                 </div>
                                             </div>
-                                            <span class="badge bg-primary rounded-pill">{{ $allProduct }}</span>
+                                            <span class="badge bg-dark rounded-pill">{{ $allProduct }}</span>
                                         </li>
                                         <hr>
                                         @foreach ($theloai as $loai)
                                             <li class="list-group-item d-flex justify-content-between align-items-start"
                                                 style="border: none;">
                                                 <div class="ms-2 me-auto">
-                                                    <div class="fw-bold"><a
+                                                    <div class=""><a
                                                             href="{{ route('sanphamtheloai', $loai->id) }}"
                                                             class="theloaiFilter">{{ $loai->name }}</a></div>
                                                 </div>
@@ -56,7 +62,7 @@
                                                         }
                                                     }
                                                 @endphp
-                                                <span class="badge bg-primary rounded-pill">
+                                                <span class="badge bg-dark rounded-pill">
                                                     {{ $tam }}
                                                 </span>
                                             </li>
@@ -97,8 +103,6 @@
                                 </option>
                             </select>
                         </div>
-                        {{-- <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"
-                                style="color: #000000;"></i></button> --}}
                     </form>
                 </header>
                 <x-sanpham.productlist :sanphams="$sanphamsort" :image="$image" />
@@ -109,7 +113,7 @@
 </body>
 <script type="text/javascript">
     $("select").change(function() {
-        $("form").submit();
+        $(form).submit();
     });
 </script>
 <x-home.footer />

@@ -174,7 +174,7 @@
                     },
                     soluong: {
                         required: true,
-                        min: 1
+                        min: 0
                     },
                     gia: {
                         required: true,

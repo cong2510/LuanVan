@@ -13,6 +13,16 @@ body {
     width: 350px;
 }
 
+.btnSearch
+{
+    background: white;
+}
+
+.btnSearch:hover
+{
+    background: gray;
+}
+
 .btnTaiKhoan {
     padding-left: 25px;
     padding-right: 25px;
@@ -27,31 +37,32 @@ body {
 
 .btnTaiKhoan a:hover {
     text-decoration: none;
-    color: blue !important;
+    color: gray !important;
 }
 
 .btnGioHang a {
     text-decoration: none;
-    color: black !important;
+    color: #fff !important;
     font-weight: bold;
     font-size: 17px;
 }
 
 .btnGioHang a:hover {
     text-decoration: none;
-    color: blue !important;
+    color: gray !important;
 }
 
 .menu ul li a{
     text-decoration: none;
-    color: black !important;
+    color: white !important;
     font-weight: bold;
     font-size: 17px;
 }
 
 .menu ul li a:hover{
     text-decoration: none;
-    color: blue !important;
+    color: gray !important;
+    background: dark;
 }
 
 @media(max-width: 991px) {
@@ -74,20 +85,26 @@ body {
 
     .btnTaiKhoan a:hover {
         text-decoration: none;
-        color: blue !important;
+        color: gray !important;
+    }
+
+    .btnGioHang
+    {
+        margin-bottom: 20px;
     }
 
     .btnGioHang a {
         text-decoration: none;
-        color: black !important;
+        color: #fff !important;
         font-weight: bold;
         font-size: 17px;
     }
 
     .btnGioHang a:hover {
         text-decoration: none;
-        color: blue !important;
+        color: gray !important;
     }
+
 }
 
 swiper-container {
@@ -113,13 +130,26 @@ swiper-slide img {
 
 .theloaiFilter
 {
-    font-size: 18px;
+    font-size: 17.5px;
     text-decoration: none;
     color: black;
+    font-weight: 500;
 }
 
 .theloaiFilter:hover
 {
     text-decoration: none;
-    color: blue !important;
+    color: gray !important;
+}
+
+.sanphamName
+{
+    text-decoration: none;
+    color: black;
+}
+
+.sanphamName:hover
+{
+    text-decoration: none;
+    color: gray !important;
 }

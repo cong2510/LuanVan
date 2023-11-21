@@ -30,6 +30,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
+    const GENDERS = [
+        'Male',
+        'Female',
+        'Other'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

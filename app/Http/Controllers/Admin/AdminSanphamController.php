@@ -132,7 +132,7 @@ class AdminSanphamController extends Controller
                 //Dia chi thu muc
                 $image_path = public_path('images/Sanpham/' . $image_name);
 
-                Image::make($image_temp)->resize(1040, 1200)->save($image_path);
+                Image::make($image_temp)->resize(600, 700)->save($image_path);
 
                 //Them vao database
                 DB::table('image')->insert([
@@ -145,7 +145,7 @@ class AdminSanphamController extends Controller
 
 
 
-        toastr()->success("", 'Thêm sản phẩm thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Thêm sản phẩm thành công', ['timeOut' => 1000]);
         return redirect()->route('all.product');
     }
 
@@ -266,7 +266,7 @@ class AdminSanphamController extends Controller
                     //Dia chi thu muc
                     $image_path = public_path('images/Sanpham/' . $image_name);
 
-                    Image::make($image_temp)->resize(1040, 1200)->save($image_path);
+                    Image::make($image_temp)->resize(600, 700)->save($image_path);
 
                     //Them vao database
                     DB::table('image')->insert([
@@ -284,7 +284,7 @@ class AdminSanphamController extends Controller
             return redirect()->back();
         }
 
-        toastr()->success("", 'Cập nhật sản phẩm thành công', ['timeOut' => 5000]);
+        toastr()->success("", 'Cập nhật sản phẩm thành công', ['timeOut' => 1000]);
         return redirect()->route('all.product');
     }
 
