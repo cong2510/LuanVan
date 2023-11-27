@@ -15,13 +15,6 @@
     </div>
     <div class="container">
         <!-- Outer Row -->
-        <div class="text-center">
-            @if (Session::has('user_not_found'))
-                <div class="invalid-feedback d-block" role="alert">
-                    <strong>{{ Session::get('user_not_found') }}</strong>
-                </div>
-            @endif
-        </div>
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">
                 <div class="card o-hidden border-0 shadow-lg my-5">
@@ -33,6 +26,14 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Đăng nhập</h1>
+                                    </div>
+                                    <div class="text-center">
+                                        @if (Session::has('user_not_found'))
+                                            <div class="invalid-feedback d-block" role="alert">
+                                                <strong>{{ Session::get('user_not_found') }}</strong>
+                                            </div>
+                                            <br>
+                                        @endif
                                     </div>
                                     <form class="user" id="login" action="{{ route('loginUser') }}"
                                         method="POST">

@@ -162,4 +162,5 @@ class SanphamController extends Controller
             'allProduct' => $allProduct,
         ]);
     }
+
 }

@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer("sanpham_id");
             $table->integer("order_id");
-            $table->string("tensanpham",1000);
+            $table->string("name",250);
             $table->double("gia");
             $table->integer("soluong");
-            $table->string("diachi",1000);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 

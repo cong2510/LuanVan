@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminBrandController;
-use App\Http\Controllers\Admin\AdminCategoryController;
-use App\Http\Controllers\Admin\AdminSanphamController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\AuthContoller;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\SanphamController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Middleware\User;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthContoller;
+use App\Http\Controllers\UserController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SanphamController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminBrandController;
+use App\Http\Controllers\Admin\AdminSanphamController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +39,18 @@ Route::post('/cart/add', [OrderController::class, 'AddToCart'])->name('addtocart
 Route::delete('cart/remove', [OrderController::class, 'RemoveItem'])->name('removeitem');
 Route::post('/cart/update', [OrderController::class, 'UpdateItem'])->name('updateitem');
 
+Route::prefix('user')->middleware(['user', User::class])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'Checkout'])->name('checkout');
+    Route::post('/checkout/method', [OrderController::class,'CheckoutMethod'])->name('checkoutmethod');
+    Route::get('/checkout/success-vnpay', [OrderController::class, 'CheckoutSuccessVNPAY'])->name('checkoutsuccessvnpay');
 
-Route::get('user/infor', [UserController::class, 'InforUser'])->name('inforuser');
-Route::post('user/edit', [UserController::class, 'EditUser'])->name('edituser');
-Route::put('user/changepassword', [UserController::class, 'ChangePassword'])->name('changepassworduser');
+
+    Route::get('/infor', [UserController::class, 'InforUser'])->name('inforuser');
+    Route::post('/edit', [UserController::class, 'EditUser'])->name('edituser');
+    Route::get('/delete-address-{id}', [UserController::class, 'DeleteAddress'])->name('deleteaddress');
+    Route::put('/change-password', [UserController::class, 'ChangePassword'])->name('changepassworduser');
+});
+
 
 
 
@@ -136,6 +146,13 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::get('/admin/edit/user/{id}', 'AdminEditUser')->name('admin.edit.user')->middleware('permission:editUserRole');
         Route::post('/store/roles/user', 'StoreRolesUser')->name('store.roles.user')->middleware('permission:addUserRole');
         Route::post('/admin/update/user/{id}', 'AdminUpdateUser')->name('admin.update.user')->middleware('permission:editUserRole');
+    });
+
+    //Order
+    Route::controller(AdminOrderController::class)->group(function () {
+        Route::get('/all/order', 'AllOrder')->name('all.order');
+        Route::post('/update/order-pending', 'UpdateOrderPending')->name('update.orderpending');
+        Route::post('/update/order-onway', 'UpdateOrderOnWay')->name('update.orderonway');
     });
 });
 

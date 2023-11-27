@@ -29,6 +29,11 @@ class Sanpham extends Model
         return $this->belongsToMany(Theloai::class);
     }
 
+    public function order(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class);
+    }
+
     /**
      * @return BelongsTo
      */

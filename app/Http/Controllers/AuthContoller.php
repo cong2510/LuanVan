@@ -186,7 +186,7 @@ class AuthContoller extends Controller
             ->first();
 
         if (!$checkVerify) {
-            return redirect()->back()->with('error', 'Email không tồn tại!');
+            return redirect()->back()->with('user_not_found', 'Email không tồn tại!');
         } else {
             if ($checkVerify->email_verified_at == null) {
                 toastr()->warning('', 'Bạn chưa xác thực tài khoản!');
@@ -198,7 +198,7 @@ class AuthContoller extends Controller
                 toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 1000]);
                 return redirect(route('index'));
             } else {
-                return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!');
+                return redirect()->back()->with('user_not_found', 'Email hoặc mật khẩu không chính xác!');
             }
         }
     }

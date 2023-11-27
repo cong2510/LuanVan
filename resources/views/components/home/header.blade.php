@@ -32,7 +32,7 @@
                 </li> --}}
             </ul>
             <form class="search d-flex" action="{{ route('search') }}" method="GET">
-                <input class="searchBar form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="search">
+                <input class="searchBar form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="search" id="search">
                 <button class="btnSearch btn btn-outline-info" type="submit"><i class="fa-solid fa-magnifying-glass"
                         style="color: #000000;"></i></button>
             </form>
@@ -93,3 +93,4 @@
         </div>
     </div>
 </nav>
+
