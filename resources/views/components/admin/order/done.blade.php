@@ -5,6 +5,7 @@
                 <tr>
                     <th class="text-center">Id</th>
                     <th class="text-center">Mã hóa đơn</th>
+                    <th class="text-center">Số điện thoại</th>
                     <th class="text-center">Phương thức thanh toán</th>
                     <th class="text-center">Ngày đặt</th>
                     <th class="text-center">Tổng tiền</th>
@@ -20,6 +21,7 @@
                                     data-bs-target="#detailModal{{ $order->id }}"><i class="fa-solid fa-circle-info"
                                         style="color: #005eff;"></i></a>
                             </td>
+                            <td>{{ $order->phone }}</td>
                             <td>
                                 @foreach ($paymentmethod as $payment)
                                     @if ($payment->order_id == $order->id)

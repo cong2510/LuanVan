@@ -102,18 +102,19 @@
                 </li>
             @endif
 
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Quản lý đơn hàng
-            </div>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('all.order') }}">
-                    <i class="fa-solid fa-receipt"></i>
-                    <span>Order</span>
-                </a>
-            </li>
-
+            @if (Auth::user()->hasAnyPermission(['allOrder']))
+                <hr class="sidebar-divider">
+                <div class="sidebar-heading">
+                    Quản lý đơn hàng
+                </div>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('all.order') }}">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Order Manager</span>
+                    </a>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -195,13 +196,9 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('index') }}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    Về trang chủ
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logoutUser') }}">

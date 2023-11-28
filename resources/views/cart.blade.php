@@ -29,6 +29,20 @@
 
 <body>
     {{-- {{ dd(session('cart')) }} --}}
+    <div class="container col-8 pt-3">
+        <div class="text-center">
+            @if (Session::has('order_success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong class="h4">{{ Session::get('order_success') }}</strong>
+                    <hr class="py-0 text-success" />
+                    <p>
+                        Hóa đơn sẽ được gửi tới email của bạn!
+                    </p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="container h-100 py-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col">

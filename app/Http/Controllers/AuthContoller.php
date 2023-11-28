@@ -163,7 +163,6 @@ class AuthContoller extends Controller
             return redirect()->back()->with('signup_success', 'Đăng ký thành công');
         }
         return redirect(route('signup'))->with('user_already_exist', 'Email đã tồn tại!');
-        ;
     }
 
     public function loginUser(Request $request)

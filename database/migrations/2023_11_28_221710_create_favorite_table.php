@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discount', function (Blueprint $table) {
+        Schema::create('favorite', function (Blueprint $table) {
             $table->id();
-            $table->string('name',100);
-            $table->integer('discount_percent')->nullable();
-            $table->date('deleted_at')->nullable();
+            $table->integer("user_id")->default(null);
+            $table->string("name",1000);
+            $table->string("mota",1000);
+            $table->double("gia");
+            $table->double("soluong");
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discount');
+        Schema::dropIfExists('favorite');
     }
 };

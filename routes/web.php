@@ -150,9 +150,9 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
     //Order
     Route::controller(AdminOrderController::class)->group(function () {
-        Route::get('/all/order', 'AllOrder')->name('all.order');
-        Route::post('/update/order-pending', 'UpdateOrderPending')->name('update.orderpending');
-        Route::post('/update/order-onway', 'UpdateOrderOnWay')->name('update.orderonway');
+        Route::get('/all/order', 'AllOrder')->name('all.order')->middleware('permission:allOrder');
+        Route::post('/update/order-pending', 'UpdateOrderPending')->name('update.orderpending')->middleware('permission:allOrder');
+        Route::post('/update/order-onway', 'UpdateOrderOnWay')->name('update.orderonway')->middleware('permission:allOrder');
     });
 });
 

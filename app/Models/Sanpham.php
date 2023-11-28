@@ -46,4 +46,12 @@ class Sanpham extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+     /**
+     * @return BelongsToMany
+     */
+    public function favorite(): BelongsToMany
+    {
+        return $this->belongsToMany(Favorite::class);
+    }
 }

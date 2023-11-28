@@ -386,7 +386,7 @@ class OrderController extends Controller
 
             session()->put('cart', null);
 
-            return redirect()->route('cart')->with('success', 'Thanh toan thanh cong');
+            return redirect()->route('cart')->with('order_success', 'Đặt hàng thành công!');
         }
 
     }
@@ -443,6 +443,6 @@ class OrderController extends Controller
 
         session()->put('cart', null);
 
-        return redirect()->route('cart')->with('success', 'Thanh toan thanh cong');
+        return redirect()->route('cart')->with('order_success', 'Đặt hàng thành công!');
     }
 }
