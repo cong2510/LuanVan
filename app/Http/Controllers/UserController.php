@@ -6,8 +6,10 @@ use App\Models\Role;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Theloai;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +39,8 @@ class UserController extends Controller
         $orders = Order::with('orderdetail')->where('user_id', $user->id)->get();
         $paymentmethod = PaymentMethod::all();
         $image = DB::table('image')->get();
+        $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
+
 
         return view('infor', [
             'theloai' => $theloai,
@@ -45,6 +49,7 @@ class UserController extends Controller
             'orders' => $orders,
             'image' => $image,
             'paymentmethod' => $paymentmethod,
+            'favorites' => $favorites
         ]);
     }
 
@@ -156,5 +161,87 @@ class UserController extends Controller
 
         toastr()->success('', "Đổi mật khẩu thành công!", ['timeOut' => 1000]);
         return redirect(route('login'));
+    }
+
+    public function AddFavorite(Request $request)
+    {
+
+        $user = Auth::user();
+        $favoriteId = DB::table('favorite')
+            ->insertGetId(
+                [
+                    'user_id' => $user->id,
+                ]
+            );
+
+        DB::table('sanpham_favorite')->insert([
+            'sanpham_id' => $request->sanphamid,
+            'favorite_id' => $favoriteId,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function DeleteFavorite(Request $request)
+    {
+        $user = Auth::user();
+
+        DB::table('favorite')->where('id', $request->favoriteid)->where('user_id', $user->id)->delete();
+
+        DB::table('sanpham_favorite')->where('favorite_id', $request->favoriteid)->where('sanpham_id', $request->sanphamid)->delete();
+
+        return redirect()->back();
+    }
+
+    public function ApplyPromo(Request $request)
+    {
+        $user = Auth::user();
+        $codes = DB::table('promocode')->where('name', $request->promocode)->get();
+        $codepromo = session()->get('promocode', []);
+        // dd($codes);
+        // dd(session('promocode'));
+
+        $promo_user = DB::table('users_promocode')->where('user_id', $user->id)->get();
+        // dd(count($promo_user));
+
+
+
+        foreach ($promo_user as $promo_user) {
+            foreach ($codes as $code) {
+                if($code->end_date < Carbon::now())
+                {
+                    return redirect()->back()->with('expired_code', 'Mã giảm giá đã hết hạn!');
+                }
+                if ($promo_user->promocode_id == $code->id) { {
+                        if ($code->max_usage_per_users == count((array)$promo_user->promocode_id)) {
+                            return redirect()->back()->with('cant_apply', 'Tài khoản đã sài mã giảm giá này!');
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (isset($codepromo[0])) {
+            return redirect()->back()->with('already_apply_code', 'Đã nhập mã giảm giá!');
+        } else {
+            foreach ($codes as $code) {
+                $codepromo[] = [
+                    'id' => $code->id,
+                    'name' => $request->promocode,
+                    'value' => $code->value,
+                    'type' => $code->type,
+                ];
+                session()->put('promocode', $codepromo);
+            }
+            return redirect()->back();
+        }
+    }
+
+    public function DeletePromo(Request $request)
+    {
+        session()->put('promocode', null);
+
+        return redirect()->back();
     }
 }

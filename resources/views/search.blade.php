@@ -39,7 +39,7 @@
         <div>
             <div class="row">
                 @foreach ($sanphamsort as $sanpham)
-                    <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
+                    <div class="col-md-3">
                         <div class="card text-center" style="margin-bottom: 20px">
                             @foreach ($image as $hinh)
                                 @if ($sanpham->id == $hinh->sanpham_id)

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\PromoController;
 use App\Http\Middleware\User;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,10 @@ Route::prefix('user')->middleware(['user', User::class])->group(function () {
     Route::post('/edit', [UserController::class, 'EditUser'])->name('edituser');
     Route::get('/delete-address-{id}', [UserController::class, 'DeleteAddress'])->name('deleteaddress');
     Route::put('/change-password', [UserController::class, 'ChangePassword'])->name('changepassworduser');
+    Route::post('/add/favorite', [UserController::class, 'AddFavorite'])->name('addfavorite');
+    Route::post('/delete/favorite', [UserController::class, 'DeleteFavorite'])->name('deletefavorite');
+    Route::post('/apply/promo', [UserController::class, 'ApplyPromo'])->name('applypromo');
+    Route::post('/delete/promo', [UserController::class, 'DeletePromo'])->name('deletepromo');
 });
 
 
@@ -153,6 +158,18 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::get('/all/order', 'AllOrder')->name('all.order')->middleware('permission:allOrder');
         Route::post('/update/order-pending', 'UpdateOrderPending')->name('update.orderpending')->middleware('permission:allOrder');
         Route::post('/update/order-onway', 'UpdateOrderOnWay')->name('update.orderonway')->middleware('permission:allOrder');
+        Route::get('/cancel/order/{id}', 'CancelInfo')->name('cancel.orderinfo')->middleware('permission:allOrder');
+        Route::post('/delete/order', 'CancelOrder')->name('cancel.order')->middleware('permission:allOrder');
+    });
+
+    //Promo Code
+    Route::controller(PromoController::class)->group(function () {
+        Route::get('/all/promo', 'AllPromo')->name('all.promo');
+        Route::get('/add/promo', 'AddPromo')->name('add.promo');
+        Route::post('/store/promo', 'StorePromo')->name('store.promo');
+        Route::get('/delete/promo/{id}', 'DeletePromo')->name('delete.promo');
+        Route::get('/edit/promo/{id}', 'EditPromo')->name('edit.promo');
+        Route::post('/update/promo', 'UpdatePromo')->name('update.promo');
     });
 });
 

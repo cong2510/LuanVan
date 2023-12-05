@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Sanpham;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class AdminOrderController extends Controller
             'order_status' => Order::ORDER_STATUS[1],
         ]);
 
-        foreach($details as $key => $item) {
+        foreach ($details as $key => $item) {
             $detail = Sanpham::find($item['sanphamid']);
 
             $sanphamsoluong = $detail->soluong - $item['soluong'];
@@ -58,5 +59,30 @@ class AdminOrderController extends Controller
         ]);
 
         return back();
+    }
+
+    public function CancelInfo($id)
+    {
+        $order = Order::query()->where('id', $id)->with('orderdetail')->first();
+        $user = User::findOrFail($order->user_id);
+        $image = DB::table('image')->get();
+
+        return view('admin.order.cancelinfo', [
+            'order' => $order,
+            'user' => $user,
+            'image' => $image,
+        ]);
+    }
+
+    public function CancelOrder(Request $request)
+    {
+        $id = $request->orderid;
+
+        DB::table('order')->where('id',$id)->delete();
+
+        DB::table('order_detail')->where('order_id', $id)->delete();
+
+        toastr()->success("", 'Xóa đơn hàng!', ['timeOut' => 100]);
+        return redirect()->route('all.order');
     }
 }

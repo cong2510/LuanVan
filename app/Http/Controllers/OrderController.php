@@ -304,6 +304,20 @@ class OrderController extends Controller
             $user = Auth::user();
             $orderIdRef = Str::upper(Str::random(8));
 
+            $codes = session()->get('promocode');
+            $promocodes = array();
+
+            foreach ($codes as $code) {
+                $promocodes[] = [
+                    'id' => $code['id'],
+                    'name' => $code['name'],
+                    'value' => $code['value'],
+                    'type' => $code['type'],
+                ];
+            }
+
+            // dd($promocodes);
+
             if ($request->address == "showInput") {
                 $request->validate(
                     [
@@ -325,16 +339,17 @@ class OrderController extends Controller
                 if ($thanhpho && $quan && $phuong && $request->get('anotherAddress')) {
                     $orderId = DB::table('order')
                         ->insertGetId(
-                            [
-                                'user_id' => $user->id,
-                                'email' => $user->email,
-                                'diachi' => $addressAll,
-                                'phone' => $request->phone,
-                                'totalprice' => $request->total,
-                                'order_status' => "Pending",
-                                'order_id_ref' => $orderIdRef,
-                            ]
-                        );
+                        [
+                            'user_id' => $user->id,
+                            'email' => $user->email,
+                            'diachi' => $addressAll,
+                            'phone' => $request->phone,
+                            'totalprice' => $request->total,
+                            'order_status' => "Pending",
+                            'order_id_ref' => $orderIdRef,
+                            'promocode_id' => $promocodes[0]['id'],
+                        ]
+                    );
 
                     if ($request->saveAddress) {
                         DB::table('address')->insert([
@@ -348,16 +363,17 @@ class OrderController extends Controller
             } else {
                 $orderId = DB::table('order')
                     ->insertGetId(
-                        [
-                            'user_id' => $user->id,
-                            'email' => $user->email,
-                            'diachi' => $request->address,
-                            'phone' => $request->phone,
-                            'totalprice' => $request->total,
-                            'order_status' => "Pending",
-                            'order_id_ref' => $orderIdRef,
-                        ]
-                    );
+                    [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'diachi' => $request->address,
+                        'phone' => $request->phone,
+                        'totalprice' => $request->total,
+                        'order_status' => "Pending",
+                        'order_id_ref' => $orderIdRef,
+                        'promocode_id' => $promocodes[0]['id'],
+                    ]
+                );
             }
 
             DB::table('paymentmethods')->insert([
@@ -381,10 +397,23 @@ class OrderController extends Controller
                     );
             }
 
+            DB::table('users_promocode')->insert([
+                'user_id' => $user->id,
+                'promocode_id' => $promocodes[0]['id'],
+            ]);
+
+            $max_usage = DB::table('promocode')->select('max_usage')->where('id',$promocodes[0]['id'])->first();
+            // dd($max_usage->max_usage);
+
+            DB::table('promocode')->where('id',$promocodes[0]['id'])->update([
+                'max_usage' => $max_usage->max_usage - 1,
+            ]);
+
             $tong = $request->total;
-            Mail::to($user->email)->send(new OrderMail($user,$orderIdRef,$tong,$cart));
+            Mail::to($user->email)->send(new OrderMail($user, $orderIdRef, $tong, $cart));
 
             session()->put('cart', null);
+            session()->put('promocode', null);
 
             return redirect()->route('cart')->with('order_success', 'Đặt hàng thành công!');
         }
@@ -400,20 +429,19 @@ class OrderController extends Controller
         $orderTotal = ($request->vnp_Amount) / 100;
         $orderIdRef = $request->vnp_TxnRef;
 
-        foreach($orderInfo as $diachi => $phone)
-        {
+        foreach ($orderInfo as $diachi => $phone) {
             $orderId = DB::table('order')
-            ->insertGetId(
-                [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'diachi' => $diachi,
-                    'phone' => $phone,
-                    'totalprice' => $orderTotal,
-                    'order_status' => "Pending",
-                    'order_id_ref' => $orderIdRef,
-                ]
-            );
+                ->insertGetId(
+                    [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'diachi' => $diachi,
+                        'phone' => $phone,
+                        'totalprice' => $orderTotal,
+                        'order_status' => "Pending",
+                        'order_id_ref' => $orderIdRef,
+                    ]
+                );
         }
 
         DB::table('paymentmethods')->insert([
@@ -438,7 +466,7 @@ class OrderController extends Controller
         }
 
         $tong = $request->total;
-        Mail::to($user->email)->send(new OrderMail($user,$orderIdRef,$tong,$cart));
+        Mail::to($user->email)->send(new OrderMail($user, $orderIdRef, $tong, $cart));
 
 
         session()->put('cart', null);

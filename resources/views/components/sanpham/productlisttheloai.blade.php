@@ -92,7 +92,7 @@
             @foreach ($product as $sanphamtheloai)
                 @if ($sanphamtheloai->sanpham_id == $sanpham->id)
                     <!-- Single Product -->
-                    <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+                    <div class="col-md-3">
                         <div class="card text-center" style="margin-bottom: 20px">
                             @foreach ($image as $hinh)
                                 @if ($sanpham->id == $hinh->sanpham_id)
@@ -111,14 +111,14 @@
                             </div>
 
                             <div class="d-flex mb-3">
-                                <h5 class="mb-0" style="font-size: 18px"><a href="{{ route('detailsanpham', $sanpham->id) }}"
+                                <h5 class="mb-0" style="font-size: 14px"><a href="{{ route('detailsanpham', $sanpham->id) }}"
                                         class="sanphamName">{{ $sanpham->name }}</a></h5>
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
                                 <h6 class="text-muted mb-0">Còn: <span
                                         class="fw-bold text-danger">{{ $sanpham->soluong }}</span></h6>
-                                <h5 class="text-dark mb-0">{{ number_format($sanpham->gia, 0, ',', '.') }}đ</h5>
+                                <h5 class="text-dark mb-0" style="font-size: 14px">{{ number_format($sanpham->gia, 0, ',', '.') }}đ</h5>
                             </div>
                         </div>
                     </div>

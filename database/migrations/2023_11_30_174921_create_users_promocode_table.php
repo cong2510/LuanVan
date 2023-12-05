@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorite', function (Blueprint $table) {
+        Schema::create('users_promocode', function (Blueprint $table) {
             $table->id();
-            $table->integer("user_id")->default(null);
-
+            $table->integer("user_id");
+            $table->integer("promocode_id");
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('promocode_id')->references('id')->on('promocode');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorite');
+        Schema::dropIfExists('users_promocode');
     }
 };

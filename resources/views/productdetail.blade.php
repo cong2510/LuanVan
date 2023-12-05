@@ -26,12 +26,12 @@
         <div class="container">
             <div class="row gx-5">
                 <aside class="col-lg-6">
-                    <div style="--swiper-navigation-color: black; --swiper-pagination-color: #fff"
+                    <div style="--swiper-navigation-color: black; --swiper-pagination-color: #fff; --swiper-navigation-size: 32px"
                         class="swiper mySwiper2">
                         <div class="swiper-wrapper">
                             @foreach ($image as $hinh)
                                 @if ($hinh->sanpham_id == $sanpham->id)
-                                    <div class="swiper-slide" style="text-align: center">
+                                    <div class="swiper-slide" style="text-align: center;">
                                         <img style="max-width: 100%; max-height: 50vh; margin: auto;"
                                             class="rounded-4 fit" src="{{ asset('images/Sanpham/' . $hinh->image) }}" />
                                     </div>
@@ -97,6 +97,50 @@
                                     @endif
                                 @endforeach
                             </dd>
+                            <dd class="col-12">
+                                @if (Auth::user())
+                                    @php
+                                        $flag = 0;
+                                    @endphp
+                                    @foreach ($favorites as $favorite)
+                                        @foreach ($favorite->sanpham as $sanphamfav)
+                                            @if ($sanphamfav->id == $sanpham->id && $favorite->user_id == auth()->user()->id)
+                                                @php
+                                                    $flag = 1;
+                                                @endphp
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+
+                                    @if ($flag == 1)
+                                        <form action="{{ route('deletefavorite') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sanphamid" value="{{ $sanpham->id }}">
+                                            @foreach ($favorites as $favorite)
+                                                @foreach ($favorite->sanpham as $sanphamfav)
+                                                    @if ($sanphamfav->id == $sanpham->id)
+                                                        <input type="hidden" name="favoriteid"
+                                                            value="{{ $favorite->id }}">
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                            <button type="submit"
+                                                class="btn btn-light border border-dark py-2 icon-hover px-3">
+                                                <i class="fa-solid fa-heart fa-lg" style="color: red;"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('addfavorite') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sanphamid" value="{{ $sanpham->id }}">
+                                            <button type="submit"
+                                                class="btn btn-light border border-dark py-2 icon-hover px-3">
+                                                <i class="fa-regular fa-heart fa-lg" style="color: red;"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endif
+                            </dd>
                         </div>
 
                         <hr />
@@ -115,14 +159,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <input type="text" name="id" id="id" value="{{ $sanpham->id }}" hidden>
                             <button type="submit" class="btn btn-primary">
                                 Thêm vào giỏ
                             </button>&nbsp;
-                            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
-                                    class="me-1 fa fa-heart fa-lg"></i> Save </a>
                         </form>
+                        <br>
                     </div>
                 </main>
             </div>

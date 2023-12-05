@@ -58,23 +58,69 @@
                                 @endphp
                             @endforeach
 
-                            <li class="list-group-item d-flex justify-content-between bg-light">
-                                <div class="text-success">
-                                    <h6 class="my-0">Promo code</h6>
-                                    <small>EXAMPLECODE</small>
-                                </div>
-                                <span class="text-success">−$5</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Tổng (VND)</span>
-                                <strong>{{ number_format($tong, 0, ',', '.') }} đ</strong>
-                            </li>
+                            @if (Session::has('promocode') && !empty(session('promocode')))
+                                @foreach ((array) session('promocode') as $id => $codes)
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <div class="text-success">
+                                            <h6 class="my-0">{{ $codes['name'] }}</h6>
+                                            @if ($codes['type'] == 'Percent')
+                                                <small>-{{ number_format($codes['value'], 0, ',', '.') }} %</small>
+                                            @else
+                                                <small>-{{ number_format($codes['value'], 0, ',', '.') }} đ</small>
+                                            @endif
+                                        </div>
+                                        <form action="{{ route('deletepromo') }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                style="background: none;border: none;color:red;font-size: 18px">X</button>
+                                        </form>
+                                    </li>
+                                @endforeach
+                            @endif
+                            @if (Session::has('promocode') && !empty(session('promocode')))
+                                @foreach ((array) session('promocode') as $id => $codes)
+                                    @php
+                                        if ($codes['type'] == 'Percent') {
+                                            $tong = $tong - ($tong * $codes['value']) / 100;
+                                        } else {
+                                            $tong = $tong - $codes['value'];
+                                        }
+                                    @endphp
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Tổng (VND)</span>
+                                        <strong>{{ number_format($tong, 0, ',', '.') }} đ</strong>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Tổng (VND)</span>
+                                    <strong>{{ number_format($tong, 0, ',', '.') }} đ</strong>
+                                </li>
+                            @endif
                         @endif
                     </ul>
-
-                    <form class="card p-2">
+                    @if (Session::has('already_apply_code'))
+                        <div class="invalid-feedback d-block" role="alert">
+                            <strong>{{ Session::get('already_apply_code') }}</strong>
+                        </div>
+                        <br>
+                    @endif
+                    @if (Session::has('cant_apply'))
+                        <div class="invalid-feedback d-block" role="alert">
+                            <strong>{{ Session::get('cant_apply') }}</strong>
+                        </div>
+                        <br>
+                    @endif
+                    @if (Session::has('expired_code'))
+                        <div class="invalid-feedback d-block" role="alert">
+                            <strong>{{ Session::get('expired_code') }}</strong>
+                        </div>
+                        <br>
+                    @endif
+                    <form class="card p-2" action="{{ route('applypromo') }}" method="POST">
+                        @csrf
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code">
+                            <input type="text" class="form-control" placeholder="Promo code" name="promocode">
                             <button type="submit" class="btn btn-secondary">Redeem</button>
                         </div>
                     </form>

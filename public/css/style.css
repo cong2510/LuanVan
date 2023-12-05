@@ -15,7 +15,7 @@ body {
 
 .btnSearch
 {
-    background: white;
+    background: black;
 }
 
 .btnSearch:hover
@@ -23,17 +23,6 @@ body {
     background: gray;
 }
 
-.btnTaiKhoan {
-    padding-left: 25px;
-    padding-right: 25px;
-}
-
-.btnTaiKhoan a {
-    text-decoration: none;
-    color: black !important;
-    font-weight: bold;
-    font-size: 17px;
-}
 
 .btnTaiKhoan a:hover {
     text-decoration: none;
@@ -68,19 +57,6 @@ body {
 @media(max-width: 991px) {
     .search .searchBar {
         width: 250px;
-    }
-
-    .btnTaiKhoan {
-        padding-left: 0px;
-        padding-right: 0px;
-        padding-top: 10px;
-    }
-
-    .btnTaiKhoan a {
-        text-decoration: none;
-        color: black !important;
-        font-weight: bold;
-        font-size: 17px;
     }
 
     .btnTaiKhoan a:hover {
@@ -153,3 +129,4 @@ swiper-slide img {
     text-decoration: none;
     color: gray !important;
 }
+

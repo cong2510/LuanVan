@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->integer("user_id");
+            $table->integer("promocode_id");
             $table->string("email",100);
             $table->string("diachi",300);
             $table->string("phone",10);
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('promocode_id')->references('id')->on('promocode');
         });
     }
 

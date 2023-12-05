@@ -116,6 +116,18 @@
                 </li>
             @endif
 
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Quản lý mã khuyễn mãi
+            </div>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('all.promo') }}">
+                    <i class="fa-solid fa-ticket-simple"></i>
+                    <span>Promo Code Manager</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -181,21 +193,16 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if (Auth::user())
                                     {{-- <img class="img-profile rounded-circle" src="">&nbsp;&nbsp; --}}
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                                        style="font-weight: bold;font-size:20px">{{ auth()->user()->name }}</span>
+                                    <i class="fa-solid fa-circle-user fa-xl"></i>&nbsp;{{ auth()->user()->name }}
                                 @endif
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
                                 <a class="dropdown-item" href="{{ route('index') }}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Về trang chủ

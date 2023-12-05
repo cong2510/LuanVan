@@ -16,6 +16,10 @@ class Favorite extends Model
      */
     public function sanpham(): BelongsToMany
     {
-        return $this->belongsToMany(Sanpham::class);
+        return $this->belongsToMany(Sanpham::class,'sanpham_favorite');
     }
+
+    const INTERMEDIATE_TABLE = [
+        'sanpham_favorite'
+    ];
 }

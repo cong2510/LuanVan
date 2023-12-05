@@ -36,8 +36,8 @@
                             <td class="text-center">
                                 @php
                                     $flag = 1;
-                                    $ten = array();
-                                    $soluong =array();
+                                    $ten = [];
+                                    $soluong = [];
                                 @endphp
                                 @foreach ($order->orderdetail as $detail)
                                     @foreach ($sanpham as $sp)
@@ -53,7 +53,7 @@
                                     @endforeach
                                 @endforeach
                                 @php
-                                    $sanphamthieu = array_combine($ten,$soluong);
+                                    $sanphamthieu = array_combine($ten, $soluong);
                                 @endphp
                                 @if ($flag == 0)
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -65,7 +65,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="needModal{{ $order->id }}Label">Thiếu sản phẩm
+                                                    <h5 class="modal-title" id="needModal{{ $order->id }}Label">
+                                                        Thiếu sản phẩm
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
@@ -88,6 +89,9 @@
                                         <i class="fa-solid fa-check"></i>
                                     </button>
                                 @endif
+                                <a href="{{ route('cancel.orderinfo',$order->id) }}" class="btn btn-danger">
+                                    <i class="fa-solid fa-ban"></i>
+                                </a>
                             </td>
                         </tr>
                         <!-- Modal -->
@@ -189,7 +193,8 @@
                                             <input type="hidden"
                                                 name="orderdetails[{{ $detail->id }}][sanphamid]"
                                                 value="{{ $detail->sanpham_id }}">
-                                            <input type="hidden" name="orderdetails[{{ $detail->id }}][soluong]"
+                                            <input type="hidden"
+                                                name="orderdetails[{{ $detail->id }}][soluong]"
                                                 value="{{ $detail->soluong }}">
                                         @endforeach
                                         <input type="hidden" name="orderid" value="{{ $order->id }}">

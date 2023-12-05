@@ -7,8 +7,10 @@ use App\Models\Brand;
 use App\Models\Image;
 use App\Models\Sanpham;
 use App\Models\Theloai;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SanphamController extends Controller
 {
@@ -53,7 +55,7 @@ class SanphamController extends Controller
             // If no sort option is selected, get all games with default sorting
             $sanphamsort = $sanphams;
         }
-        $sanphamsort = $sanphamsort->paginate(9);
+        $sanphamsort = $sanphamsort->paginate(12);
         $sanphamsort->appends($request->except('page'));
         $allProduct = count($sanphamsort);
 
@@ -97,7 +99,7 @@ class SanphamController extends Controller
             // If no sort option is selected, get all games with default sorting
             $sanphamsort = $sanphams;
         }
-        $sanphamsort = $sanphamsort->paginate(9);
+        $sanphamsort = $sanphamsort->paginate(12);
         $sanphamsort->appends($request->except('page'));
         $allProduct = count($sanphamsort);
 
@@ -115,12 +117,18 @@ class SanphamController extends Controller
 
     public function DetailSanpham($id)
     {
+        $user = Auth::user();
+
         $sanpham = Sanpham::findOrFail($id);
         $brands = Brand::all();
         $image = Image::all();
         $role = Role::all();
         $theloai = Theloai::all();
         $loaiSanphams = DB::table('sanpham_theloai')->get();
+
+        // $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
+        $favorites = Favorite::with('sanpham')->get();
+
 
         return view('productdetail', [
             'sanpham' => $sanpham,
@@ -129,6 +137,7 @@ class SanphamController extends Controller
             'theloai' => $theloai,
             'loaiSanphams' => $loaiSanphams,
             'brands' => $brands,
+            'favorites' => $favorites
         ]);
     }
 
@@ -145,7 +154,7 @@ class SanphamController extends Controller
 
         if ($search) {
             $sanphamsort = $sanphams->where('name', 'like', '%' . $search . '%');
-            $sanphamsort = $sanphamsort->paginate(9);
+            $sanphamsort = $sanphamsort->paginate(12);
             $sanphamsort->appends($request->except('page'));
             $allProduct = count($sanphamsort);
         }else{
