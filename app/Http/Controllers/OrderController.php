@@ -24,7 +24,7 @@ class OrderController extends Controller
         $theloai = Theloai::all();
         $role = Role::all();
         $image = Image::all();
-        $brands = Brand::all();
+        $brand = Brand::all();
         $sanpham_theloai = DB::table('sanpham_theloai')->get();
 
         return view('cart', [
@@ -32,7 +32,7 @@ class OrderController extends Controller
             'theloai' => $theloai,
             'role' => $role,
             'image' => $image,
-            'brands' => $brands,
+            'brand' => $brand,
             'sanpham_theloai' => $sanpham_theloai,
         ]);
     }
@@ -147,11 +147,13 @@ class OrderController extends Controller
         $theloai = Theloai::all();
         $role = Role::all();
         $address = Address::all();
+        $brand = Brand::all();
 
         return view('paycheck', [
             'theloai' => $theloai,
             'role' => $role,
             'address' => $address,
+            'brand' => $brand,
         ]);
     }
 
@@ -307,13 +309,15 @@ class OrderController extends Controller
             $codes = session()->get('promocode');
             $promocodes = array();
 
-            foreach ($codes as $code) {
-                $promocodes[] = [
-                    'id' => $code['id'],
-                    'name' => $code['name'],
-                    'value' => $code['value'],
-                    'type' => $code['type'],
-                ];
+            if ($codes != null) {
+                foreach ($codes as $code) {
+                    $promocodes[] = [
+                        'id' => $code['id'],
+                        'name' => $code['name'],
+                        'value' => $code['value'],
+                        'type' => $code['type'],
+                    ];
+                }
             }
 
             // dd($promocodes);
@@ -337,19 +341,37 @@ class OrderController extends Controller
                 $addressAll = $request->get('anotherAddress') . ", " . $thanhpho . ", " . $quan . ", " . $phuong;
 
                 if ($thanhpho && $quan && $phuong && $request->get('anotherAddress')) {
-                    $orderId = DB::table('order')
-                        ->insertGetId(
-                        [
-                            'user_id' => $user->id,
-                            'email' => $user->email,
-                            'diachi' => $addressAll,
-                            'phone' => $request->phone,
-                            'totalprice' => $request->total,
-                            'order_status' => "Pending",
-                            'order_id_ref' => $orderIdRef,
-                            'promocode_id' => $promocodes[0]['id'],
-                        ]
-                    );
+                    if ($codes != null) {
+                        $orderId = DB::table('order')
+                            ->insertGetId(
+                                [
+                                    'user_id' => $user->id,
+                                    'name' => $request->name,
+                                    'email' => $user->email,
+                                    'diachi' => $addressAll,
+                                    'phone' => $request->phone,
+                                    'totalprice' => $request->total,
+                                    'order_status' => "Pending",
+                                    'order_id_ref' => $orderIdRef,
+                                    'promocode_id' => $promocodes[0]['id'],
+                                ]
+                            );
+                    } else {
+                        $orderId = DB::table('order')
+                            ->insertGetId(
+                                [
+                                    'user_id' => $user->id,
+                                    'name' => $request->name,
+                                    'email' => $user->email,
+                                    'diachi' => $addressAll,
+                                    'phone' => $request->phone,
+                                    'totalprice' => $request->total,
+                                    'order_status' => "Pending",
+                                    'order_id_ref' => $orderIdRef,
+                                    'promocode_id' => 0,
+                                ]
+                            );
+                    }
 
                     if ($request->saveAddress) {
                         DB::table('address')->insert([
@@ -361,19 +383,37 @@ class OrderController extends Controller
                     return redirect()->back();
                 }
             } else {
-                $orderId = DB::table('order')
-                    ->insertGetId(
-                    [
-                        'user_id' => $user->id,
-                        'email' => $user->email,
-                        'diachi' => $request->address,
-                        'phone' => $request->phone,
-                        'totalprice' => $request->total,
-                        'order_status' => "Pending",
-                        'order_id_ref' => $orderIdRef,
-                        'promocode_id' => $promocodes[0]['id'],
-                    ]
-                );
+                if ($codes != null) {
+                    $orderId = DB::table('order')
+                        ->insertGetId(
+                            [
+                                'user_id' => $user->id,
+                                'name' => $request->name,
+                                'email' => $user->email,
+                                'diachi' => $request->address,
+                                'phone' => $request->phone,
+                                'totalprice' => $request->total,
+                                'order_status' => "Pending",
+                                'order_id_ref' => $orderIdRef,
+                                'promocode_id' => $promocodes[0]['id'],
+                            ]
+                        );
+                } else {
+                    $orderId = DB::table('order')
+                        ->insertGetId(
+                            [
+                                'user_id' => $user->id,
+                                'name' => $request->name,
+                                'email' => $user->email,
+                                'diachi' => $request->address,
+                                'phone' => $request->phone,
+                                'totalprice' => $request->total,
+                                'order_status' => "Pending",
+                                'order_id_ref' => $orderIdRef,
+                                'promocode_id' => 0,
+                            ]
+                        );
+                }
             }
 
             DB::table('paymentmethods')->insert([
@@ -397,17 +437,20 @@ class OrderController extends Controller
                     );
             }
 
-            DB::table('users_promocode')->insert([
-                'user_id' => $user->id,
-                'promocode_id' => $promocodes[0]['id'],
-            ]);
+            if ($codes != null) {
+                DB::table('users_promocode')->insert([
+                    'user_id' => $user->id,
+                    'promocode_id' => $promocodes[0]['id'],
+                ]);
 
-            $max_usage = DB::table('promocode')->select('max_usage')->where('id',$promocodes[0]['id'])->first();
-            // dd($max_usage->max_usage);
+                $max_usage = DB::table('promocode')->select('max_usage')->where('id', $promocodes[0]['id'])->first();
+                // dd($max_usage->max_usage);
 
-            DB::table('promocode')->where('id',$promocodes[0]['id'])->update([
-                'max_usage' => $max_usage->max_usage - 1,
-            ]);
+                DB::table('promocode')->where('id', $promocodes[0]['id'])->update([
+                    'max_usage' => $max_usage->max_usage - 1,
+                ]);
+
+            }
 
             $tong = $request->total;
             Mail::to($user->email)->send(new OrderMail($user, $orderIdRef, $tong, $cart));
@@ -429,20 +472,67 @@ class OrderController extends Controller
         $orderTotal = ($request->vnp_Amount) / 100;
         $orderIdRef = $request->vnp_TxnRef;
 
-        foreach ($orderInfo as $diachi => $phone) {
-            $orderId = DB::table('order')
-                ->insertGetId(
-                    [
-                        'user_id' => $user->id,
-                        'email' => $user->email,
-                        'diachi' => $diachi,
-                        'phone' => $phone,
-                        'totalprice' => $orderTotal,
-                        'order_status' => "Pending",
-                        'order_id_ref' => $orderIdRef,
-                    ]
-                );
+        $codes = session()->get('promocode');
+        $promocodes = array();
+
+        if ($codes != null) {
+            foreach ($codes as $code) {
+                $promocodes[] = [
+                    'id' => $code['id'],
+                    'name' => $code['name'],
+                    'value' => $code['value'],
+                    'type' => $code['type'],
+                ];
+            }
+
+            foreach ($orderInfo as $diachi => $phone) {
+                $orderId = DB::table('order')
+                    ->insertGetId(
+                        [
+                            'user_id' => $user->id,
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'diachi' => $diachi,
+                            'phone' => $phone,
+                            'totalprice' => $orderTotal,
+                            'order_status' => "Pending",
+                            'order_id_ref' => $orderIdRef,
+                            'promocode_id' => $promocodes[0]['id'],
+                        ]
+                    );
+            }
+
+            DB::table('users_promocode')->insert([
+                'user_id' => $user->id,
+                'promocode_id' => $promocodes[0]['id'],
+            ]);
+
+            $max_usage = DB::table('promocode')->select('max_usage')->where('id', $promocodes[0]['id'])->first();
+            // dd($max_usage->max_usage);
+
+            DB::table('promocode')->where('id', $promocodes[0]['id'])->update([
+                'max_usage' => $max_usage->max_usage - 1,
+            ]);
+
+        } else {
+            foreach ($orderInfo as $diachi => $phone) {
+                $orderId = DB::table('order')
+                    ->insertGetId(
+                        [
+                            'user_id' => $user->id,
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'diachi' => $diachi,
+                            'phone' => $phone,
+                            'totalprice' => $orderTotal,
+                            'order_status' => "Pending",
+                            'order_id_ref' => $orderIdRef,
+                            'promocode_id' => 0,
+                        ]
+                    );
+            }
         }
+
 
         DB::table('paymentmethods')->insert([
             'order_id' => $orderId,

@@ -19,23 +19,36 @@ class SanphamController extends Controller
         $sanphams = Sanpham::query()->with('theloai')->get();
         $theloai = Theloai::all();
         $role = Role::all();
-        $sanpham_image = Image::all();
+        $image = Image::all();
+        $brand = Brand::all();
+
+        $loaithubong ="1";
+        $thubong = Sanpham::whereHas('theloai', function ($query) use ($loaithubong) {
+            $query->where('theloai_id', $loaithubong);
+        })->take(8)->get();
+
         return view('index', [
             'sanphams' => $sanphams,
             'theloai' => $theloai,
             'role' => $role,
-            'sanpham_image' => $sanpham_image,
+            'brand' => $brand,
+            'image' => $image,
+            'thubong' => $thubong,
         ]);
     }
 
     public function TrangSanPham(Request $request)
     {
+        $allsanphams = Sanpham::query()->with('theloai')->get();
         $sanphams = Sanpham::query()->with('theloai');
         $theloai = Theloai::all();
         $role = Role::all();
         $image = Image::all();
+        $brand = Brand::all();
 
+        $allProduct = count($allsanphams);
         $loaiSanphams = DB::table('sanpham_theloai')->get(); //Để tính tát cả sản phẩm của mỗi thể loại
+
 
         //sort
         $sortBy = $request->get('sortBy');
@@ -56,34 +69,34 @@ class SanphamController extends Controller
             $sanphamsort = $sanphams;
         }
         $sanphamsort = $sanphamsort->paginate(12);
-        $sanphamsort->appends($request->except('page'));
-        $allProduct = count($sanphamsort);
+        // $sanphamsort->appends($request->except('page'));
 
-        return view('sanpham.product', [
+        return view('product', [
             'sanphamsort' => $sanphamsort,
             'theloai' => $theloai,
             'role' => $role,
             'image' => $image,
             'allProduct' => $allProduct,
             'loaiSanphams' => $loaiSanphams,
+            'brand' => $brand,
         ]);
     }
 
-
     public function TrangSanPhamTheLoai($id, Request $request)
     {
-        $sanphams = Sanpham::query()->with('theloai');
-        $image = Image::all();
-        $role = Role::all();
         $theloai = Theloai::all();
+        $role = Role::all();
+        $image = Image::all();
+        $brand = Brand::all();
+        $loaisp = DB::table('theloai')->where('id', $id)->first();
+        $loaiSanphams = DB::table('sanpham_theloai')->where('theloai_id', $id)->get();
 
-        $loaiSanphams = DB::table('sanpham_theloai')->get();
-        $loaiSanpham = DB::table('theloai')->where('id', $id)->first();
-        $product = DB::table('sanpham_theloai')->where('theloai_id', $id)->get();
+        $sanphams = Sanpham::whereHas('theloai', function ($query) use ($id) {
+            $query->where('theloai_id', $id);
+        });
 
         //sort
         $sortBy = $request->get('sortBy');
-        // $sanphamQuery = Sanpham::query()->with('theloai');
 
         if ($sortBy) {
             if ($sortBy == 'highest') {
@@ -100,18 +113,66 @@ class SanphamController extends Controller
             $sanphamsort = $sanphams;
         }
         $sanphamsort = $sanphamsort->paginate(12);
-        $sanphamsort->appends($request->except('page'));
+        // $sanphamsort->appends($request->except('page'));
         $allProduct = count($sanphamsort);
 
-        return view('sanpham.producttheloai', [
-            'loaiSanpham' => $loaiSanpham,
-            'sanphamsort' => $sanphamsort,
-            'image' => $image,
-            'role' => $role,
-            'theloai' => $theloai,
-            'product' => $product,
+        // dd($sanphamsort);
+
+        return view('producttheloai', [
             'allProduct' => $allProduct,
+            'sanphamsort' => $sanphamsort,
+            'theloai' => $theloai,
+            'role' => $role,
+            'image' => $image,
             'loaiSanphams' => $loaiSanphams,
+            'brand' => $brand,
+            'loaisp' => $loaisp,
+        ]);
+    }
+
+    public function TrangSanPhamBrand($id, Request $request)
+    {
+        $theloai = Theloai::all();
+        $role = Role::all();
+        $image = Image::all();
+        $brand = Brand::all();
+        $loaibrand = DB::table('brand')->where('id', $id)->first();
+        $loaiSanphams = DB::table('sanpham_theloai')->where('theloai_id', $id)->get();
+
+        $sanphams = Sanpham::query()->where('brand_id',$id);
+
+        //sort
+        $sortBy = $request->get('sortBy');
+
+        if ($sortBy) {
+            if ($sortBy == 'highest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'desc');
+            } elseif ($sortBy == 'lowest') {
+                $sanphamsort = $sanphams->orderBy('gia', 'asc');
+            } elseif ($sortBy == 'AZ') {
+                $sanphamsort = $sanphams->orderBy('name', 'asc');
+            } elseif ($sortBy == 'ZA') {
+                $sanphamsort = $sanphams->orderBy('name', 'desc');
+            }
+        } else {
+            // If no sort option is selected, get all games with default sorting
+            $sanphamsort = $sanphams;
+        }
+        $sanphamsort = $sanphamsort->paginate(12);
+        // $sanphamsort->appends($request->except('page'));
+        $allProduct = count($sanphamsort);
+
+        // dd($sanphamsort);
+
+        return view('productbrand', [
+            'allProduct' => $allProduct,
+            'sanphamsort' => $sanphamsort,
+            'theloai' => $theloai,
+            'role' => $role,
+            'image' => $image,
+            'loaiSanphams' => $loaiSanphams,
+            'brand' => $brand,
+            'loaibrand' => $loaibrand,
         ]);
     }
 
@@ -120,7 +181,7 @@ class SanphamController extends Controller
         $user = Auth::user();
 
         $sanpham = Sanpham::findOrFail($id);
-        $brands = Brand::all();
+        $brand = Brand::all();
         $image = Image::all();
         $role = Role::all();
         $theloai = Theloai::all();
@@ -136,7 +197,7 @@ class SanphamController extends Controller
             'role' => $role,
             'theloai' => $theloai,
             'loaiSanphams' => $loaiSanphams,
-            'brands' => $brands,
+            'brand' => $brand,
             'favorites' => $favorites
         ]);
     }
@@ -145,6 +206,7 @@ class SanphamController extends Controller
     {
         $sanphams = Sanpham::query()->with('theloai');
         $theloai = Theloai::all();
+        $brand = Brand::all();
         $role = Role::all();
         $image = Image::all();
 
@@ -157,7 +219,7 @@ class SanphamController extends Controller
             $sanphamsort = $sanphamsort->paginate(12);
             $sanphamsort->appends($request->except('page'));
             $allProduct = count($sanphamsort);
-        }else{
+        } else {
             return redirect()->back();
         }
 
@@ -169,6 +231,7 @@ class SanphamController extends Controller
             'image' => $image,
             'loaiSanphams' => $loaiSanphams,
             'allProduct' => $allProduct,
+            'brand' => $brand,
         ]);
     }
 

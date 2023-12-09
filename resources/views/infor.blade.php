@@ -8,7 +8,7 @@
 
     @include('cdn')
 
-    <x-home.header :theloai="$theloai" :role="$role" title="Trang cá nhân" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Trang cá nhân" />
 </head>
 
 <body>
@@ -41,7 +41,7 @@
                 <x-user.basicinfo :address="$address" />
             </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                <x-user.orderhistory :orders="$orders" :image="$image" :paymentmethod="$paymentmethod" />
+                <x-user.orderhistory :orders="$orders" :image="$image" :paymentmethod="$paymentmethod" :promos="$promos" />
             </div>
         </div>
     </div>

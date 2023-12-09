@@ -85,17 +85,17 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             @if (Auth::user()->can('allPermission'))
-                                <a class="collapse-item" href="{{ route('all.permission') }}">Danh sách quyền</a>
+                                <a class="collapse-item" href="{{ route('all.permission') }}">Quản lý quyền</a>
                             @endif
                             @if (Auth::user()->can('allRole'))
-                                <a class="collapse-item" href="{{ route('all.roles') }}">Danh sách role</a>
+                                <a class="collapse-item" href="{{ route('all.roles') }}">Quản lý vai trò</a>
                             @endif
                             @if (Auth::user()->can('allRolePermission'))
-                                <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách role có
+                                <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách vai trò có
                                     quyền</a>
                             @endif
                             @if (Auth::user()->can('allUser'))
-                                <a class="collapse-item" href="{{ route('all.roles.user') }}">Danh sách User</a>
+                                <a class="collapse-item" href="{{ route('all.roles.user') }}">Quản lý tài khoản</a>
                             @endif
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('all.order') }}">
                         <i class="fa-solid fa-receipt"></i>
-                        <span>Order Manager</span>
+                        <span>Quản lý đơn hàng</span>
                     </a>
                 </li>
             @endif
@@ -124,7 +124,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('all.promo') }}">
                     <i class="fa-solid fa-ticket-simple"></i>
-                    <span>Promo Code Manager</span>
+                    <span>Quản lý mã khuyễn mãi</span>
                 </a>
             </li>
 

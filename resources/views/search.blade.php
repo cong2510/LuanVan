@@ -8,7 +8,7 @@
 
     @include('cdn')
 
-    <x-home.header :theloai="$theloai" :role="$role" title="Tìm kiếm" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Tìm kiếm" />
 </head>
 
 <body>
@@ -51,9 +51,9 @@
                         @endforeach
                         <div class="card-body">
                             <div class="d-flex justify-content-left">
-                                @foreach ($sanpham->theloai as $theloai)
-                                    <p class="small"><a href="{{ route('sanphamtheloai', $theloai->id) }}"
-                                            class="text-muted">{{ $theloai->name }}</a></p>
+                                @foreach ($sanpham->theloai as $loai)
+                                    <p class="small"><a href="{{ route('sanphamtheloai',$loai->id) }}" class="text-muted">{{ $loai->name }}</a>
+                                    </p>
                                     &nbsp;&nbsp;
                                 @endforeach
                             </div>

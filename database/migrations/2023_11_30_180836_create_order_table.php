@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->integer("user_id");
             $table->integer("promocode_id");
+            $table->string("name",255);
             $table->string("email",100);
             $table->string("diachi",300);
             $table->string("phone",10);

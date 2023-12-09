@@ -28,7 +28,6 @@
                                 <th>Thương hiệu</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
-                                <th>Khuyễn mãi</th>
                                 <th>Tình trạng</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -64,7 +63,6 @@
                                 </td>
                                 <td>{{ $sanpham->soluong }}</td>
                                 <td>{{ number_format($sanpham->gia, 0, ',', '.') }}đ</td>
-                                <td>0</td>
                                 <td>{{ $sanpham->tinhtrang }}</td>
                                 <td>
                                     <div class="dropdown text-center">
@@ -100,7 +98,6 @@
                             <th>Thương hiệu</th>
                             <th>Số lượng</th>
                             <th>Giá</th>
-                            <th>Khuyễn mãi</th>
                             <th>Tình trạng</th>
                             <th class="text-center">Actions</th>
                         </tr>

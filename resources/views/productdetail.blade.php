@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
-    <x-home.header :theloai="$theloai" :role="$role" title="{{ $sanpham->name }}" />
+    <x-home.header :theloai="$theloai" :role="$role" title="{{ $sanpham->name }}" :brand="$brand" />
     <style>
         .icon-hover:hover {
             border-color: #3b71ca !important;
@@ -78,8 +78,9 @@
                         <div class="row">
                             <dt class="col-3">Loại:</dt>
                             <dd class="col-9">
-                                @foreach ($sanpham->theloai as $theloai)
-                                    <span class="badge bg-primary">{{ $theloai->name }}</span>
+                                @foreach ($sanpham->theloai as $loai)
+                                    <span class="badge bg-primary"><a href="{{ route('sanphamtheloai', $loai->id) }}"
+                                            style="text-decoration: none;color: white">{{ $loai->name }}</a></span>
                                 @endforeach
                             </dd>
 
@@ -91,9 +92,9 @@
 
                             <dt class="col-3">Thương hiệu</dt>
                             <dd class="col-9">
-                                @foreach ($brands as $brand)
+                                @foreach ($brand as $brand)
                                     @if ($brand->id == $sanpham->brand_id)
-                                        {{ $brand->name }}
+                                        <a href="{{ route('sanphambrand', $brand->id) }}">{{ $brand->name }}</a>
                                     @endif
                                 @endforeach
                             </dd>

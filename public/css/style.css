@@ -130,3 +130,32 @@ swiper-slide img {
     color: gray !important;
 }
 
+.theloaiTitle
+{
+    text-decoration: none;
+    font-size: 28px !important;
+    color: black;
+    font-family: monospace;
+    background-color: rgb(214, 212, 212);
+    border-radius: 25px;
+}
+
+.theloaiTitle:hover
+{
+    text-decoration: none;
+    color: gray !important;
+}
+
+.btn-square-md {
+    width: 150px !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    height: 150px !important;
+    text-align: center;
+    padding: 0px;
+    font-size: 23px
+}
+
+.btn-square-md a:hover{
+    color: white;
+}

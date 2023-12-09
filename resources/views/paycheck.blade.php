@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
 
-    <x-home.header :theloai="$theloai" :role="$role" title="Thanh toán" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Thanh toán" />
     <style>
         .error {
             color: red;

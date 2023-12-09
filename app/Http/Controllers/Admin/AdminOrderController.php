@@ -82,7 +82,10 @@ class AdminOrderController extends Controller
 
         DB::table('order_detail')->where('order_id', $id)->delete();
 
+        DB::table('paymentmethods')->where('order_id', $id)->delete();
+
         toastr()->success("", 'Xóa đơn hàng!', ['timeOut' => 100]);
+
         return redirect()->route('all.order');
     }
 }

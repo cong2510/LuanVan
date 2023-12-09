@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 Route::get('/', [SanphamController::class, 'index'])->name('index');
 Route::get('/sanpham', [SanphamController::class, 'TrangSanPham'])->name('sanpham');
 Route::get('/sanpham/theloai/{id}', [SanphamController::class, 'TrangSanPhamTheLoai'])->name('sanphamtheloai');
+Route::get('/sanpham/brand/{id}', [SanphamController::class, 'TrangSanPhamBrand'])->name('sanphambrand');
 Route::get('/sanpham/detail-{id}', [SanphamController::class, 'DetailSanpham'])->name('detailsanpham');
 Route::get('/sanpham/timkiem', [SanphamController::class, 'TrangTimKiem'])->name('search');
 
@@ -54,6 +55,7 @@ Route::prefix('user')->middleware(['user', User::class])->group(function () {
     Route::post('/delete/favorite', [UserController::class, 'DeleteFavorite'])->name('deletefavorite');
     Route::post('/apply/promo', [UserController::class, 'ApplyPromo'])->name('applypromo');
     Route::post('/delete/promo', [UserController::class, 'DeletePromo'])->name('deletepromo');
+    Route::post('/delete/order-user',[UserController::class, 'CancelOrderUser'])->name('cancel.orderuser');
 });
 
 

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
-use App\Models\Role;
-use App\Models\Theloai;
-use App\Models\User;
 use toastr;
+use Carbon\Carbon;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Brand;
+use App\Models\Theloai;
+use App\Mail\RegisterMail;
+use App\Models\Permission;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\ForgotPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
-use App\Mail\RegisterMail;
-use App\Mail\ForgotPasswordMail;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class AuthContoller extends Controller
@@ -25,6 +26,7 @@ class AuthContoller extends Controller
     {
         $theloai = Theloai::all();
         $role = Role::all();
+        $brand = Brand::all();
 
         if (auth()->check()) {
             return redirect()->back();
@@ -32,6 +34,7 @@ class AuthContoller extends Controller
             return view('login', [
                 'theloai' => $theloai,
                 'role' => $role,
+                'brand' => $brand,
             ]);
         }
     }
@@ -40,6 +43,7 @@ class AuthContoller extends Controller
     {
         $theloai = Theloai::all();
         $role = Role::all();
+        $brand = Brand::all();
 
         if (auth()->check()) {
             return redirect()->back();
@@ -47,6 +51,7 @@ class AuthContoller extends Controller
             return view('signup', [
                 'theloai' => $theloai,
                 'role' => $role,
+                'brand' => $brand,
             ]);
         }
     }
@@ -227,6 +232,7 @@ class AuthContoller extends Controller
     {
         $theloai = Theloai::all();
         $role = Role::all();
+        $brand = Brand::all();
 
         if (auth()->check()) {
             return redirect()->back();
@@ -234,6 +240,7 @@ class AuthContoller extends Controller
             return view('forgotPassword', [
                 'theloai' => $theloai,
                 'role' => $role,
+                'brand' => $brand,
             ]);
         }
 

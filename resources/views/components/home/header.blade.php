@@ -27,8 +27,8 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centerOnMobile">
                 <span
                     class="d-none d-lg-inline-block d-md-inline-block d-sm-inline-block d-xs-none me-3"><strong>btcong2510@gmail.com</strong></span>
-                <span class="me-3"><i class="fa-solid fa-phone me-1 text-dark"></i>
-                    <strong>09-355-300-85</strong></span>
+                {{-- <span class="me-3"><i class="fa-solid fa-phone me-1 text-dark"></i>
+                    <strong>09-355-300-85</strong></span> --}}
             </div>
             <div
                 class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-none d-lg-block d-md-block-d-sm-block d-xs-none text-end">
@@ -84,12 +84,21 @@
                     <ul class="dropdown-menu ulTheloai" aria-labelledby="navbarDropdown">
                         @foreach ($theloai as $loai)
                             <li><a class="dropdown-item" style="color: black !important;"
-                                    href="{{ route('sanphamtheloai', $loai->id) }}">{{ $loai->name }}</a></li>
+                                    href="{{ route('sanphamtheloai',$loai->id) }}">{{ $loai->name }}</a></li>
                         @endforeach
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link mx-2 text-uppercase" href="#">Services</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link mx-2 text-uppercase" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Thương hiệu
+                    </a>
+                    <ul class="dropdown-menu ulTheloai" aria-labelledby="navbarDropdown">
+                        @foreach ($brand as $brand)
+                            <li><a class="dropdown-item" style="color: black !important;"
+                                    href="{{ route('sanphambrand',$brand->id) }}">{{ $brand->name }}</a></li>
+                        @endforeach
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link mx-2 text-uppercase" href="#">About</a>

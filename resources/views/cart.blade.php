@@ -24,7 +24,7 @@
             font-size: 16px;
         }
     </style>
-    <x-home.header :theloai="$theloai" :role="$role" title="Giỏ hàng" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Giỏ hàng" />
 </head>
 
 <body>

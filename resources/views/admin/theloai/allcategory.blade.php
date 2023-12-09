@@ -22,7 +22,7 @@
                     <table id="myTable" class="table table-hover" style="width:100%">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Id</th>
                                 <th>Category name</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -30,7 +30,7 @@
                         <tbody>
                             @foreach ($loais as $key => $loai)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $loai->id }}</td>
                                     <td>{{ $loai->name }}</td>
                                     <td>
                                         <div class="dropdown text-center">

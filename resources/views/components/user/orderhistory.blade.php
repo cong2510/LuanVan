@@ -71,6 +71,13 @@
                                         <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                                         <div class="d-flex justify-content-between pt-2">
                                             <p class="fw-bold mb-0">Order Details</p>
+                                            <p class="fw-bold mb-0">Mã khuyễn mãi:
+                                                @foreach($promos as $promo)
+                                                    @if($promo->id == $item->promocode_id)
+                                                        {{ $promo->name }}
+                                                    @endif
+                                                @endforeach
+                                            </p>
                                             <p class="small text-dark mb-0"><span class="fw-bold me-4">Tổng</span>
                                                 {{ number_format($item->totalprice, 0, ',', '.') }}đ</p>
                                         </div>
@@ -90,6 +97,16 @@
                                             <p class="small text-dark mb-0"><span class="fw-bold me-4">Delivery
                                                     Charges</span> Free</p>
                                         </div> --}}
+                                        <br>
+                                        <div>
+                                            <form action="{{ route('cancel.orderuser') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="orderid" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-danger" style="float: right">
+                                                    Hủy đơn
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

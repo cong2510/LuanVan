@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PromoCode;
 use App\Models\Role;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Theloai;
@@ -28,6 +30,7 @@ class UserController extends Controller
         $theloai = Theloai::all();
         $role = Role::all();
         $address = Address::all();
+        $brand = Brand::all();
 
         // $responseTP = Http::get($this->apiUrlTP);
         // $thanhpho = $responseTP->json();
@@ -40,6 +43,7 @@ class UserController extends Controller
         $paymentmethod = PaymentMethod::all();
         $image = DB::table('image')->get();
         $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
+        $promos = PromoCode::all();
 
 
         return view('infor', [
@@ -49,7 +53,9 @@ class UserController extends Controller
             'orders' => $orders,
             'image' => $image,
             'paymentmethod' => $paymentmethod,
-            'favorites' => $favorites
+            'favorites' => $favorites,
+            'brand' => $brand,
+            'promos' => $promos,
         ]);
     }
 
@@ -241,6 +247,21 @@ class UserController extends Controller
     public function DeletePromo(Request $request)
     {
         session()->put('promocode', null);
+
+        return redirect()->back();
+    }
+
+    public function CancelOrderUser(Request $request)
+    {
+        $id = $request->orderid;
+
+        DB::table('order')->where('id',$id)->delete();
+
+        DB::table('order_detail')->where('order_id', $id)->delete();
+
+        DB::table('paymentmethods')->where('order_id', $id)->delete();
+
+        toastr()->success("", 'Xóa đơn hàng!', ['timeOut' => 100]);
 
         return redirect()->back();
     }
