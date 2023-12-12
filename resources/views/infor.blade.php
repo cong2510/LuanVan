@@ -35,13 +35,14 @@
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <x-user.favorite :favorites="$favorites" :image="$image"/>
+                <x-user.favorite :favorites="$favorites" :image="$image" />
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <x-user.basicinfo :address="$address" />
             </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                <x-user.orderhistory :orders="$orders" :image="$image" :paymentmethod="$paymentmethod" :promos="$promos" />
+                <x-user.orderhistory :orders="$orders" :image="$image" :paymentmethod="$paymentmethod" :promos="$promos"
+                    :pending="$pending" :canceled="$canceled" />
             </div>
         </div>
     </div>
@@ -49,6 +50,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
     integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
     const host = "https://provinces.open-api.vn/api/";
@@ -90,6 +94,11 @@
         let selectedValue = $("#quan").val();
         let selectedId = $("#quan option[value='" + selectedValue + "']").attr("id");
         callApiWard(host + "d/" + selectedId + "?depth=2");
+    });
+
+
+    $(document).ready(function() {
+        $('#orderhistory').DataTable();
     });
 </script>
 <x-home.footer />

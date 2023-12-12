@@ -76,16 +76,13 @@ class AdminOrderController extends Controller
 
     public function CancelOrder(Request $request)
     {
-        $id = $request->orderid;
+        $order = Order::find($request->orderid);
 
-        DB::table('order')->where('id',$id)->delete();
+        $order->update([
+            'order_status' => Order::ORDER_STATUS[3],
+        ]);
 
-        DB::table('order_detail')->where('order_id', $id)->delete();
-
-        DB::table('paymentmethods')->where('order_id', $id)->delete();
-
-        toastr()->success("", 'Xóa đơn hàng!', ['timeOut' => 100]);
-
+        toastr()->success("", 'Hủy đơn hàng thành công!', ['timeOut' => 100]);
         return redirect()->route('all.order');
     }
 }

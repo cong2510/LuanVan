@@ -1,45 +1,72 @@
-<div class="container shadow min-vh-100 py-2">
+<div class="card-body">
     <div class="table-responsive">
-        <table class="table accordion table-hover">
+        <table id="orderhistory" class="table table-hover" style="width:100%">
             <thead>
-                <tr class="text-center">
-                    <th scope="col">Mã hóa đơn</th>
-                    <th scope="col">Phương thức thanh toán</th>
-                    <th scope="col">Ngày đặt</th>
-                    <th scope="col">Tổng tiền</th>
-                    <th scope="col">Trạng thái</th>
+                <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">Mã hóa đơn</th>
+                    <th class="text-center">Tên khách hàng</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Số điện thoại</th>
+                    <th class="text-center">Phương thức thanh toán</th>
+                    <th class="text-center">Ngày đặt</th>
+                    <th class="text-center">Tổng tiền</th>
+                    <th class="text-center">Trạng thái</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($orders as $item)
-                    <tr class="text-center" data-bs-toggle="collapse" data-bs-target="#{{ $item->order_id_ref }}">
-                        <th scope="row" style="color:red">{{ $item->order_id_ref }}<i class="bi bi-chevron-down"></i></th>
+                @foreach ($orders as $key => $order)
+                    <tr class="text-center">
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->order_id_ref }} <a data-bs-toggle="modal"
+                                data-bs-target="#detailModal{{ $order->id }}"><i class="fa-solid fa-circle-info"
+                                    style="color: #005eff;"></i></a>
+                        </td>
+                        <td>{{ $order->name }}</td>
+                        <td>{{ $order->email }}</td>
+                        <td>{{ $order->phone }}</td>
                         <td>
                             @foreach ($paymentmethod as $payment)
-                                @if ($payment->order_id == $item->id)
+                                @if ($payment->order_id == $order->id)
                                     {{ $payment->name }}
                                 @endif
                             @endforeach
                         </td>
-                        <td>{{ date('d-m-Y', strtotime($item->created_at)) }}</td>
-                        <td>{{ number_format($item->totalprice, 0, ',', '.') }}đ</td>
-                        <td><span class="badge bg-primary">{{ $item->order_status }}</span></td>
+                        <td>{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
+                        <td>{{ number_format($order->totalprice, 0, ',', '.') }}đ</td>
+                        <td>
+                            @if ($order->order_status == $canceled)
+                                <span class="badge bg-danger">{{ $order->order_status }}</span>
+                            @else
+                                <span class="badge bg-primary">{{ $order->order_status }}</span>
+                            @endif
+                        </td>
                     </tr>
-                    <tr class="collapse accordion-collapse" id="{{ $item->order_id_ref }}" data-bs-parent=".table">
-                        <td colspan="5">
-                            <div class="row d-flex justify-content-center align-items-center h-100">
-                                <div class="col-lg-10 col-xl-8">
+                    <!-- Modal -->
+                    <div class="modal fade" id="detailModal{{ $order->id }}" tabindex="-1"
+                        aria-labelledby="detailModal{{ $order->id }}Label" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailModal{{ $order->id }}Label">Thông tin đơn
+                                        hàng
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
                                     <div class="card" style="border-radius: 10px;">
                                         <div class="card-body p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <p class="lead fw-normal mb-0" style="color: black;">Hóa đơn</p>
-                                                <p class="small text-dark mb-0">Mã hóa đơn : {{ $item->order_id_ref }}
+                                                <p class="small text-dark mb-0">Mã hóa đơn :
+                                                    {{ $order->order_id_ref }}
                                                 </p>
                                             </div>
                                             <div class="card shadow-0 border mb-4">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        @foreach ($item->orderdetail as $detail)
+                                                        @foreach ($order->orderdetail as $detail)
                                                             <div class="col-md-3">
                                                                 @foreach ($image as $hinh)
                                                                     @if ($hinh->sanpham_id == $detail->sanpham_id)
@@ -52,7 +79,8 @@
                                                         </div>
                                                         <div
                                                             class="col-md-5 text-center d-flex justify-content-center align-items-center">
-                                                            <p class="text-dark mb-0" style="font-size: 16px">{{ $detail->name }}</p>
+                                                            <p class="text-dark mb-0" style="font-size: 16px">
+                                                                {{ $detail->name }}</p>
                                                         </div>
                                                         <div
                                                             class="col-md-2 text-center d-flex justify-content-center align-items-center">
@@ -62,7 +90,8 @@
                                                         <div
                                                             class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                                             <p class="small text-dark mb-0 small">
-                                                                {{ number_format($detail->gia, 0, ',', '.') }}đ</p>
+                                                                {{ number_format($detail->gia, 0, ',', '.') }}đ
+                                                            </p>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -71,51 +100,41 @@
                                         <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                                         <div class="d-flex justify-content-between pt-2">
                                             <p class="fw-bold mb-0">Order Details</p>
-                                            <p class="fw-bold mb-0">Mã khuyễn mãi:
-                                                @foreach($promos as $promo)
-                                                    @if($promo->id == $item->promocode_id)
-                                                        {{ $promo->name }}
-                                                    @endif
-                                                @endforeach
-                                            </p>
                                             <p class="small text-dark mb-0"><span class="fw-bold me-4">Tổng</span>
-                                                {{ number_format($item->totalprice, 0, ',', '.') }}đ</p>
+                                                {{ number_format($order->totalprice, 0, ',', '.') }}đ</p>
                                         </div>
-
-                                        {{-- <div class="d-flex justify-content-between pt-2">
-                                            <p class="small text-dark mb-0">Invoice Number : 788152</p>
-                                            <p class="small text-dark mb-0"><span class="fw-bold me-4">Discount</span>
-                                                $19.00</p>
-                                        </div> --}}
 
                                         <div class="d-flex justify-content-between">
-                                            <p class="small text-dark mb-0">Invoice Date : {{ date('d-m-Y', strtotime($item->created_at)) }}</p>
+                                            <p class="small text-dark mb-0">Invoice Date :
+                                                {{ date('d-m-Y', strtotime($order->created_at)) }}</p>
                                         </div>
 
-                                        {{-- <div class="d-flex justify-content-between mb-5">
-                                            <p class="small text-dark mb-0">Recepits Voucher : 18KU-62IIK</p>
-                                            <p class="small text-dark mb-0"><span class="fw-bold me-4">Delivery
-                                                    Charges</span> Free</p>
-                                        </div> --}}
                                         <br>
-                                        <div>
-                                            <form action="{{ route('cancel.orderuser') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="orderid" value="{{ $item->id }}">
-                                                <button type="submit" class="btn btn-danger" style="float: right">
-                                                    Hủy đơn
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @if ($order->order_status == $pending)
+                                            <div>
+                                                <form action="{{ route('cancel.orderuser') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="orderid"
+                                                        value="{{ $order->id }}">
+                                                    <button type="submit" class="btn btn-danger"
+                                                        style="float: right">
+                                                        Hủy đơn
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             @endforeach
         </tbody>
     </table>
 </div>
 </div>
-

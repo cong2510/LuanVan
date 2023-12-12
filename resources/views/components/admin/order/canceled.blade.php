@@ -1,6 +1,6 @@
 <div class="card-body">
     <div class="table-responsive">
-        <table id="done" class="table table-hover" style="width:100%">
+        <table id="canceled" class="table table-hover" style="width:100%">
             <thead>
                 <tr>
                     <th class="text-center">Id</th>
@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 @foreach ($orders as $key => $order)
-                    @if ($order->order_status == 'Done')
+                    @if ($order->order_status == 'Canceled')
                         <tr class="text-center">
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->order_id_ref }} <a data-bs-toggle="modal"
@@ -35,7 +35,7 @@
                             </td>
                             <td>{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                             <td>{{ number_format($order->totalprice, 0, ',', '.') }}đ</td>
-                            <td><span class="badge bg-primary">{{ $order->order_status }}</span></td>
+                            <td><span class="badge bg-danger">{{ $order->order_status }}</span></td>
                         </tr>
                         <!-- Modal -->
                         <div class="modal fade" id="detailModal{{ $order->id }}" tabindex="-1"

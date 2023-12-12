@@ -45,6 +45,8 @@ class UserController extends Controller
         $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
         $promos = PromoCode::all();
 
+        $pending = Order::ORDER_STATUS[0];
+        $canceled = Order::ORDER_STATUS[3];
 
         return view('infor', [
             'theloai' => $theloai,
@@ -56,6 +58,8 @@ class UserController extends Controller
             'favorites' => $favorites,
             'brand' => $brand,
             'promos' => $promos,
+            'pending' => $pending,
+            'canceled' => $canceled,
         ]);
     }
 
@@ -253,16 +257,14 @@ class UserController extends Controller
 
     public function CancelOrderUser(Request $request)
     {
-        $id = $request->orderid;
+        $order = Order::find($request->orderid);
 
-        DB::table('order')->where('id',$id)->delete();
+        $order->update([
+            'order_status' => Order::ORDER_STATUS[3],
+        ]);
 
-        DB::table('order_detail')->where('order_id', $id)->delete();
-
-        DB::table('paymentmethods')->where('order_id', $id)->delete();
 
         toastr()->success("", 'Xóa đơn hàng!', ['timeOut' => 100]);
-
         return redirect()->back();
     }
 }

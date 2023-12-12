@@ -29,7 +29,6 @@
 
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Giỏ hàng</h2>
         <div class="container col-8 pt-3">
             <div class="text-center">
                 @if (Session::has('order_success'))
@@ -44,6 +43,7 @@
                 @endif
             </div>
         </div>
+        <h2 class="mb-4">Giỏ hàng</h2>
         <!-- Cart Items -->
         <div class="row">
             <div class="col-md-8">
@@ -118,14 +118,15 @@
                     @endphp
                 @endforeach
             @else
-                <tr style="text-align: center; justify-content: center">
-                    <td></td>
-                    <td style="text-align: center; justify-content: center">
-                        <p class="h5 mb-4 mt-4">Giỏ hàng trống!</p>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <div class="container col-8 pt-4">
+                    <div class="text-center">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <p>
+                                <strong>Giỏ hàng trống</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
 
@@ -165,6 +166,15 @@
                                 <span
                                     class="badge bg-success rounded-pill">{{ number_format($total, 0, ',', '.') }}
                                     đ</span>
+                            </li>
+                        @else
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Giỏ hàng trống
+                                <span class="badge bg-primary rounded-pill">0 đ</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Tổng
+                                <span class="badge bg-success rounded-pill">0 đ</span>
                             </li>
                         @endif
                     </ul>

@@ -127,7 +127,8 @@
                                             @endforeach
                                             <button type="submit"
                                                 class="btn btn-light border border-dark py-2 icon-hover px-3">
-                                                <i class="fa-solid fa-heart fa-lg" style="color: red;"></i>
+                                                <i class="fa-solid fa-heart fa-lg"
+                                                    style="color: red;"></i>&nbsp;&nbsp;{{ $allfavorite }}
                                             </button>
                                         </form>
                                     @else
@@ -136,10 +137,17 @@
                                             <input type="hidden" name="sanphamid" value="{{ $sanpham->id }}">
                                             <button type="submit"
                                                 class="btn btn-light border border-dark py-2 icon-hover px-3">
-                                                <i class="fa-regular fa-heart fa-lg" style="color: red;"></i>
+                                                <i class="fa-regular fa-heart fa-lg"
+                                                    style="color: red;"></i>&nbsp;&nbsp;{{ $allfavorite }}
                                             </button>
                                         </form>
                                     @endif
+                                @else
+                                    <button type="submit"
+                                        class="btn btn-light border border-dark py-2 icon-hover px-3">
+                                        <i class="fa-solid fa-heart fa-lg"
+                                            style="color: red;"></i>&nbsp;&nbsp;{{ $allfavorite }}
+                                    </button>
                                 @endif
                             </dd>
                         </div>

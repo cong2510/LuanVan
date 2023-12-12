@@ -27,6 +27,14 @@ class SanphamController extends Controller
             $query->where('theloai_id', $loaithubong);
         })->take(8)->get();
 
+        $favorites = DB::table('sanpham_favorite')
+        ->select('sanpham_id', DB::raw('COUNT(*) as count'))
+        ->groupBy('sanpham_id')
+        ->orderBy('count', 'desc') // Order by the count in descending order
+        ->get();
+
+        // dd($favorites);
+
         return view('index', [
             'sanphams' => $sanphams,
             'theloai' => $theloai,
@@ -190,6 +198,9 @@ class SanphamController extends Controller
         // $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
         $favorites = Favorite::with('sanpham')->get();
 
+        $sanphamfavorite = DB::table('sanpham_favorite')->where('sanpham_id',$id)->get();
+        $allfavorite = count($sanphamfavorite);
+
 
         return view('productdetail', [
             'sanpham' => $sanpham,
@@ -198,7 +209,8 @@ class SanphamController extends Controller
             'theloai' => $theloai,
             'loaiSanphams' => $loaiSanphams,
             'brand' => $brand,
-            'favorites' => $favorites
+            'favorites' => $favorites,
+            'allfavorite' => $allfavorite,
         ]);
     }
 
