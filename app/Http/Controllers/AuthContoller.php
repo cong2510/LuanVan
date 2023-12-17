@@ -117,7 +117,7 @@ class AuthContoller extends Controller
             [
                 'email' => [
                     'required',
-                    'email'
+                    'email',
                 ],
                 'name' => [
                     'required',

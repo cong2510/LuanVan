@@ -38,64 +38,71 @@
                             <td>{{ number_format($order->totalprice, 0, ',', '.') }}đ</td>
                             <td><span class="badge bg-primary">{{ $order->order_status }}</span></td>
                             <td class="text-center">
-                                @php
-                                    $flag = 1;
-                                    $ten = [];
-                                    $soluong = [];
-                                @endphp
-                                @foreach ($order->orderdetail as $detail)
-                                    @foreach ($sanpham as $sp)
-                                        @if ($sp->id == $detail->sanpham_id)
-                                            @if ($sp->soluong < $detail->soluong)
-                                                @php
-                                                    $flag = 0;
-                                                    $ten[] = $detail->name;
-                                                    $soluong[] = $detail->soluong - $sp->soluong;
-                                                @endphp
-                                            @endif
-                                        @endif
-                                    @endforeach
-                                @endforeach
-                                @php
-                                    $sanphamthieu = array_combine($ten, $soluong);
-                                @endphp
-                                @if ($flag == 0)
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#needModal{{ $order->id }}">
-                                        <i class="fa-solid fa-sack-xmark"></i>
-                                    </button>
-                                    <div class="modal fade" id="needModal{{ $order->id }}" tabindex="-1"
-                                        aria-labelledby="needModal{{ $order->id }}Label" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="needModal{{ $order->id }}Label">
-                                                        Thiếu sản phẩm
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    @foreach ($sanphamthieu as $key => $thieu)
-                                                        {{ $key }} x {{ $thieu }} <br>
-                                                    @endforeach
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @php
+                                            $flag = 1;
+                                            $ten = [];
+                                            $soluong = [];
+                                        @endphp
+                                        @foreach ($order->orderdetail as $detail)
+                                            @foreach ($sanpham as $sp)
+                                                @if ($sp->id == $detail->sanpham_id)
+                                                    @if ($sp->soluong < $detail->soluong)
+                                                        @php
+                                                            $flag = 0;
+                                                            $ten[] = $detail->name;
+                                                            $soluong[] = $detail->soluong - $sp->soluong;
+                                                        @endphp
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                        @php
+                                            $sanphamthieu = array_combine($ten, $soluong);
+                                        @endphp
+                                        @if ($flag == 0)
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#needModal{{ $order->id }}">
+                                                <i class="fa-solid fa-sack-xmark"></i>
+                                            </button>
+                                            <div class="modal fade" id="needModal{{ $order->id }}" tabindex="-1"
+                                                aria-labelledby="needModal{{ $order->id }}Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="needModal{{ $order->id }}Label">
+                                                                Thiếu sản phẩm
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @foreach ($sanphamthieu as $key => $thieu)
+                                                                {{ $key }} x {{ $thieu }} <br>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $order->id }}">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        @endif
                                     </div>
-                                @else
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal{{ $order->id }}">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                @endif
-                                <a href="{{ route('cancel.orderinfo',$order->id) }}" class="btn btn-danger">
-                                    <i class="fa-solid fa-ban"></i>
-                                </a>
+                                    <div class="col-md-6">
+                                        <a href="{{ route('cancel.orderinfo', $order->id) }}" class="btn btn-danger">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <!-- Modal -->

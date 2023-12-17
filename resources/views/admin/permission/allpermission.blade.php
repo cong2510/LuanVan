@@ -14,8 +14,6 @@
                 @if (Auth::user()->can('addPermission'))
                     <a class="btn btn-primary" href="{{ route('add.permission') }}" role="button">Thêm quyền</a>&nbsp;
                 @endif
-                <a class="btn btn-success" href="{{ route('import.permission') }}" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="{{ route('export.permission') }}" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -46,26 +44,18 @@
                                                             class="bx bx-edit-alt me-1"></i>
                                                         Edit</a>
                                                 @endif
-                                                @if (Auth::user()->can('deletePermission'))
+                                                {{-- @if (Auth::user()->can('deletePermission'))
                                                     <a class="dropdown-item"
                                                         href="{{ route('delete.permission', $per->id) }}"><i
                                                             class="bx bx-trash me-1"></i>
                                                         Delete</a>
-                                                @endif
+                                                @endif --}}
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Permission name</th>
-                                <th>Group name</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

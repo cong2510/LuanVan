@@ -7,42 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     @include('cdn')
-
-    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Trang cá nhân" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Cài đặt tài khoản" />
 </head>
 
 <body>
-    {{-- {{ dd($orders) }}; --}}
     <br>
+    {{-- {{ dd($orders) }}; --}}
     <div class="container">
-        <h5>Tên: {{ auth()->user()->name }}</h5>
-        <h5></h5>
-        <h5></h5>
-    </div>
-    <div class="container">
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Danh sách yêu
-                    thích</button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thông tin tài
-                    khoản</button>
-                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
-                    type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Lịch sử mua
-                    hàng</button>
+        <div class="row flex-lg-nowrap">
+            <div class="col-2 col-lg-auto mb-3" style="width: auto;">
+                <div class="card p-3">
+                    <div class="e-navlist e-navlist--active-bg">
+                        <ul class="nav d-flex flex-column">
+                            <li class="nav-item"><a class="nav-link text-dark px-2 active" href="{{ route('basicinforuser') }}"><i
+                                        class="fa fa-fw fa-user mr-1"></i><span>Thông tin cá nhân</span></a></li>
+                            <li class="nav-item"><a class="nav-link text-dark px-2" href="{{ route('orderhistoryuser') }}"><i
+                                        class="fa fa-fw fa-receipt mr-1"></i><span>Lịch sử đơn hàng</span></a></li>
+                            <li class="nav-item"><a class="nav-link text-dark px-2" href="{{ route('favoriteuser') }}"><i
+                                        class="fa fa-fw fa-heart mr-1"></i><span>Danh sách yêu thích</span></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <x-user.favorite :favorites="$favorites" :image="$image" />
-            </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                <x-user.basicinfo :address="$address" />
-            </div>
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                <x-user.orderhistory :orders="$orders" :image="$image" :paymentmethod="$paymentmethod" :promos="$promos"
-                    :pending="$pending" :canceled="$canceled" />
+            <div class="col-10">
+                @yield('content')
             </div>
         </div>
     </div>

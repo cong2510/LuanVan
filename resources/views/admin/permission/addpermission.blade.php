@@ -51,6 +51,7 @@
                                     <option value="brand">Thương hiệu</option>
                                     <option value="role&permission">Role & Permission</option>
                                     <option value="user">User</option>
+                                    <option value="promo">Mã khuyến mãi</option>
                                 </select>
                             </div>
                         </div>

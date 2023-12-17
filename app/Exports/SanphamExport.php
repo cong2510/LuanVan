@@ -13,7 +13,7 @@ class SanphamExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return Sanpham::select('name','mota','soluong','gia')->get();
+        return Sanpham::select('name','soluong','gia')->get();
     }
 
     /**
@@ -31,7 +31,6 @@ class SanphamExport implements FromCollection, WithHeadings
             // 'Tinh trang',
 
             'Name',
-            'Mo ta',
             'So luong',
             'Gia',
 

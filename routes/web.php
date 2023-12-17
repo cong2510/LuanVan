@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\PromoController;
+use App\Http\Controllers\Admin\RatingController;
 use App\Http\Middleware\User;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +47,12 @@ Route::prefix('user')->middleware(['user', User::class])->group(function () {
     Route::post('/checkout/method', [OrderController::class,'CheckoutMethod'])->name('checkoutmethod');
     Route::get('/checkout/success-vnpay', [OrderController::class, 'CheckoutSuccessVNPAY'])->name('checkoutsuccessvnpay');
 
-
-    Route::get('/infor', [UserController::class, 'InforUser'])->name('inforuser');
+    Route::get('/infor/basicinfo', [UserController::class, 'BasicInforUser'])->name('basicinforuser');
+    Route::get('/infor/orderhistory', [UserController::class, 'OrderHistoryUser'])->name('orderhistoryuser');
+    Route::post('/infor/orderhistory/rating', [UserController::class, 'RateProduct'])->name('rateproduct');
+    Route::post('/infor/orderhistory/editrating', [UserController::class, 'EditRateProduct'])->name('editrateproduct');
+    Route::post('/infor/orderhistory/deleterating', [UserController::class, 'DeleteRateProduct'])->name('deleterateproduct');
+    Route::get('/infor/favorites', [UserController::class, 'FavoriteUser'])->name('favoriteuser');
     Route::post('/edit', [UserController::class, 'EditUser'])->name('edituser');
     Route::get('/delete-address-{id}', [UserController::class, 'DeleteAddress'])->name('deleteaddress');
     Route::put('/change-password', [UserController::class, 'ChangePassword'])->name('changepassworduser');
@@ -57,7 +62,6 @@ Route::prefix('user')->middleware(['user', User::class])->group(function () {
     Route::post('/delete/promo', [UserController::class, 'DeletePromo'])->name('deletepromo');
     Route::post('/delete/order-user',[UserController::class, 'CancelOrderUser'])->name('cancel.orderuser');
 });
-
 
 
 
@@ -90,7 +94,7 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::post('/store/product', 'StoreProduct')->name('store.product')->middleware('permission:addProduct');
         Route::get('/edit/product/{id}', 'EditProduct')->name('edit.product')->middleware('permission:editProduct');
         Route::post('/update/product/{id}', 'UpdateProduct')->name('update.product')->middleware('permission:editProduct');
-        Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product')->middleware('permission:deleteProduct');
+        // Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product')->middleware('permission:deleteProduct');
         Route::get('/delete/product-image/{id}', 'DeleteProductImage')->name('delete.productimage')->middleware('permission:editProduct');
 
         Route::get('/export/product', 'Export')->name('export.product');
@@ -125,7 +129,7 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::post('/store/permission', 'StorePermission')->name('store.permission')->middleware('permission:addPermission');
         Route::get('/edit/permission/{id}', 'EditPermission')->name('edit.permission')->middleware('permission:editPermission');
         Route::post('/update/permission', 'UpdatePermission')->name('update.permission')->middleware('permission:editPermission');
-        Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission')->middleware('permission:deletePermission');
+        // Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission')->middleware('permission:deletePermission');
 
         Route::get('/import/permission', 'ImportPermission')->name('import.permission');
         Route::get('/export/permission', 'Export')->name('export.permission');
@@ -139,14 +143,14 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
         Route::post('/store/roles', 'StoreRoles')->name('store.roles')->middleware('permission:addRole');
         Route::get('/edit/roles/{id}', 'EditRoles')->name('edit.roles')->middleware('permission:editRole');
         Route::post('/update/roles', 'UpdateRoles')->name('update.roles')->middleware('permission:editRole');
-        Route::get('/delete/roles/{id}', 'DeleteRoles')->name('delete.roles')->middleware('permission:deleteRole');
+        // Route::get('/delete/roles/{id}', 'DeleteRoles')->name('delete.roles')->middleware('permission:deleteRole');
 
         Route::get('/add/roles/permission', 'AddRolesPermission')->name('add.roles.permission')->middleware('permission:addPermissionToRole');
         Route::post('/store/roles/permission', 'StoreRolesPermission')->name('store.roles.permission')->middleware('permission:addPermissionToRole');
         Route::get('/all/roles/permission', 'AllRolesPermission')->name('all.roles.permission')->middleware('permission:allRolePermission');
         Route::get('/admin/edit/roles/{id}', 'AdminEditRoles')->name('admin.edit.roles')->middleware('permission:editRolePermission');
         Route::post('/admin/update/roles/{id}', 'AdminUpdateRoles')->name('admin.update.roles')->middleware('permission:editRolePermission');
-        Route::get('/admin/delete/roles/{id}', 'AdminDeleteRoles')->name('admin.delete.roles')->middleware('permission:deleteRolePermission');
+        // Route::get('/admin/delete/roles/{id}', 'AdminDeleteRoles')->name('admin.delete.roles')->middleware('permission:deleteRolePermission');
 
         Route::get('/all/roles/user', 'AllRolesUser')->name('all.roles.user')->middleware('permission:allUser');
         Route::get('/add/roles/user', 'AddRolesUser')->name('add.roles.user')->middleware('permission:addUserRole');
@@ -166,12 +170,15 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
     //Promo Code
     Route::controller(PromoController::class)->group(function () {
-        Route::get('/all/promo', 'AllPromo')->name('all.promo');
-        Route::get('/add/promo', 'AddPromo')->name('add.promo');
-        Route::post('/store/promo', 'StorePromo')->name('store.promo');
-        Route::get('/delete/promo/{id}', 'DeletePromo')->name('delete.promo');
-        Route::get('/edit/promo/{id}', 'EditPromo')->name('edit.promo');
-        Route::post('/update/promo', 'UpdatePromo')->name('update.promo');
+        Route::get('/all/promo', 'AllPromo')->name('all.promo')->middleware('permission:allPromo');
+        Route::get('/add/promo', 'AddPromo')->name('add.promo')->middleware('permission:addPromo');
+        Route::post('/store/promo', 'StorePromo')->name('store.promo')->middleware('permission:addPromo');
+        Route::get('/edit/promo/{id}', 'EditPromo')->name('edit.promo')->middleware('permission:editPromo');
+        Route::post('/update/promo', 'UpdatePromo')->name('update.promo')->middleware('permission:editPromo');
+    });
+
+    Route::controller(RatingController::class)->group(function () {
+        Route::get('/all/rating', 'AllRating')->name('all.rating');
     });
 });
 

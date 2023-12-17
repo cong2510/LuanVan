@@ -14,8 +14,6 @@
                 @if (Auth::user()->can('addRole'))
                 <a class="btn btn-primary" href="{{ route('add.roles') }}" role="button">Thêm role</a>&nbsp;
                 @endif
-                <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -43,25 +41,18 @@
                                                             class="bx bx-edit-alt me-1"></i>
                                                         Edit</a>
                                                 @endif
-                                                @if (Auth::user()->can('deleteRole'))
+                                                {{-- @if (Auth::user()->can('deleteRole'))
                                                     <a class="dropdown-item"
                                                         href="{{ route('delete.roles', $role->id) }}"><i
                                                             class="bx bx-trash me-1"></i>
                                                         Delete</a>
-                                                @endif
+                                                @endif --}}
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Role name</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

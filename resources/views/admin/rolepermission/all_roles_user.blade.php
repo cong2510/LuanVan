@@ -12,10 +12,8 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 @if (Auth::user()->can('addUserRole'))
-                    <a class="btn btn-primary" href="{{ route('add.roles.user') }}" role="button">Thêm role cho user</a>&nbsp;
+                    {{-- <a class="btn btn-primary" href="{{ route('add.roles.user') }}" role="button">Thêm role cho user</a>&nbsp; --}}
                 @endif
-                <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -62,15 +60,6 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

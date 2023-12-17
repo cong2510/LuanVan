@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     @include('cdn')
+    <link href="{{ asset('template/css/sb-admin-2.css') }}" rel="stylesheet">
     <title>@yield('page_title')</title>
 </head>
 
@@ -16,10 +16,8 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         <ul class="navbar-nav bg-dark sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
                 href="{{ route('admindashboard') }}">
@@ -58,7 +56,6 @@
                     <div id="collapseProducts" class="collapse" aria-labelledby="headingPages"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Products:</h6>
                             @if (Auth::user()->can('allProduct'))
                                 <a class="collapse-item" href="{{ route('all.product') }}">Danh sách sản phẩm</a>
                             @endif
@@ -116,17 +113,33 @@
                 </li>
             @endif
 
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Quản lý mã khuyễn mãi
-            </div>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('all.promo') }}">
-                    <i class="fa-solid fa-ticket-simple"></i>
-                    <span>Quản lý mã khuyễn mãi</span>
-                </a>
-            </li>
+            @if (Auth::user()->hasAnyPermission(['allPromo']))
+                <hr class="sidebar-divider">
+                <div class="sidebar-heading">
+                    Quản lý mã khuyễn mãi
+                </div>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('all.promo') }}">
+                        <i class="fa-solid fa-ticket-simple"></i>
+                        <span>Quản lý mã khuyễn mãi</span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- @if (Auth::user()->hasAnyPermission(['allPromo'])) --}}
+                <hr class="sidebar-divider">
+                <div class="sidebar-heading">
+                    Quản lý đánh giá
+                </div>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('all.rating') }}">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Quản lý đánh giá sản phẩm</span>
+                    </a>
+                </li>
+            {{-- @endif --}}
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -164,37 +177,12 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if (Auth::user())
                                     {{-- <img class="img-profile rounded-circle" src="">&nbsp;&nbsp; --}}
                                     <i class="fa-solid fa-circle-user fa-xl"></i>&nbsp;{{ auth()->user()->name }}
@@ -204,12 +192,12 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('index') }}">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-700"></i>
                                     Về trang chủ
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logoutUser') }}">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-700"></i>
                                     Logout
                                 </a>
                             </div>

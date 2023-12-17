@@ -106,12 +106,6 @@ class PromoController extends Controller
         return redirect()->route('all.promo');
     }
 
-    public function DeletePromo($id)
-    {
-        DB::table('promocode')->where('id', $id)->delete();
-        toastr()->success('','Xóa thành công!', [''=> 100]);
-        return redirect()->route('all.promo');
-    }
 
     public function EditPromo($id)
     {

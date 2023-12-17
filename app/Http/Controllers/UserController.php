@@ -24,42 +24,162 @@ class UserController extends Controller
     // public $apiUrlQ = "https://provinces.open-api.vn/api/d/";
     // public $apiUrlP = "https://provinces.open-api.vn/api/w/";
 
-
-    public function InforUser()
+    public function BasicInforUser()
     {
         $theloai = Theloai::all();
         $role = Role::all();
         $address = Address::all();
         $brand = Brand::all();
 
-        // $responseTP = Http::get($this->apiUrlTP);
-        // $thanhpho = $responseTP->json();
-        // $responseQ = Http::get($this->apiUrlQ);
-        // $quan = $responseQ->json();
-        // $responseP = Http::get($this->apiUrlP);
-        // $phuong = $responseP->json();
+        return view('user.basicinfo', [
+            'theloai' => $theloai,
+            'role' => $role,
+            'address' => $address,
+            'brand' => $brand,
+        ]);
+    }
+
+    public function OrderHistoryUser()
+    {
+        $theloai = Theloai::all();
+        $role = Role::all();
+        $address = Address::all();
+        $brand = Brand::all();
+
+
         $user = Auth::user();
-        $orders = Order::with('orderdetail')->where('user_id', $user->id)->get();
+        $orders = Order::with('orderdetail')->where('user_id', $user->id)->latest()->paginate(2);
         $paymentmethod = PaymentMethod::all();
         $image = DB::table('image')->get();
-        $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->get();
         $promos = PromoCode::all();
 
         $pending = Order::ORDER_STATUS[0];
+        $onway = Order::ORDER_STATUS[1];
+        $done = Order::ORDER_STATUS[2];
         $canceled = Order::ORDER_STATUS[3];
 
-        return view('infor', [
+        return view('user.orderhistory', [
             'theloai' => $theloai,
             'role' => $role,
             'address' => $address,
             'orders' => $orders,
             'image' => $image,
             'paymentmethod' => $paymentmethod,
-            'favorites' => $favorites,
             'brand' => $brand,
             'promos' => $promos,
             'pending' => $pending,
             'canceled' => $canceled,
+            'onway' => $onway,
+            'done' => $done,
+            'user' => $user,
+        ]);
+    }
+
+    public function RateProduct(Request $request)
+    {
+        $request->validate(
+            [
+                'content' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+                'rating' => [
+                    'required',
+                ]
+            ],
+            [
+                'content.required' => "Thiếu đánh giá!",
+                'content.string' => "Đánh giá cần phải là 1 chuỗi",
+                'content.max' => "Đánh giá tối đa 255 ký tự",
+
+                'rating.required' => "Thiếu đánh giá sao!",
+            ]
+        );
+        $user = auth()->user();
+        $sanphamid = $request->sanpham_id;
+        $orderdetailid = $request->orderdetail_id;
+        $rating = $request->rating;
+        $content = $request->content;
+
+        if (!$user->rating()->where('sanpham_id', $sanphamid)->where('orderdetail_id', $orderdetailid)->exists()) {
+
+            DB::table('rating')->insert([
+                'user_id' => $user->id,
+                'sanpham_id' => $sanphamid,
+                'orderdetail_id' => $orderdetailid,
+                'content' => $content,
+                'rating' => $rating,
+            ]);
+
+            return redirect()->back();
+        }
+
+        return redirect()->back()->with('error', 'You have already rated this product for the order detail.');
+    }
+
+    public function EditRateProduct(Request $request)
+    {
+        $request->validate(
+            [
+                'content' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+            ],
+            [
+                'content.required' => "Thiếu đánh giá!",
+                'content.string' => "Đánh giá cần phải là 1 chuỗi",
+                'content.max' => "Đánh giá tối đa 255 ký tự",
+            ]
+        );
+
+        $id = $request->ratingid;
+
+        if ($request->rating) {
+            DB::table('rating')->where('id', $id)->update([
+                'content' => $request->content,
+                'rating' => $request->rating
+            ]);
+        } else {
+            DB::table('rating')->where('id', $id)->update([
+                'content' => $request->content,
+            ]);
+        }
+
+        return redirect()->back();
+    }
+
+    public function DeleteRateProduct(Request $request)
+    {
+        $id = $request->deleteratingid;
+
+        DB::table('rating')->where('id',$id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function FavoriteUser()
+    {
+        $theloai = Theloai::all();
+        $role = Role::all();
+        $address = Address::all();
+        $brand = Brand::all();
+
+        $user = Auth::user();
+        $paymentmethod = PaymentMethod::all();
+        $image = DB::table('image')->get();
+        $favorites = Favorite::with('sanpham')->where('user_id', $user->id)->paginate(5);
+
+        return view('user.favorite', [
+            'theloai' => $theloai,
+            'role' => $role,
+            'address' => $address,
+            'image' => $image,
+            'paymentmethod' => $paymentmethod,
+            'favorites' => $favorites,
+            'brand' => $brand,
         ]);
     }
 
@@ -86,8 +206,8 @@ class UserController extends Controller
             DB::table('users')
                 ->where('id', '=', auth()->user()->id)
                 ->update([
-                    'name' => $request->get('name'),
-                ]);
+                        'name' => $request->get('name'),
+                    ]);
         } else {
             $request->validate(
                 [
@@ -116,17 +236,20 @@ class UserController extends Controller
             DB::table('users')
                 ->where('id', '=', auth()->user()->id)
                 ->update([
-                    'gender' => $request->get('gender'),
-                ]);
+                        'gender' => $request->get('gender'),
+                    ]);
 
         }
 
+        toastr()->success('', "Lưu thành công!", ['timeOut' => 100]);
         return redirect()->back();
     }
 
     public function DeleteAddress($id)
     {
         DB::table('address')->where('id', $id)->delete();
+
+        toastr()->success('', "Xóa thành công!", ['timeOut' => 100]);
         return redirect()->back();
     }
 
@@ -161,8 +284,8 @@ class UserController extends Controller
         DB::table('users')
             ->where('id', '=', $user->id)
             ->update([
-                'password' => Hash::make($request->get('new_password'))
-            ]);
+                    'password' => Hash::make($request->get('new_password'))
+                ]);
 
         // Đăng xuất
         auth()->guest();
@@ -179,10 +302,10 @@ class UserController extends Controller
         $user = Auth::user();
         $favoriteId = DB::table('favorite')
             ->insertGetId(
-                [
-                    'user_id' => $user->id,
-                ]
-            );
+            [
+                'user_id' => $user->id,
+            ]
+        );
 
         DB::table('sanpham_favorite')->insert([
             'sanpham_id' => $request->sanphamid,
@@ -218,12 +341,14 @@ class UserController extends Controller
 
         foreach ($promo_user as $promo_user) {
             foreach ($codes as $code) {
-                if($code->end_date < Carbon::now())
-                {
+                if ($code->max_usage <= 0) {
+                    return redirect()->back()->with('out_code', 'Mã giảm giá đã hết!');
+                }
+                if ($code->end_date < Carbon::now()) {
                     return redirect()->back()->with('expired_code', 'Mã giảm giá đã hết hạn!');
                 }
                 if ($promo_user->promocode_id == $code->id) { {
-                        if ($code->max_usage_per_users == count((array)$promo_user->promocode_id)) {
+                        if ($code->max_usage_per_users == count((array) $promo_user->promocode_id)) {
                             return redirect()->back()->with('cant_apply', 'Tài khoản đã sài mã giảm giá này!');
                         }
                     }

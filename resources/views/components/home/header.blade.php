@@ -84,7 +84,7 @@
                     <ul class="dropdown-menu ulTheloai" aria-labelledby="navbarDropdown">
                         @foreach ($theloai as $loai)
                             <li><a class="dropdown-item" style="color: black !important;"
-                                    href="{{ route('sanphamtheloai',$loai->id) }}">{{ $loai->name }}</a></li>
+                                    href="{{ route('sanphamtheloai', $loai->id) }}">{{ $loai->name }}</a></li>
                         @endforeach
                     </ul>
                 </li>
@@ -96,7 +96,7 @@
                     <ul class="dropdown-menu ulTheloai" aria-labelledby="navbarDropdown">
                         @foreach ($brand as $brand)
                             <li><a class="dropdown-item" style="color: black !important;"
-                                    href="{{ route('sanphambrand',$brand->id) }}">{{ $brand->name }}</a></li>
+                                    href="{{ route('sanphambrand', $brand->id) }}">{{ $brand->name }}</a></li>
                         @endforeach
                     </ul>
                 </li>
@@ -140,20 +140,26 @@
                     @endif
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         @if (Auth::user())
-                            <li><a class="dropdown-item" href="{{ route('inforuser') }}"
-                                    style="color: black !important;">Cài đặt tài
+                            <li><a class="dropdown-item" href="{{ route('basicinforuser') }}"
+                                    style="color: black !important;"><i
+                                    class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-700"></i>Cài đặt tài
                                     khoản</a></li>
                             @if (Auth::user()->hasAnyRole($role))
                                 <li><a class="dropdown-item" href="{{ route('admindashboard') }}"
-                                        style="color: black !important;">Admin</a></li>
+                                        style="color: black !important;"><i
+                                        class="fas fa-briefcase fa-sm fa-fw mr-2 text-gray-700"></i>Admin</a></li>
                             @endif
                             <li><a class="dropdown-item" href="{{ route('logoutUser') }}"
-                                    style="color: black !important;">Đăng xuất</a></li>
+                                    style="color: black !important;"><i
+                                        class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-700"></i>Đăng xuất</a>
+                            </li>
                         @else
                             <li><a class="dropdown-item" href="{{ route('login') }}"
-                                    style="color: black !important;">Đăng nhập</a></li>
+                                    style="color: black !important;"><i
+                                    class="fas fa-sign-in fa-sm fa-fw mr-2 text-gray-700"></i>Đăng nhập</a></li>
                             <li><a class="dropdown-item" href="{{ route('signup') }}"
-                                    style="color: black !important;">Đăng ký</a></li>
+                                    style="color: black !important;"><i
+                                    class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-700"></i>Đăng ký</a></li>
                         @endif
                     </ul>
                 </li>

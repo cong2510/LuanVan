@@ -117,6 +117,12 @@
                         </div>
                         <br>
                     @endif
+                    @if (Session::has('out_code'))
+                        <div class="invalid-feedback d-block" role="alert">
+                            <strong>{{ Session::get('out_code') }}</strong>
+                        </div>
+                        <br>
+                    @endif
                     <form class="card p-2" action="{{ route('applypromo') }}" method="POST">
                         @csrf
                         <div class="input-group">

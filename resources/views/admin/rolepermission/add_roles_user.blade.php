@@ -28,7 +28,7 @@
                         @csrf
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name">User email</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-5">
                                 <select name='user_id' class="form-select" id='exampleFormControlSelect1'>
                                     <option disabled="" selected="">Chọn user</option>
                                     @foreach ($users as $user)

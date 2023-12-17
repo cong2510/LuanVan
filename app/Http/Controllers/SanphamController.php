@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Brand;
 use App\Models\Image;
+use App\Models\Rating;
 use App\Models\Sanpham;
 use App\Models\Theloai;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -187,6 +189,7 @@ class SanphamController extends Controller
     public function DetailSanpham($id)
     {
         $user = Auth::user();
+        Carbon::setLocale('vi');
 
         $sanpham = Sanpham::findOrFail($id);
         $brand = Brand::all();
@@ -201,6 +204,22 @@ class SanphamController extends Controller
         $sanphamfavorite = DB::table('sanpham_favorite')->where('sanpham_id',$id)->get();
         $allfavorite = count($sanphamfavorite);
 
+        // $reviews = DB::table('rating')->where('sanpham_id',$id)->get();
+        $reviews = Rating::query()->where('sanpham_id',$id)->paginate(5);
+        $users = DB::table('users')->get();
+
+        $averageRating = DB::table('rating')
+        ->where('sanpham_id', $id)
+        ->avg('rating');
+
+        // $averageRating =3.25;
+        // dd($averageRating);
+        $theloaisanpham = DB::table('sanpham_theloai')->where('sanpham_id',$id)->value('theloai_id');
+        $similars = Sanpham::whereHas('theloai', function ($query) use ($theloaisanpham) {
+            $query->where('theloai_id',$theloaisanpham);
+        })->take(4)->inRandomOrder()->get();
+
+        $allreviews = Rating::query()->where('sanpham_id',$id)->count();
 
         return view('productdetail', [
             'sanpham' => $sanpham,
@@ -211,6 +230,11 @@ class SanphamController extends Controller
             'brand' => $brand,
             'favorites' => $favorites,
             'allfavorite' => $allfavorite,
+            'reviews' =>$reviews,
+            'users' => $users,
+            'allreviews' => $allreviews,
+            'averageRating' => $averageRating,
+            'similars' => $similars,
         ]);
     }
 

@@ -288,31 +288,31 @@ class AdminSanphamController extends Controller
         return redirect()->route('all.product');
     }
 
-    public function DeleteProduct($id)
-    {
-        $imageProduct = DB::table('image')->where('sanpham_id', $id)->get();
+    // public function DeleteProduct($id)
+    // {
+    //     $imageProduct = DB::table('image')->where('sanpham_id', $id)->get();
 
-        foreach ($imageProduct as $imagePro) {
-            $image_path = public_path('images/Sanpham/' . $imagePro->image);
-            if (File::exists($image_path)) {
-                File::delete($image_path);
-            }
-        }
+    //     foreach ($imageProduct as $imagePro) {
+    //         $image_path = public_path('images/Sanpham/' . $imagePro->image);
+    //         if (File::exists($image_path)) {
+    //             File::delete($image_path);
+    //         }
+    //     }
 
-        Sanpham::findOrfail($id)->delete();
-        DB::table('sanpham_theloai')
-            ->where('sanpham_id', '=', $id)
-            ->delete();
+    //     Sanpham::findOrfail($id)->delete();
+    //     DB::table('sanpham_theloai')
+    //         ->where('sanpham_id', '=', $id)
+    //         ->delete();
 
-        DB::table('image')
-            ->where('sanpham_id', '=', $id)
-            ->delete();
+    //     DB::table('image')
+    //         ->where('sanpham_id', '=', $id)
+    //         ->delete();
 
 
 
-        toastr()->success('', 'Xóa thành công');
-        return redirect()->back();
-    }
+    //     toastr()->success('', 'Xóa thành công');
+    //     return redirect()->back();
+    // }
 
     public function DeleteProductImage($id)
     {

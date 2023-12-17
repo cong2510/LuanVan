@@ -54,4 +54,12 @@ class Sanpham extends Model
     {
         return $this->belongsToMany(Favorite::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function rating() : HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

@@ -4,10 +4,8 @@
 <script src="{{ asset('template/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('template/js/sb-admin-2.min.js') }}"></script>
 <script src="https://kit.fontawesome.com/ee39434323.js" crossorigin="anonymous"></script>
-<script src="{{ asset('template/js/sb-admin-2.min.js') }}">
-    < /scrip> <
-    script src = "{{ asset('template/vendor/chart.js/Chart.min.js') }}" >
-</script>
+<script src="{{ asset('template/js/sb-admin-2.min.js') }}"></scrip>
+<script src = "{{ asset('template/vendor/chart.js/Chart.min.js') }}"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
 </script>
@@ -15,18 +13,18 @@
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 
 {{-- Swiper --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-element-bundle.min.js"></script>
+
 
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 

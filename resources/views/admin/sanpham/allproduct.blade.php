@@ -12,7 +12,6 @@
                 @if (Auth::user()->can('addProduct'))
                     <a class="btn btn-primary" href="{{ route('add.product') }}" role="button">Thêm sản phẩm</a>&nbsp;
                 @endif
-                <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
                 <a class="btn btn-danger" href="{{ route('export.product') }}" role="button">Export</a>
             </div>
             <div class="card-body">
@@ -47,7 +46,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <textarea readonly autofocus form style="border: 0">{{ $sanpham->mota }}</textarea>
+                                    <textarea readonly autofocus form style="border: 0" class="no-resize" cols="20" rows="4">{{ $sanpham->mota }}</textarea>
                                 </td>
                                 <td>
                                     @foreach ($sanpham->theloai as $theloai)
@@ -76,32 +75,18 @@
                                                         class="bx bx-edit-alt me-1"></i>
                                                     Edit</a>
                                             @endif
-                                            @if (Auth::user()->can('deleteProduct'))
+                                            {{-- @if (Auth::user()->can('deleteProduct'))
                                                 <a class="dropdown-item"
                                                     href="{{ route('delete.product', $sanpham->id) }}"><i
                                                         class="bx bx-trash me-1"></i>
                                                     Delete</a>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>SL</th>
-                            <th>Name</th>
-                            <th>Hình</th>
-                            <th>Mô tả</th>
-                            <th>Thể loại</th>
-                            <th>Thương hiệu</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
-                            <th>Tình trạng</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

@@ -14,8 +14,6 @@
                 @if (Auth::user()->can('addPermissionToRole'))
                     <a class="btn btn-primary" href="{{ route('add.roles.permission') }}" role="button">Phân quyền cho role</a>&nbsp;
                 @endif
-                <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -60,14 +58,6 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Role</th>
-                                <th>Permission</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

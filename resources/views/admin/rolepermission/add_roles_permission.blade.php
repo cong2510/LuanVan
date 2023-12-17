@@ -52,7 +52,7 @@
                                         {{-- <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault"> --}}
                                         <label class="form-check-label" for="flexCheckDefault">
-                                            {{ $group->group_name }}
+                                            {{ Str::ucfirst($group->group_name) }}
                                         </label>
                                     </div>
                                 </div>

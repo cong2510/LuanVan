@@ -11,7 +11,7 @@
                         Thanh Ngân
                     </a>
                     <p class="mt-1 text-white">
-                        © 2023 Copyright: MDBootstrap.com
+
                     </p>
                 </div>
                 <!-- Grid column -->
@@ -87,10 +87,17 @@
             <div class="d-flex justify-content-between py-4 border-top">
                 <!--- payment --->
                 <div>
-                    <i class="fab fa-lg fa-cc-visa text-white"></i>
-                    <i class="fab fa-lg fa-cc-amex text-white"></i>
-                    <i class="fab fa-lg fa-cc-mastercard text-white"></i>
-                    <i class="fab fa-lg fa-cc-paypal text-white"></i>
+                    <a href="#" style="text-decoration: none;color: white">
+                        <i class="fa-brands fa-square-facebook fa-xl"></i>
+                    </a>
+                    &nbsp;&nbsp;
+                    <a href="#" style="text-decoration: none;color: white">
+                        <i class="fa-brands fa-tiktok fa-l"></i>
+                    </a>
+                    &nbsp;&nbsp;
+                    <a href="#" style="text-decoration: none;color: white">
+                        <i class="fa-brands fa-x-twitter fa-xl"></i>
+                    </a>
                 </div>
                 <!--- payment --->
             </div>

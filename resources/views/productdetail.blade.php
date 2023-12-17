@@ -17,6 +17,43 @@
         .icon-hover:hover i {
             color: #3b71ca !important;
         }
+
+        ul,
+        ul li {
+            list-style: none;
+            margin: 0px;
+        }
+
+        .glyphicon {
+            margin-right: 5px;
+        }
+
+        .rating .glyphicon {
+            font-size: 22px;
+        }
+
+        .rating-num {
+            margin-top: 0px;
+            font-size: 54px;
+        }
+
+        .progress {
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            text-align: left;
+        }
+
+        .rating-desc .col-md-3 {
+            padding-right: 0px;
+        }
+
+        .sr-only {
+            margin-left: 5px;
+            overflow: visible;
+            clip: auto;
+        }
     </style>
 </head>
 
@@ -72,7 +109,7 @@
                         </div>
 
                         <p>
-                            {{ $sanpham->mota }}
+                            {!! nl2br($sanpham->mota) !!}
                         </p>
 
                         <div class="row">
@@ -184,195 +221,237 @@
     <section class="bg-light border-top py-4">
         <div class="container">
             <div class="row gx-4">
-                <div class="col-lg-8 mb-4">
-                    <div class="border rounded-2 px-3 py-2 bg-white">
-                        <!-- Pills navs -->
-                        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-                            <li class="nav-item d-flex" role="presentation">
-                                <a class="nav-link d-flex align-items-center justify-content-center w-100 active"
-                                    id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab"
-                                    aria-controls="ex1-pills-1" aria-selected="true">Specification</a>
-                            </li>
-                            <li class="nav-item d-flex" role="presentation">
-                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
-                                    id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab"
-                                    aria-controls="ex1-pills-2" aria-selected="false">Warranty info</a>
-                            </li>
-                            <li class="nav-item d-flex" role="presentation">
-                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
-                                    id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
-                                    aria-controls="ex1-pills-3" aria-selected="false">Shipping info</a>
-                            </li>
-                            <li class="nav-item d-flex" role="presentation">
-                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
-                                    id="ex1-tab-4" data-mdb-toggle="pill" href="#ex1-pills-4" role="tab"
-                                    aria-controls="ex1-pills-4" aria-selected="false">Seller profile</a>
-                            </li>
-                        </ul>
-                        <!-- Pills navs -->
-
-                        <!-- Pills content -->
-                        <div class="tab-content" id="ex1-content">
-                            <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel"
-                                aria-labelledby="ex1-tab-1">
-                                <p>
-                                    With supporting text below as a natural lead-in to additional content. Lorem ipsum
-                                    dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                    labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla
-                                    pariatur.
-                                </p>
-                                <div class="row mb-2">
-                                    <div class="col-12 col-md-6">
-                                        <ul class="list-unstyled mb-0">
-                                            <li><i class="fas fa-check text-success me-2"></i>Some great feature name
-                                                here</li>
-                                            <li><i class="fas fa-check text-success me-2"></i>Lorem ipsum dolor sit
-                                                amet, consectetur</li>
-                                            <li><i class="fas fa-check text-success me-2"></i>Duis aute irure dolor in
-                                                reprehenderit</li>
-                                            <li><i class="fas fa-check text-success me-2"></i>Optical heart sensor</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-12 col-md-6 mb-0">
-                                        <ul class="list-unstyled">
-                                            <li><i class="fas fa-check text-success me-2"></i>Easy fast and ver good
-                                            </li>
-                                            <li><i class="fas fa-check text-success me-2"></i>Some great feature name
-                                                here</li>
-                                            <li><i class="fas fa-check text-success me-2"></i>Modern style and design
-                                            </li>
-                                        </ul>
-                                    </div>
+                <div class="col-lg-8 card">
+                    <div id="reviews" class="review-section">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <h1 class="rating-num">
+                                    {{ number_format($averageRating, 1) }}</h1>
+                                <div class="rating-reviews">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $averageRating)
+                                            <span class="fa fa-star" style="color: #fbff00;"></span>
+                                        @elseif ($i - 0.5 == $averageRating)
+                                            <span class="fa fa-star-half" style="color: #fbff00;"></span>
+                                        @endif
+                                    @endfor
                                 </div>
-                                <table class="table border mt-3 mb-2">
-                                    <tr>
-                                        <th class="py-2">Display:</th>
-                                        <td class="py-2">13.3-inch LED-backlit display with IPS</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="py-2">Processor capacity:</th>
-                                        <td class="py-2">2.3GHz dual-core Intel Core i5</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="py-2">Camera quality:</th>
-                                        <td class="py-2">720p FaceTime HD camera</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="py-2">Memory</th>
-                                        <td class="py-2">8 GB RAM or 16 GB RAM</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="py-2">Graphics</th>
-                                        <td class="py-2">Intel Iris Plus Graphics 640</td>
-                                    </tr>
-                                </table>
+                                <div>
+                                    <span class="glyphicon glyphicon-user"></span>{{ $allreviews }} lượt đánh giá
+                                </div>
                             </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-2" role="tabpanel"
-                                aria-labelledby="ex1-tab-2">
-                                Tab content or sample information now <br />
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui
-                                officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel"
-                                aria-labelledby="ex1-tab-3">
-                                Another tab content or sample information now <br />
-                                Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea
-                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                culpa qui officia deserunt
-                                mollit anim id est laborum.
-                            </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-4" role="tabpanel"
-                                aria-labelledby="ex1-tab-4">
-                                Some other tab content or sample information now <br />
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui
-                                officia deserunt mollit anim id est laborum.
-                            </div>
+                            {{-- <div class="col-xs-12 col-md-6">
+                            </div> --}}
                         </div>
-                        <!-- Pills content -->
+                    </div>
+
+                    <div class="review-list">
+                        <ul>
+                            @foreach ($reviews as $review)
+                                @foreach ($users as $user)
+                                    @if ($review->user_id == $user->id)
+                                        <li>
+                                            <div class="d-flex">
+                                                <div class="left">
+                                                    <span>
+                                                        <img src="{{ asset('images/user.png') }}"
+                                                            class="profile-pict-img img-fluid" alt="" />
+                                                    </span>
+                                                </div>
+                                                <div class="right">
+                                                    <h4>
+                                                        {{ $user->name }}
+                                                        <span class="gig-rating text-body-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 1792 1792" width="15"
+                                                                height="15">
+                                                                <path fill="currentColor"
+                                                                    d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z">
+                                                                </path>
+                                                            </svg>
+                                                            {{ $review->rating }}
+                                                        </span>
+                                                    </h4>
+                                                    <div class="review-description">
+                                                        <p>{{ $review->content }}</p>
+                                                        <br>
+                                                    </div>
+                                                    @if (Auth::user())
+                                                        @if (auth()->user()->id == $review->user_id)
+                                                            <div>
+                                                                <a style="font-size: 13px;color:grey;text-decoration: underline">
+                                                                    Chỉnh sửa
+                                                                </a>
+                                                                &nbsp;
+                                                                <a data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteModal"
+                                                                    style="font-size: 13px;color:grey;text-decoration: underline">
+                                                                    Xóa
+                                                                </a>
+                                                                <br>
+                                                                <hr>
+                                                                <form action="{{ route('editrateproduct') }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="ratingid"
+                                                                        value="{{ $review->id }}">
+                                                                    <input type="hidden" name="userid"
+                                                                        value="{{ $review->user_id }}">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            @error('content')
+                                                                                <div class="invalid-feedback d-block"
+                                                                                    role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </div>
+                                                                            @enderror
+                                                                            <textarea class="form-control no-resize" rows="4" placeholder="Chỉnh sửa đánh giá..." maxlength="255"
+                                                                                name="content"></textarea>
+                                                                        </div>
+                                                                        @error('rating')
+                                                                            <div class="invalid-feedback d-block"
+                                                                                role="alert">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </div>
+                                                                        @enderror
+                                                                        <div class="form-group-row ">
+                                                                            <div class="rating"
+                                                                                style="font-size: 25px !important">
+                                                                                <input
+                                                                                    id="rate5star{{ $review->id }}"
+                                                                                    name="rating" type="radio"
+                                                                                    value="5"
+                                                                                    class="radio-btn starhide" />
+                                                                                <label
+                                                                                    for="rate5star{{ $review->id }}">☆</label>
+                                                                                <input
+                                                                                    id="rate4star{{ $review->id }}"
+                                                                                    name="rating" type="radio"
+                                                                                    value="4"
+                                                                                    class="radio-btn starhide" />
+                                                                                <label
+                                                                                    for="rate4star{{ $review->id }}">☆</label>
+                                                                                <input
+                                                                                    id="rate3star{{ $review->id }}"
+                                                                                    name="rating" type="radio"
+                                                                                    value="3"
+                                                                                    class="radio-btn starhide" />
+                                                                                <label
+                                                                                    for="rate3star{{ $review->id }}">☆</label>
+                                                                                <input
+                                                                                    id="rate2star{{ $review->id }}"
+                                                                                    name="rating" type="radio"
+                                                                                    value="2"
+                                                                                    class="radio-btn starhide" />
+                                                                                <label
+                                                                                    for="rate2star{{ $review->id }}">☆</label>
+                                                                                <input
+                                                                                    id="rate1star{{ $review->id }}"
+                                                                                    name="rating" type="radio"
+                                                                                    value="1"
+                                                                                    class="radio-btn starhide" />
+                                                                                <label
+                                                                                    for="rate1star{{ $review->id }}">☆</label>
+                                                                                <div class="clear"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br><br>
+                                                                        <div class="col-12">
+                                                                            <button class="btn btn-primary"
+                                                                                type="submit">Chỉnh sửa</button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <hr>
+                                                                </form>
+                                                                <div class="modal fade" id="deleteModal"
+                                                                    tabindex="-1" aria-labelledby="deleteModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="deleteModalLabel">Xác nhận xóa
+                                                                                </h5>
+                                                                                <button type="button"
+                                                                                    class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                Xóa đánh giá này
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-bs-dismiss="modal">Hủy</button>
+                                                                                <form
+                                                                                    action="{{ route('deleterateproduct') }}"
+                                                                                    method="post">
+                                                                                    @csrf
+                                                                                    <input type="hidden"
+                                                                                        name="deleteratingid"
+                                                                                        value="{{ $review->id }}">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-danger"
+                                                                                        id="confirmDelete">
+                                                                                        Xóa
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endif
+                                                    <span class="publish py-3 d-inline-block w-100">
+                                                        Đăng {{ $review->created_at->diffForHumans() }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        </ul>
+                        {{ $reviews->links() }}
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="px-0 border rounded-2 shadow-0">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Similar items</h5>
-                                <div class="d-flex mb-3">
-                                    <a href="#" class="me-3">
-                                        <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/8.webp"
-                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                <h5 class="card-title">Sản phẩm tương tự</h5>
+                                <hr>
+                                @foreach ($similars as $similar)
+                                    <div class="d-flex mb-3">
+                                        <a href="{{ route('detailsanpham', $similar->id) }}" class="me-3">
+                                            @foreach ($image as $hinh)
+                                                @if ($hinh->sanpham_id == $similar->id)
+                                                    <img style="min-width: 96px; height: 96px;"
+                                                        class="img-md img-thumbnail"
+                                                        src="{{ asset('images/Sanpham/' . $hinh->image) }}" />
+                                                @break
+                                            @endif
+                                        @endforeach
                                     </a>
                                     <div class="info">
-                                        <a href="#" class="nav-link mb-1">
-                                            Rucksack Backpack Large <br />
-                                            Line Mounts
-                                        </a>
-                                        <strong class="text-dark"> $38.90</strong>
+                                        <a href="{{ route('detailsanpham', $similar->id) }}" class="sanphamName"
+                                            style="font-size: 16px">{{ $similar->name }}</a><br>
+                                        <strong
+                                            class="text-danger">{{ number_format($similar->gia, 0, ',', '.') }}
+                                            đ</strong>
                                     </div>
                                 </div>
-
-                                <div class="d-flex mb-3">
-                                    <a href="#" class="me-3">
-                                        <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/9.webp"
-                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
-                                    </a>
-                                    <div class="info">
-                                        <a href="#" class="nav-link mb-1">
-                                            Summer New Men's Denim <br />
-                                            Jeans Shorts
-                                        </a>
-                                        <strong class="text-dark"> $29.50</strong>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex mb-3">
-                                    <a href="#" class="me-3">
-                                        <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/10.webp"
-                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
-                                    </a>
-                                    <div class="info">
-                                        <a href="#" class="nav-link mb-1"> T-shirts with multiple colors, for
-                                            men and lady </a>
-                                        <strong class="text-dark"> $120.00</strong>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex">
-                                    <a href="#" class="me-3">
-                                        <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/11.webp"
-                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
-                                    </a>
-                                    <div class="info">
-                                        <a href="#" class="nav-link mb-1"> Blazer Suit Dress Jacket for Men,
-                                            Blue color </a>
-                                        <strong class="text-dark"> $339.90</strong>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -396,6 +475,12 @@
         thumbs: {
             swiper: swiper,
         },
+    });
+
+
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.hide();
     });
 </script>
 <x-home.footer />

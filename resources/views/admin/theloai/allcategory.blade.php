@@ -14,8 +14,6 @@
                 @if (Auth::user()->can('addCategory'))
                     <a class="btn btn-primary" href="{{ route('add.category') }}" role="button">Thêm thể loại</a>&nbsp;
                 @endif
-                <a class="btn btn-success" href="" role="button">Import</a>&nbsp;
-                <a class="btn btn-danger" href="" role="button">Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -55,13 +53,6 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>SL</th>
-                                <th>Category name</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
