@@ -43,18 +43,12 @@
                                     <td>{{ date('d-m-Y', strtotime($promo->end_date)) }}</td>
                                     <td>{{ $promo->promo_status }}</td>
                                     <td>
-                                        <div class="dropdown text-center">
-                                            <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
-                                                    class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
-                                                        style="color: #000000;"></i></i></button>
-                                            <div class="dropdown-menu">
-                                                @if (Auth::user()->can('editPromo'))
-                                                    <a class="dropdown-item" href="{{ route('edit.promo', $promo->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i>
-                                                        Edit</a>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        @if (Auth::user()->can('editPromo'))
+                                            <a href="{{ route('edit.promo', $promo->id) }}">
+                                                <button class="btn btn-info">
+                                                    Sửa</button>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

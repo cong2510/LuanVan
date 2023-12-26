@@ -57,13 +57,13 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             @if (Auth::user()->can('allProduct'))
-                                <a class="collapse-item" href="{{ route('all.product') }}">Danh sách sản phẩm</a>
+                                <a class="collapse-item" href="{{ route('all.product') }}">Quản lý sản phẩm</a>
                             @endif
                             @if (Auth::user()->can('allCategory'))
-                                <a class="collapse-item" href="{{ route('all.category') }}">Danh sách thể loại</a>
+                                <a class="collapse-item" href="{{ route('all.category') }}">Quản lý thể loại</a>
                             @endif
                             @if (Auth::user()->can('allBrand'))
-                                <a class="collapse-item" href="{{ route('all.brand') }}">Danh sách thương hiệu</a>
+                                <a class="collapse-item" href="{{ route('all.brand') }}">Quản lý thương hiệu</a>
                             @endif
                         </div>
                     </div>
@@ -85,11 +85,7 @@
                                 <a class="collapse-item" href="{{ route('all.permission') }}">Quản lý quyền</a>
                             @endif
                             @if (Auth::user()->can('allRole'))
-                                <a class="collapse-item" href="{{ route('all.roles') }}">Quản lý vai trò</a>
-                            @endif
-                            @if (Auth::user()->can('allRolePermission'))
-                                <a class="collapse-item" href="{{ route('all.roles.permission') }}">Danh sách vai trò có
-                                    quyền</a>
+                                <a class="collapse-item" href="{{ route('all.roles.permission') }}">Quản lý vai trò</a>
                             @endif
                             @if (Auth::user()->can('allUser'))
                                 <a class="collapse-item" href="{{ route('all.roles.user') }}">Quản lý tài khoản</a>

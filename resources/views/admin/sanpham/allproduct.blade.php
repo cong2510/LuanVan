@@ -12,7 +12,7 @@
                 @if (Auth::user()->can('addProduct'))
                     <a class="btn btn-primary" href="{{ route('add.product') }}" role="button">Thêm sản phẩm</a>&nbsp;
                 @endif
-                <a class="btn btn-danger" href="{{ route('export.product') }}" role="button">Export</a>
+                {{-- <a class="btn btn-danger" href="{{ route('export.product') }}" role="button">Export</a> --}}
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -64,25 +64,17 @@
                                 <td>{{ number_format($sanpham->gia, 0, ',', '.') }}đ</td>
                                 <td>{{ $sanpham->tinhtrang }}</td>
                                 <td>
-                                    <div class="dropdown text-center">
-                                        <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
-                                                class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
-                                                    style="color: #000000;"></i></i></button>
-                                        <div class="dropdown-menu">
-                                            @if (Auth::user()->can('editProduct'))
-                                                <a class="dropdown-item"
-                                                    href="{{ route('edit.product', $sanpham->id) }}"><i
-                                                        class="bx bx-edit-alt me-1"></i>
-                                                    Edit</a>
-                                            @endif
-                                            {{-- @if (Auth::user()->can('deleteProduct'))
+                                    @if (Auth::user()->can('editProduct'))
+                                        <a class="btn btn-info" href="{{ route('edit.product', $sanpham->id) }}"><i
+                                                class="bx bx-edit-alt me-1"></i>
+                                            Sửa</a>
+                                    @endif
+                                    {{-- @if (Auth::user()->can('deleteProduct'))
                                                 <a class="dropdown-item"
                                                     href="{{ route('delete.product', $sanpham->id) }}"><i
                                                         class="bx bx-trash me-1"></i>
                                                     Delete</a>
                                             @endif --}}
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         @endforeach

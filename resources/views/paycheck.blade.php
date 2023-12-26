@@ -44,6 +44,7 @@
                         @if (Session::has('cart') && !empty(session('cart')))
                             @php
                                 $tong = 0;
+                                $tong = $tong + 15000;
                             @endphp
                             @foreach ((array) session('cart') as $id => $details)
                                 <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -57,7 +58,12 @@
                                     $tong += $details['gia'] * $details['soluong'];
                                 @endphp
                             @endforeach
-
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <div>
+                                    <h6 class="my-0">Phí vận chuyển</h6>
+                                </div>
+                                <span class="text-muted">{{ number_format(15000, 0, ',', '.') }} đ</span>
+                            </li>
                             @if (Session::has('promocode') && !empty(session('promocode')))
                                 @foreach ((array) session('promocode') as $id => $codes)
                                     <li class="list-group-item d-flex justify-content-between bg-light">
@@ -226,7 +232,7 @@
 
                         <hr class="my-4">
 
-                        <h4 class="mb-3">Phương thức thanh toán</h4>
+                        <h5 class="mb-3">Phương thức thanh toán</h5>
 
                         <div class="my-3" id="payment">
                             <div class="form-check">
@@ -244,7 +250,19 @@
                                 <label class="form-check-label" for="paypal">PayPal</label>
                             </div> --}}
                         </div>
-
+                        <br>
+                        <h5 class="mb-3">Phương thức vận chuyển</h5>
+                        <div class="my-3">
+                            <div class="form-check">
+                                <input id="ship" name="ship" type="radio" class="form-check-input"
+                                    checked>
+                                <label class="form-check-label" for="credit">Giao hàng tiêu chuẩn</label>
+                            </div>
+                            {{-- <div class="form-check">
+                                <input id="paypal" name="paymentMethod" type="radio" class="form-check-input">
+                                <label class="form-check-label" for="paypal">PayPal</label>
+                            </div> --}}
+                        </div>
                         <hr class="my-4">
 
                         <button name="redirect" class="w-100 btn btn-primary btn-lg" type="submit">Thanh
@@ -405,6 +423,7 @@
             $(this).valid();
         });
     });
+
 </script>
 <x-home.footer />
 

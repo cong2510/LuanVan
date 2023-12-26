@@ -24,10 +24,10 @@ class SanphamController extends Controller
         $image = Image::all();
         $brand = Brand::all();
 
-        $loaithubong ="1";
-        $thubong = Sanpham::whereHas('theloai', function ($query) use ($loaithubong) {
-            $query->where('theloai_id', $loaithubong);
-        })->take(8)->get();
+        $loaidochoi = DB::table('theloai')->where('id',3)->value('id');
+        $dochoitheloai = Sanpham::whereHas('theloai', function ($query) use ($loaidochoi) {
+            $query->where('theloai_id', $loaidochoi);
+        })->get();
 
         $favorites = DB::table('sanpham_favorite')
         ->select('sanpham_id', DB::raw('COUNT(*) as count'))
@@ -35,7 +35,6 @@ class SanphamController extends Controller
         ->orderBy('count', 'desc') // Order by the count in descending order
         ->get();
 
-        // dd($favorites);
 
         return view('index', [
             'sanphams' => $sanphams,
@@ -43,7 +42,9 @@ class SanphamController extends Controller
             'role' => $role,
             'brand' => $brand,
             'image' => $image,
-            'thubong' => $thubong,
+            'dochoitheloai' => $dochoitheloai,
+            'favorites' => $favorites,
+            'loaidochoi' => $loaidochoi
         ]);
     }
 

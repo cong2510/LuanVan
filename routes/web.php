@@ -138,7 +138,6 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
     //Role
     Route::controller(RoleController::class)->group(function () {
-        Route::get('/all/roles', 'AllRoles')->name('all.roles')->middleware('permission:allRole');
         Route::get('/add/roles', 'AddRoles')->name('add.roles')->middleware('permission:addRole');
         Route::post('/store/roles', 'StoreRoles')->name('store.roles')->middleware('permission:addRole');
         Route::get('/edit/roles/{id}', 'EditRoles')->name('edit.roles')->middleware('permission:editRole');
@@ -147,7 +146,7 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
         Route::get('/add/roles/permission', 'AddRolesPermission')->name('add.roles.permission')->middleware('permission:addPermissionToRole');
         Route::post('/store/roles/permission', 'StoreRolesPermission')->name('store.roles.permission')->middleware('permission:addPermissionToRole');
-        Route::get('/all/roles/permission', 'AllRolesPermission')->name('all.roles.permission')->middleware('permission:allRolePermission');
+        Route::get('/all/roles/permission', 'AllRolesPermission')->name('all.roles.permission')->middleware('permission:allRole');
         Route::get('/admin/edit/roles/{id}', 'AdminEditRoles')->name('admin.edit.roles')->middleware('permission:editRolePermission');
         Route::post('/admin/update/roles/{id}', 'AdminUpdateRoles')->name('admin.update.roles')->middleware('permission:editRolePermission');
         // Route::get('/admin/delete/roles/{id}', 'AdminDeleteRoles')->name('admin.delete.roles')->middleware('permission:deleteRolePermission');
@@ -179,6 +178,7 @@ Route::prefix('admin')->middleware(['adminlogin', Admin::class])->group(function
 
     Route::controller(RatingController::class)->group(function () {
         Route::get('/all/rating', 'AllRating')->name('all.rating');
+        Route::post('/delete/rating', 'DeleteRating')->name('delete.rating');
     });
 });
 

@@ -59,7 +59,7 @@
 
 <body>
     <br>
-    <section class="py-5">
+    <section class="py-5" style="">
         <div class="container">
             <div class="row gx-5">
                 <aside class="col-lg-6">
@@ -279,9 +279,9 @@
                                                     @if (Auth::user())
                                                         @if (auth()->user()->id == $review->user_id)
                                                             <div>
-                                                                <a style="font-size: 13px;color:grey;text-decoration: underline">
+                                                                {{-- <a style="font-size: 13px;color:grey;text-decoration: underline">
                                                                     Chỉnh sửa
-                                                                </a>
+                                                                </a> --}}
                                                                 &nbsp;
                                                                 <a data-bs-toggle="modal"
                                                                     data-bs-target="#deleteModal"

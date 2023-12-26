@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('cdn')
-    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Product" />
+    <x-home.header :theloai="$theloai" :role="$role" :brand="$brand" title="Danh sách sản phẩm" />
     <style>
         img:hover {
             transform: scale(1.008);

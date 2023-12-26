@@ -30,13 +30,13 @@
                 {{-- <span class="me-3"><i class="fa-solid fa-phone me-1 text-dark"></i>
                     <strong>09-355-300-85</strong></span> --}}
             </div>
-            <div
+            {{-- <div
                 class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-none d-lg-block d-md-block-d-sm-block d-xs-none text-end">
                 <span class="me-3"><i class="fa-solid fa-truck text-muted me-1"></i><a class="text-muted"
                         href="#">Shipping</a></span>
                 <span class="me-3"><i class="fa-solid fa-file  text-muted me-2"></i><a class="text-muted"
                         href="#">Policy</a></span>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

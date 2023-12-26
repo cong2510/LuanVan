@@ -120,32 +120,38 @@ class UserController extends Controller
 
     public function EditRateProduct(Request $request)
     {
-        $request->validate(
-            [
-                'content' => [
-                    'required',
-                    'string',
-                    'max:255'
-                ],
-            ],
-            [
-                'content.required' => "Thiếu đánh giá!",
-                'content.string' => "Đánh giá cần phải là 1 chuỗi",
-                'content.max' => "Đánh giá tối đa 255 ký tự",
-            ]
-        );
-
         $id = $request->ratingid;
+        if ($request->content) {
+            $request->validate(
+                [
+                    'content' => [
+                        'string',
+                        'max:255'
+                    ],
+                ],
+                [
+                    'content.string' => "Đánh giá cần phải là 1 chuỗi",
+                    'content.max' => "Đánh giá tối đa 255 ký tự",
+                ]
+            );
 
-        if ($request->rating) {
-            DB::table('rating')->where('id', $id)->update([
-                'content' => $request->content,
-                'rating' => $request->rating
-            ]);
-        } else {
-            DB::table('rating')->where('id', $id)->update([
-                'content' => $request->content,
-            ]);
+            if ($request->rating) {
+                DB::table('rating')->where('id', $id)->update([
+                    'content' => $request->content,
+                    'rating' => $request->rating
+                ]);
+            } else {
+                DB::table('rating')->where('id', $id)->update([
+                    'content' => $request->content,
+                ]);
+            }
+        }else{
+            if ($request->rating)
+            {
+                DB::table('rating')->where('id', $id)->update([
+                    'rating' => $request->rating
+                ]);
+            }
         }
 
         return redirect()->back();
@@ -155,7 +161,7 @@ class UserController extends Controller
     {
         $id = $request->deleteratingid;
 
-        DB::table('rating')->where('id',$id)->delete();
+        DB::table('rating')->where('id', $id)->delete();
 
         return redirect()->back();
     }

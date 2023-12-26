@@ -222,7 +222,7 @@ class AuthContoller extends Controller
             // $user->save();
 
             toastr()->success('Chào mừng!', "Xác thực email thành công!", ['timeOut' => 1000]);
-            return redirect(route('login'));
+            return redirect(route('index'));
         } else {
             abort(404);
         }

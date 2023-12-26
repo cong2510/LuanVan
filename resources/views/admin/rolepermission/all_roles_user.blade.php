@@ -38,24 +38,16 @@
                                             <span class="badge bg-danger">{{ $roleuser->name }}</span>
                                         @endforeach
                                     </td>
-                                    <td>
-                                        <div class="dropdown text-center">
-                                            <button type="button" class="btn p-0 " data-bs-toggle="dropdown"><i
-                                                    class="bx bx-dots-vertical-rounded"><i class="fa-solid fa-gear"
-                                                        style="color: #000000;"></i></i></button>
-                                            <div class="dropdown-menu">
-                                                @if (Auth::user()->can('editUserRole'))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.edit.user', $user->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i>
-                                                        Edit</a>
-                                                @endif
-                                                {{-- <a class="dropdown-item"
+                                    <td class="text-center">
+                                        @if (Auth::user()->can('editUserRole'))
+                                            <a href="{{ route('admin.edit.user', $user->id) }}" class="btn btn-info">
+                                                    Sửa
+                                            </a>
+                                        @endif
+                                        {{-- <a class="dropdown-item"
                                                     href="{{ route('admin.delete.roles', $role->id) }}"><i
                                                         class="bx bx-trash me-1"></i>
                                                     Delete</a> --}}
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
