@@ -21,6 +21,7 @@ class Sanpham extends Model
         'brand_id',
     ];
 
+
     /**
      * @return BelongsToMany
      */

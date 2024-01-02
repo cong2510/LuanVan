@@ -62,7 +62,13 @@
                                 </td>
                                 <td>{{ $sanpham->soluong }}</td>
                                 <td>{{ number_format($sanpham->gia, 0, ',', '.') }}đ</td>
-                                <td>{{ $sanpham->tinhtrang }}</td>
+                                <td>
+                                    @if ($sanpham->tinhtrang == 0)
+                                        <p>Hết hàng</p>
+                                    @else
+                                        <p>Còn hàng</p>
+                                    @endif
+                                </td>
                                 <td>
                                     @if (Auth::user()->can('editProduct'))
                                         <a class="btn btn-info" href="{{ route('edit.product', $sanpham->id) }}"><i
