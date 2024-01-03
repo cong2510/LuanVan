@@ -76,10 +76,10 @@ class AuthContoller extends Controller
         if ($userExist) {
             if ($userGoogleExist) {
                 Auth::loginUsingId($userExist->id);
-                toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 1000]);
+                toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 100]);
                 return redirect(route('index'));
             } else {
-                toastr()->warning('Đã tồn tại tài khoản!', "", ['timeOut' => 1000]);
+                toastr()->warning('Đã tồn tại tài khoản!', "", ['timeOut' => 100]);
                 return redirect(route('login'));
             }
         } else {
@@ -95,7 +95,7 @@ class AuthContoller extends Controller
                 );
 
             Auth::loginUsingId($user);
-            toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 1000]);
+            toastr()->success('Chào mừng!', "Thanh Ngan Shop", ['timeOut' => 100]);
             return redirect(route('index'));
         }
     }
@@ -199,7 +199,7 @@ class AuthContoller extends Controller
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 1000]);
+                toastr()->success('Chào mừng!', "Đăng nhập thành công!", ['timeOut' => 100]);
                 return redirect(route('index'));
             } else {
                 return redirect()->back()->with('user_not_found', 'Email hoặc mật khẩu không chính xác!');
@@ -221,7 +221,7 @@ class AuthContoller extends Controller
             // $user->remember_token = Str::random(40);
             // $user->save();
 
-            toastr()->success('Chào mừng!', "Xác thực email thành công!", ['timeOut' => 1000]);
+            toastr()->success('Chào mừng!', "Xác thực email thành công!", ['timeOut' => 100]);
             return redirect(route('index'));
         } else {
             abort(404);

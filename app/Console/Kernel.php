@@ -17,6 +17,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('product:status')->everyMinute();
+        $schedule->command('promo:status')->everyMinute();
+        $schedule->call(function(){
+            User::whereNull('email_verified_at')->delete();
+        })->daily();
     }
 
     /**
