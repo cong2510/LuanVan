@@ -50,7 +50,7 @@
                             <div class="col-sm-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="type" id="radio1"
-                                        value="1">
+                                        value="1" checked>
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         Mã giảm tiền
                                     </label>

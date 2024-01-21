@@ -279,9 +279,10 @@
                                                     @if (Auth::user())
                                                         @if (auth()->user()->id == $review->user_id)
                                                             <div>
-                                                                {{-- <a style="font-size: 13px;color:grey;text-decoration: underline">
+                                                                <a data-bs-toggle="modal" data-bs-target="#editModal{{ $review->id }}"
+                                                                    style="font-size: 13px;color:grey;text-decoration: underline">
                                                                     Chỉnh sửa
-                                                                </a> --}}
+                                                                </a>
                                                                 &nbsp;
                                                                 <a data-bs-toggle="modal"
                                                                     data-bs-target="#deleteModal"
@@ -290,80 +291,114 @@
                                                                 </a>
                                                                 <br>
                                                                 <hr>
-                                                                <form action="{{ route('editrateproduct') }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    <input type="hidden" name="ratingid"
-                                                                        value="{{ $review->id }}">
-                                                                    <input type="hidden" name="userid"
-                                                                        value="{{ $review->user_id }}">
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            @error('content')
-                                                                                <div class="invalid-feedback d-block"
-                                                                                    role="alert">
-                                                                                    <strong>{{ $message }}</strong>
-                                                                                </div>
-                                                                            @enderror
-                                                                            <textarea class="form-control no-resize" rows="4" placeholder="Chỉnh sửa đánh giá..." maxlength="255"
-                                                                                name="content"></textarea>
-                                                                        </div>
-                                                                        @error('rating')
-                                                                            <div class="invalid-feedback d-block"
-                                                                                role="alert">
-                                                                                <strong>{{ $message }}</strong>
+                                                                <div class="modal fade" id="editModal{{ $review->id }}" tabindex="-1"
+                                                                    aria-labelledby="editModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="editModalLabel">Chỉnh sửa đánh
+                                                                                    giá
+                                                                                </h5>
+                                                                                <button type="button"
+                                                                                    class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"></button>
                                                                             </div>
-                                                                        @enderror
-                                                                        <div class="form-group-row ">
-                                                                            <div class="rating"
-                                                                                style="font-size: 25px !important">
-                                                                                <input
-                                                                                    id="rate5star{{ $review->id }}"
-                                                                                    name="rating" type="radio"
-                                                                                    value="5"
-                                                                                    class="radio-btn starhide" />
-                                                                                <label
-                                                                                    for="rate5star{{ $review->id }}">☆</label>
-                                                                                <input
-                                                                                    id="rate4star{{ $review->id }}"
-                                                                                    name="rating" type="radio"
-                                                                                    value="4"
-                                                                                    class="radio-btn starhide" />
-                                                                                <label
-                                                                                    for="rate4star{{ $review->id }}">☆</label>
-                                                                                <input
-                                                                                    id="rate3star{{ $review->id }}"
-                                                                                    name="rating" type="radio"
-                                                                                    value="3"
-                                                                                    class="radio-btn starhide" />
-                                                                                <label
-                                                                                    for="rate3star{{ $review->id }}">☆</label>
-                                                                                <input
-                                                                                    id="rate2star{{ $review->id }}"
-                                                                                    name="rating" type="radio"
-                                                                                    value="2"
-                                                                                    class="radio-btn starhide" />
-                                                                                <label
-                                                                                    for="rate2star{{ $review->id }}">☆</label>
-                                                                                <input
-                                                                                    id="rate1star{{ $review->id }}"
-                                                                                    name="rating" type="radio"
-                                                                                    value="1"
-                                                                                    class="radio-btn starhide" />
-                                                                                <label
-                                                                                    for="rate1star{{ $review->id }}">☆</label>
-                                                                                <div class="clear"></div>
+                                                                            <div class="modal-footer">
+                                                                                <form
+                                                                                    action="{{ route('editrateproduct') }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    <input type="hidden"
+                                                                                        name="ratingid"
+                                                                                        value="{{ $review->id }}">
+                                                                                    <input type="hidden"
+                                                                                        name="userid"
+                                                                                        value="{{ $review->user_id }}">
+                                                                                    <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            @error('content')
+                                                                                                <div class="invalid-feedback d-block"
+                                                                                                    role="alert">
+                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                </div>
+                                                                                            @enderror
+                                                                                            <textarea class="form-control no-resize" rows="4" placeholder="Chỉnh sửa đánh giá..." maxlength="255"
+                                                                                                name="content"></textarea>
+                                                                                        </div>
+                                                                                        @error('rating')
+                                                                                            <div class="invalid-feedback d-block"
+                                                                                                role="alert">
+                                                                                                <strong>{{ $message }}</strong>
+                                                                                            </div>
+                                                                                        @enderror
+                                                                                        <div class="form-group-row ">
+                                                                                            <div class="rating"
+                                                                                                style="font-size: 25px !important">
+                                                                                                <input
+                                                                                                    id="rate5star{{ $review->id }}"
+                                                                                                    name="rating"
+                                                                                                    type="radio"
+                                                                                                    value="5"
+                                                                                                    class="radio-btn starhide" />
+                                                                                                <label
+                                                                                                    for="rate5star{{ $review->id }}">☆</label>
+                                                                                                <input
+                                                                                                    id="rate4star{{ $review->id }}"
+                                                                                                    name="rating"
+                                                                                                    type="radio"
+                                                                                                    value="4"
+                                                                                                    class="radio-btn starhide" />
+                                                                                                <label
+                                                                                                    for="rate4star{{ $review->id }}">☆</label>
+                                                                                                <input
+                                                                                                    id="rate3star{{ $review->id }}"
+                                                                                                    name="rating"
+                                                                                                    type="radio"
+                                                                                                    value="3"
+                                                                                                    class="radio-btn starhide" />
+                                                                                                <label
+                                                                                                    for="rate3star{{ $review->id }}">☆</label>
+                                                                                                <input
+                                                                                                    id="rate2star{{ $review->id }}"
+                                                                                                    name="rating"
+                                                                                                    type="radio"
+                                                                                                    value="2"
+                                                                                                    class="radio-btn starhide" />
+                                                                                                <label
+                                                                                                    for="rate2star{{ $review->id }}">☆</label>
+                                                                                                <input
+                                                                                                    id="rate1star{{ $review->id }}"
+                                                                                                    name="rating"
+                                                                                                    type="radio"
+                                                                                                    value="1"
+                                                                                                    class="radio-btn starhide" />
+                                                                                                <label
+                                                                                                    for="rate1star{{ $review->id }}">☆</label>
+                                                                                                <div class="clear">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <br><br>
+                                                                                        <div class="col-12">
+                                                                                            <button
+                                                                                                class="btn btn-primary"
+                                                                                                type="submit">Chỉnh
+                                                                                                sửa</button>
+                                                                                            <button type="button"
+                                                                                                class="btn btn-secondary"
+                                                                                                data-bs-dismiss="modal">Hủy</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+                                                                                    <hr>
+                                                                                </form>
                                                                             </div>
-                                                                        </div>
-                                                                        <br><br>
-                                                                        <div class="col-12">
-                                                                            <button class="btn btn-primary"
-                                                                                type="submit">Chỉnh sửa</button>
                                                                         </div>
                                                                     </div>
-                                                                    <br>
-                                                                    <hr>
-                                                                </form>
+                                                                </div>
                                                                 <div class="modal fade" id="deleteModal"
                                                                     tabindex="-1" aria-labelledby="deleteModalLabel"
                                                                     aria-hidden="true">

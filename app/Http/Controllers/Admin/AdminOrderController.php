@@ -47,6 +47,7 @@ class AdminOrderController extends Controller
             ]);
         }
 
+        toastr()->success("", 'Xác nhận đơn hàng thành công!', ['timeOut' => 100]);
         return back();
     }
 
@@ -58,6 +59,7 @@ class AdminOrderController extends Controller
             'order_status' => Order::ORDER_STATUS[2],
         ]);
 
+        toastr()->success("", 'Xác nhận giao hàng thành công!', ['timeOut' => 100]);
         return back();
     }
 

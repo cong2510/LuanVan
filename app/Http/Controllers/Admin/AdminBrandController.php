@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AdminBrandController extends Controller
 {
@@ -87,9 +88,15 @@ class AdminBrandController extends Controller
 
     public function DeleteBrand($id)
     {
-        Brand::findOrFail($id)->delete();
+        $existBrand = DB::table('sanpham')->where('brand_id', $id)->exists();
 
-        toastr()->success("", 'Xóa thương hiệu thành công', ['timeOut' => 1000]);
-        return redirect()->route('all.brand');
+        if ($existBrand == true) {
+            toastr()->warning("", 'Không thể xóa', ['timeOut' => 100]);
+            return redirect()->back();
+        } else {
+            Brand::findOrFail($id)->delete();
+            toastr()->success("", 'Xóa thương hiệu thành công', ['timeOut' => 100]);
+            return redirect()->route('all.brand');
+        }
     }
 }

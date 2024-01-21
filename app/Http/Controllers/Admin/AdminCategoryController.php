@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Theloai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AdminCategoryController extends Controller
 {
@@ -12,7 +13,7 @@ class AdminCategoryController extends Controller
     {
         $loais = Theloai::all();
 
-        return view('admin.theloai.allcategory',[
+        return view('admin.theloai.allcategory', [
             'loais' => $loais,
         ]);
     }
@@ -53,7 +54,7 @@ class AdminCategoryController extends Controller
     {
         $loai = Theloai::findOrFail($id);
 
-        return view('admin.theloai.editcategory',[
+        return view('admin.theloai.editcategory', [
             'loai' => $loai,
         ]);
     }
@@ -87,9 +88,15 @@ class AdminCategoryController extends Controller
 
     public function DeleteCategory($id)
     {
-        Theloai::findOrFail($id)->delete();
+        $existTheloai = DB::table('sanpham_theloai')->where('theloai_id', $id)->exists();
 
-        toastr()->success("", 'Xóa thể loại thành công', ['timeOut' => 1000]);
-        return redirect()->route('all.category');
+        if ($existTheloai == true) {
+            toastr()->warning("", 'Không thể xóa', ['timeOut' => 100]);
+            return redirect()->back();
+        } else {
+            Theloai::findOrFail($id)->delete();
+            toastr()->success("", 'Xóa thể loại thành công', ['timeOut' => 100]);
+            return redirect()->route('all.category');
+        }
     }
 }

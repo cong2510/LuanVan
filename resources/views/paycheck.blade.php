@@ -89,7 +89,12 @@
                                         if ($codes['type'] == 'Percent') {
                                             $tong = $tong - ($tong * $codes['value']) / 100;
                                         } else {
-                                            $tong = $tong - $codes['value'];
+                                            if($tong < $codes['value'])
+                                            {
+                                                $tong = 0;
+                                            }else{
+                                                $tong = $tong - $codes['value'];
+                                            }
                                         }
                                     @endphp
                                     <li class="list-group-item d-flex justify-content-between">

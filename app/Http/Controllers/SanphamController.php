@@ -79,7 +79,7 @@ class SanphamController extends Controller
             // If no sort option is selected, get all games with default sorting
             $sanphamsort = $sanphams;
         }
-        $sanphamsort = $sanphamsort->paginate(12);
+        $sanphamsort = $sanphamsort->paginate(15);
         // $sanphamsort->appends($request->except('page'));
 
         return view('product', [
@@ -123,7 +123,7 @@ class SanphamController extends Controller
             // If no sort option is selected, get all games with default sorting
             $sanphamsort = $sanphams;
         }
-        $sanphamsort = $sanphamsort->paginate(12);
+        $sanphamsort = $sanphamsort->paginate(15);
         // $sanphamsort->appends($request->except('page'));
         $allProduct = count($sanphamsort);
 
@@ -169,7 +169,7 @@ class SanphamController extends Controller
             // If no sort option is selected, get all games with default sorting
             $sanphamsort = $sanphams;
         }
-        $sanphamsort = $sanphamsort->paginate(12);
+        $sanphamsort = $sanphamsort->paginate(15);
         // $sanphamsort->appends($request->except('page'));
         $allProduct = count($sanphamsort);
 

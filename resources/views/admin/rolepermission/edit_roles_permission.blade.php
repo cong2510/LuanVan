@@ -50,7 +50,7 @@
                                         {{-- <input class="form-check-input" type="checkbox" id="flexCheckDefault"
                                             {{ App\Models\User::roleHasPermissions($role, $permissions) ? 'checked' : '' }}> --}}
                                         <label class="form-check-label" for="flexCheckDefault">
-                                            {{ $group->group_name }}
+                                            {{ Str::ucfirst($group->group_name) }}
                                         </label>
                                     </div>
                                 </div>
